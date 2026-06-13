@@ -1,0 +1,14 @@
+{
+  "name": "@analysis-at-home/coordinator",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Trustless work dispatch and verified-status ledger for analysis@home",
+  "license": "Apache-2.0",
+  "type": "module",
+  "scripts": {
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}

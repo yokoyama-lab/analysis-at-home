@@ -1,0 +1,19 @@
+{
+  "id": "insertion-sort-comparisons",
+  "title": "Worst-case comparison count of insertion sort",
+  "statement_informal": "Sorting a list of length n by insertion sort performs at most n(n-1)/2 key comparisons.",
+  "domain": "sorting",
+  "claim_kind": "complexity",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "references": [
+    "Software Foundations, Vol. 3: Verified Functional Algorithms (Appel) — functional correctness of insertion sort",
+    "Charguéraud & Pottier, 'A Fistful of Dollars' — formal verification of asymptotic cost via time credits"
+  ],
+  "status": {
+    "rocq": "open",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

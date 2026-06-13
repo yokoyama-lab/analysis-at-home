@@ -1,0 +1,19 @@
+# Node
+node_modules/
+*.log
+
+# Rocq / Coq build artifacts
+*.vo
+*.vok
+*.vos
+*.glob
+.*.aux
+*.cmi
+*.cmo
+*.cmx
+
+# Lean
+.lake/
+
+# OS / editor
+.DS_Store

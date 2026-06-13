@@ -1,0 +1,28 @@
+name: verify
+# Type-checks the seed Rocq statement only. No LLM calls, no secrets.
+on:
+  push:
+  pull_request:
+
+jobs:
+  rocq-seed:
+    runs-on: ubuntu-latest
+    container: coqorg/coq:8.18
+    steps:
+      - uses: actions/checkout@v4
+      - name: coqc the seed work-unit statement
+        run: |
+          cd work-units/insertion-sort-comparisons/targets/rocq
+          coqc -q InsertionSortComparisons.v
+
+  coordinator-typecheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - working-directory: coordinator
+        run: |
+          npm install
+          npm run typecheck

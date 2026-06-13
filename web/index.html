@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>analysis@home — verify a theorem</title>
+  <style>
+    :root { color-scheme: light dark; }
+    body { font: 16px/1.6 system-ui, sans-serif; max-width: 760px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { margin-bottom: .2rem; }
+    .tag { color: #888; margin-top: 0; }
+    .step { border-left: 3px solid #4caf50; padding: .2rem 0 .2rem 1rem; margin: 1.5rem 0; }
+    textarea { width: 100%; box-sizing: border-box; font-family: ui-monospace, monospace; }
+    pre { background: #0001; padding: 1rem; overflow:auto; white-space: pre-wrap; }
+    button { font: inherit; padding: .5rem 1rem; cursor: pointer; }
+    .note { font-size: .85em; color: #888; }
+    #verdict:empty { display:none; }
+    #verdict { margin-top: 1rem; padding: .75rem 1rem; border-radius: 6px; background:#0001; }
+  </style>
+</head>
+<body>
+  <h1>analysis@home</h1>
+  <p class="tag">Spare AI, turned into proven math. <strong>Verified, not trusted.</strong></p>
+
+  <div class="step">
+    <h2>1 · Copy this prompt into your own LLM</h2>
+    <p class="note">We never run your LLM and never see your credentials.</p>
+    <pre id="prompt">Loading the open work unit…</pre>
+    <button id="copy">Copy prompt</button>
+  </div>
+
+  <div class="step">
+    <h2>2 · Paste the proof your LLM returned</h2>
+    <textarea id="submission" rows="14" placeholder="Paste the full .v source here…"></textarea>
+  </div>
+
+  <div class="step">
+    <h2>3 · Verify with the kernel</h2>
+    <button id="submit">Submit for verification</button>
+    <div id="verdict"></div>
+    <p class="note">The kernel re-checks every line. Only kernel-passing proofs land in the corpus.</p>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
