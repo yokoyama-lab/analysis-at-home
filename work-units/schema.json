@@ -14,6 +14,22 @@
     "title": { "type": "string", "minLength": 1 },
     "statement_informal": { "type": "string", "minLength": 1 },
     "domain": { "type": "string" },
+    "kind": {
+      "type": "string",
+      "enum": ["theorem", "leaf", "assembly"],
+      "description": "theorem: a whole self-contained theorem (default if absent). leaf: one lemma in a decomposition. assembly: the glue proving the main theorem from leaf lemmas."
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5,
+      "description": "Estimated effort to one-shot (1 = trivial arithmetic/inversion … 5 = hard core). Lets contributors pick what they can finish."
+    },
+    "depends_on": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Ids of leaves whose STATEMENTS this unit may assume (not their proofs). Used to order assembly and to build a leaf's self-contained prompt."
+    },
     "claim_kind": {
       "type": "string",
       "enum": ["correctness", "complexity", "closed-form"]

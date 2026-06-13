@@ -16,6 +16,7 @@ jobs:
         with:
           coq_version: "8.18"
           custom_script: |
+            ws="$PWD"
             startGroup "type-check seeds"
               # Compile in a writable temp dir: the mounted workspace is
               # host-owned, so coqc (running as user `coq`) cannot write its
@@ -23,9 +24,11 @@ jobs:
               d="$(mktemp -d)"
               cp work-units/insertion-sort-comparisons/targets/rocq/InsertionSortComparisons.v "$d/"
               cp work-units/insertion-sort-comparisons-while/targets/rocq/InsertionSortWhileComparisons.v "$d/"
-              cd "$d"
-              coqc -q InsertionSortComparisons.v
-              coqc -q InsertionSortWhileComparisons.v
+              ( cd "$d" && coqc -q InsertionSortComparisons.v && coqc -q InsertionSortWhileComparisons.v )
+            endGroup
+            startGroup "certify the decomposed (leaf) proof"
+              # assemble.sh resolves its own dir and compiles in a temp dir.
+              bash "$ws/work-units/insertion-sort-comparisons-while/decomposition/assemble.sh"
             endGroup
 
   coordinator-typecheck:

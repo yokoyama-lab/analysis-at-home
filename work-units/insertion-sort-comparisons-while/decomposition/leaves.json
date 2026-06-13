@@ -1,0 +1,17 @@
+{
+  "theorem": "insertion_sort_while_comparisons_upper_bound",
+  "spec": "spec.v",
+  "assembly": "main.v",
+  "leaves": [
+    { "id": "list_set_length",     "file": "leaves/01_list_set_length.v",     "difficulty": 1, "depends_on": [] },
+    { "id": "ceval_ass_inv",       "file": "leaves/02_ceval_ass_inv.v",       "difficulty": 1, "depends_on": [] },
+    { "id": "ceval_arrass_inv",    "file": "leaves/03_ceval_arrass_inv.v",    "difficulty": 1, "depends_on": [] },
+    { "id": "ceval_seq_inv",       "file": "leaves/04_ceval_seq_inv.v",       "difficulty": 1, "depends_on": [] },
+    { "id": "ceval_arr_length",    "file": "leaves/05_ceval_arr_length.v",    "difficulty": 2, "depends_on": ["list_set_length"] },
+    { "id": "inner_body_effect",   "file": "leaves/06_inner_body_effect.v",   "difficulty": 2, "depends_on": ["ceval_seq_inv", "ceval_arrass_inv", "ceval_ass_inv"] },
+    { "id": "inner_loop_preserves","file": "leaves/07_inner_loop_preserves.v","difficulty": 2, "depends_on": ["inner_body_effect"] },
+    { "id": "inner_loop_bound",    "file": "leaves/08_inner_loop_bound.v",    "difficulty": 3, "depends_on": ["inner_body_effect"] },
+    { "id": "outer_body_effect",   "file": "leaves/09_outer_body_effect.v",   "difficulty": 3, "depends_on": ["ceval_seq_inv", "ceval_ass_inv", "ceval_arrass_inv", "inner_loop_bound", "inner_loop_preserves", "ceval_arr_length", "list_set_length"] },
+    { "id": "outer_loop_bound",    "file": "leaves/10_outer_loop_bound.v",    "difficulty": 4, "depends_on": ["outer_body_effect"] }
+  ]
+}

@@ -47,6 +47,34 @@ submitted ──(kernel rejects)──▶ open      # nothing trusted, just try 
 The transition to `verified` is performed **only** by the verifier after the
 kernel accepts — never by a contributor's say-so. See `docs/design.md`.
 
+## Decomposition: small leaves that assemble into a theorem
+
+To make work **reliably completable**, a hard theorem is sliced into small,
+independently-checkable pieces so many contributors each finish one. A unit
+declares its `kind`:
+
+- **`theorem`** (default) — a whole self-contained theorem.
+- **`leaf`** — ONE lemma. The unit of crowd work: small (often a single
+  `induction`/`inversion` + `lia`), `difficulty`-tagged (★1–5), and depending
+  only on other leaves' **statements** (`depends_on`), never their proofs — so
+  leaves are done in any order, in parallel.
+- **`assembly`** — the glue: proves the main theorem from the leaf lemmas, with
+  no new heavy reasoning.
+
+A leaf's prompt is self-contained = shared spec + its `depends_on` lemma
+statements (as `Admitted`) + the lemma to prove. The kernel checks each leaf;
+the theorem is **certified** only when every leaf is discharged and the
+assembled `Print Assumptions <main>` reports *"Closed under the global
+context"* — i.e. nothing is assumed.
+
+A worked, runnable example (the `while-ops` theorem split into 10 leaves + an
+assembly + `assemble.sh`, with a `leaves.json` manifest) lives in
+[`../work-units/insertion-sort-comparisons-while/decomposition/`](../work-units/insertion-sort-comparisons-while/decomposition/).
+
+**Adaptive grain:** if a leaf can't be one-shot after several attempts, it is
+"too big" and should be split further (its internal `assert`s are the natural
+sub-leaves). Failures drive finer decomposition until every leaf is reliable.
+
 ## Translation is itself a work unit
 
 If a unit lists a backend with no file under `targets/<backend>/`, producing
