@@ -16,7 +16,7 @@
     "Charguéraud & Pottier, 'A Fistful of Dollars' — formal verification of asymptotic cost via time credits"
   ],
   "status": {
-    "rocq": "open",
+    "rocq": "verified",
     "lean": "open",
     "agda": "open",
     "isabelle": "open"
