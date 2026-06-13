@@ -16,11 +16,27 @@
     .note { font-size: .85em; color: #888; }
     #verdict:empty { display:none; }
     #verdict { margin-top: 1rem; padding: .75rem 1rem; border-radius: 6px; background:#0001; }
+    .leaf { display:inline-block; margin:.15rem; padding:.25rem .5rem; border:1px solid #8884; border-radius:6px; cursor:pointer; font-size:.9em; background:none; }
+    .leaf:disabled { opacity:.45; cursor:not-allowed; }
+    .leaf.done { border-color:#4caf50; color:#4caf50; cursor:default; }
+    .bar { height:8px; background:#0002; border-radius:4px; overflow:hidden; margin:.3rem 0; }
+    .bar > i { display:block; height:100%; background:#4caf50; }
   </style>
 </head>
 <body>
   <h1>analysis@home</h1>
   <p class="tag">Spare AI, turned into proven math. <strong>Verified, not trusted.</strong></p>
+
+  <div class="step" id="decomp">
+    <h2>Build a theorem leaf by leaf</h2>
+    <p class="note">A hard theorem split into small lemmas. Prove one — many small
+      proofs assemble into the whole, each checked by the kernel.</p>
+    <p><strong id="dtitle">…</strong> — <span id="prog">0/0</span> leaves verified</p>
+    <div class="bar"><i id="progbar" style="width:0%"></i></div>
+    <div id="leaves"></div>
+    <p class="note">★ = difficulty. Greyed leaves are blocked until their
+      dependencies are verified. Click an open leaf to load it below.</p>
+  </div>
 
   <div class="step">
     <h2>1 · Pick an open work unit, copy the prompt into your own LLM</h2>
