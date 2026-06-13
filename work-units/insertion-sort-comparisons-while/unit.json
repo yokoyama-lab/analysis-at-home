@@ -16,7 +16,7 @@
     "Nielson & Nielson, Semantics with Applications — cost-annotated operational semantics"
   ],
   "status": {
-    "rocq": "open",
+    "rocq": "verified",
     "lean": "open",
     "agda": "open",
     "isabelle": "open"
