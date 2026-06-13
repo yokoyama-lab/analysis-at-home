@@ -7,17 +7,21 @@ on:
 jobs:
   rocq-seed:
     runs-on: ubuntu-latest
-    container: coqorg/coq:8.18
+    # checkout runs on the host; docker-coq-action mounts the workspace and runs
+    # coqc inside the coq container with the opam env loaded (avoids the
+    # non-root EACCES issue of running checkout inside coqorg/coq directly).
     steps:
       - uses: actions/checkout@v4
-      - name: coqc the func-ops seed statement
-        run: |
-          cd work-units/insertion-sort-comparisons/targets/rocq
-          coqc -q InsertionSortComparisons.v
-      - name: coqc the while-ops seed statement
-        run: |
-          cd work-units/insertion-sort-comparisons-while/targets/rocq
-          coqc -q InsertionSortWhileComparisons.v
+      - uses: coq-community/docker-coq-action@v1
+        with:
+          coq_version: "8.18"
+          custom_script: |
+            startGroup "coqc func-ops seed"
+              ( cd work-units/insertion-sort-comparisons/targets/rocq && coqc -q InsertionSortComparisons.v )
+            endGroup
+            startGroup "coqc while-ops seed"
+              ( cd work-units/insertion-sort-comparisons-while/targets/rocq && coqc -q InsertionSortWhileComparisons.v )
+            endGroup
 
   coordinator-typecheck:
     runs-on: ubuntu-latest
