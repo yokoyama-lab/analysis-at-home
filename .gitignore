@@ -7,6 +7,8 @@ node_modules/
 *.vok
 *.vos
 *.glob
+.lia.cache
+.nia.cache
 .*.aux
 *.cmi
 *.cmo
