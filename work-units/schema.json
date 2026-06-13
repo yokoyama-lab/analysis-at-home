@@ -25,6 +25,10 @@
       "items": { "type": "string", "enum": ["rocq", "lean", "agda", "isabelle"] }
     },
     "prompt_template": { "type": "string" },
+    "expected_theorem": {
+      "type": "string",
+      "description": "Name of the identifier a submission must prove with no axioms (checked by the verifier via Print Assumptions). For now a single canonical name shared across backends."
+    },
     "cost_model": {
       "type": "object",
       "additionalProperties": false,

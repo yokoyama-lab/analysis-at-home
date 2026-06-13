@@ -18,18 +18,27 @@ Make the empty repo "design-visible": interfaces and types fixed before logic.
 
 **Milestone:** repo communicates the architecture; `coqc` accepts the seed `.v`.
 
-## Phase 1 — Push one theorem end-to-end (~2 weeks)
+## Phase 1 — Push one theorem end-to-end (in progress)
 
 One vertical slice that actually works, for **insertion sort comparison count**.
 
-- [ ] Replace the `Admitted.` worst-case bound with a real Rocq proof
-      (`2 * comparisons l <= length l * (length l - 1)`).
+- [x] Replace the `Admitted.` worst-case bound with a real Rocq proof
+      (`2 * comparisons l <= length l * (length l - 1)`) — both the `func-ops`
+      and `while-ops` units, kernel-checked, axiom-free.
+- [x] Verifier: real trustless check — compile + `Print Assumptions` reports
+      "Closed under the global context" (no naive grep false-positives).
+- [x] Coordinator: real HTTP server, submission intake → invoke verifier →
+      record `verified` (in-memory).
+- [x] Web MVP: pick an open unit, paste the prompt into your own LLM, submit,
+      and see it auto-marked `verified`.
+- [ ] Signature-equivalence check (submission proves the *same* statement as the
+      seed, not a weaker one) — see `verifier/README.md`.
+- [ ] Sandbox the verifier before any public exposure.
+- [ ] Persist verified status (currently in-memory; resets on restart).
 - [ ] Add the functional-correctness unit (sorted permutation) alongside cost.
-- [ ] Coordinator: real submission intake → invoke verifier → persist `verified`.
-- [ ] Web MVP: a third party pastes the prompt into their own LLM, submits the
-      result, and sees it auto-marked `verified`.
 
-**Milestone:** an outside contributor verifies a theorem without us trusting them.
+**Milestone:** an outside contributor verifies a theorem without us trusting
+them — reached locally; remaining items harden it for public use.
 
 ## Phase 2 — The two-track pipeline (research core)
 

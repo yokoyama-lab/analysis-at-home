@@ -23,8 +23,12 @@
   <p class="tag">Spare AI, turned into proven math. <strong>Verified, not trusted.</strong></p>
 
   <div class="step">
-    <h2>1 · Copy this prompt into your own LLM</h2>
+    <h2>1 · Pick an open work unit, copy the prompt into your own LLM</h2>
     <p class="note">We never run your LLM and never see your credentials.</p>
+    <label>Work unit:
+      <select id="unit"><option>loading…</option></select>
+    </label>
+    <p class="note">Must prove: <code id="thm">—</code></p>
     <pre id="prompt">Loading the open work unit…</pre>
     <button id="copy">Copy prompt</button>
   </div>

@@ -6,6 +6,7 @@
   "claim_kind": "complexity",
   "targets": ["rocq", "lean", "agda", "isabelle"],
   "prompt_template": "prompt-template.md",
+  "expected_theorem": "insertion_sort_while_comparisons_upper_bound",
   "cost_model": {
     "kind": "while-ops",
     "counts": ["key-comparison"],

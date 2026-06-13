@@ -65,11 +65,16 @@ conjecture track is a hypothesis generator, never the final word.
 
 ## Status
 
-🚧 **Phase 0 — scaffold.** Interfaces and the first seed work unit are in place;
-business logic is stubbed (see `TODO`s). The first end-to-end target is the
-worst-case **comparison count of insertion sort** (`work-units/insertion-sort-comparisons`).
+🛠️ **Phase 1 — the vertical slice works locally.** The worst-case
+**comparison count of insertion sort** is proved and kernel-checked (axiom-free)
+under two cost models — functional (`func-ops`) and imperative WHILE
+(`while-ops`). The coordinator serves the web MVP, accepts a pasted proof, and
+the verifier re-checks it with the Rocq kernel (`Print Assumptions` ⇒ "closed
+under the global context"). Run it: `npm --prefix coordinator install && npm
+--prefix coordinator start`.
 
-See [`docs/roadmap.md`](docs/roadmap.md) for the plan.
+Remaining before public exposure: signature-equivalence, a sandbox, and
+persistence — see [`docs/roadmap.md`](docs/roadmap.md).
 
 ## Layout
 

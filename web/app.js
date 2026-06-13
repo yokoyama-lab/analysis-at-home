@@ -1,42 +1,59 @@
-// analysis@home web MVP — STUB.
+// analysis@home web MVP — talks to the coordinator (coordinator/src/server.ts).
 //
-// Shows a ready-to-paste prompt and accepts a pasted proof for verification.
-// Phase 1 wires `loadPrompt` / `verify` to the coordinator + verifier behind a
-// minimal backend. For now they are mocked so the page is usable offline.
+// Flow: list open work units -> show the ready-to-paste prompt for the chosen
+// one -> POST the proof the contributor's own LLM produced -> the server
+// re-checks it with the kernel and returns a verdict.
 //
 // Trustless invariant: this page never asks for an API key and never calls an
 // LLM. It only ships proof SOURCE to the verifier.
 
-const WORK_UNIT = "insertion-sort-comparisons";
-const BACKEND = "rocq";
-
-// TODO (Phase 1): GET /api/dispatch -> { promptPath }, then fetch its contents.
-async function loadPrompt() {
-  const path = `../work-units/${WORK_UNIT}/prompt-template.md`;
-  try {
-    const res = await fetch(path);
-    if (!res.ok) throw new Error(String(res.status));
-    return await res.text();
-  } catch {
-    return `(Could not load ${path}. Open it directly in the repo and copy the prompt.)`;
-  }
-}
-
-// TODO (Phase 1): POST /api/submit { unitId, backend, source } -> Verdict.
-// The server shells out to verifier/verify.sh in a sandbox. Mocked here.
-async function verify(source) {
-  if (/\b(Admitted|admit|Axiom|sorry)\b/.test(source)) {
-    return { accepted: false, reason: "contains Admitted/admit/Axiom/sorry" };
-  }
-  return {
-    accepted: false,
-    reason: "verification backend not wired yet (Phase 1) — run verifier/verify.sh locally",
-  };
-}
-
 const $ = (id) => document.getElementById(id);
+let current = null; // { unitId, backend }
 
-loadPrompt().then((text) => { $("prompt").textContent = text; });
+async function api(path, opts) {
+  const res = await fetch(path, opts);
+  if (!res.ok) throw new Error(`${path} -> ${res.status}`);
+  return res.json();
+}
+
+async function loadUnits() {
+  const sel = $("unit");
+  let open;
+  try {
+    open = await api("/api/units");
+  } catch {
+    sel.innerHTML = "<option>(start the coordinator: npm --prefix coordinator start)</option>";
+    $("prompt").textContent = "No coordinator. Run: node coordinator/src/server.ts, then reload.";
+    return;
+  }
+  if (!open.length) {
+    sel.innerHTML = "<option>(no open units — all verified 🎉)</option>";
+    $("prompt").textContent = "Every target is verified.";
+    return;
+  }
+  sel.innerHTML = "";
+  for (const u of open) {
+    const o = document.createElement("option");
+    o.value = `${u.unitId}::${u.backend}`;
+    o.textContent = `[${u.backend}] ${u.title} (${u.status})`;
+    sel.appendChild(o);
+  }
+  sel.onchange = () => selectUnit(sel.value);
+  await selectUnit(sel.value);
+}
+
+async function selectUnit(value) {
+  const [unitId, backend] = value.split("::");
+  current = { unitId, backend };
+  $("prompt").textContent = "Loading prompt…";
+  try {
+    const { prompt, expected_theorem } = await api(`/api/prompt?unit=${encodeURIComponent(unitId)}`);
+    $("prompt").textContent = prompt;
+    $("thm").textContent = expected_theorem ?? "—";
+  } catch (e) {
+    $("prompt").textContent = `Could not load prompt: ${e.message}`;
+  }
+}
 
 $("copy").addEventListener("click", async () => {
   await navigator.clipboard.writeText($("prompt").textContent);
@@ -45,10 +62,22 @@ $("copy").addEventListener("click", async () => {
 });
 
 $("submit").addEventListener("click", async () => {
-  const source = $("submission").value.trim();
   const out = $("verdict");
+  const source = $("submission").value.trim();
+  if (!current) { out.textContent = "Pick a work unit first."; return; }
   if (!source) { out.textContent = "Paste a proof first."; return; }
-  out.textContent = "Verifying…";
-  const v = await verify(source);
-  out.textContent = (v.accepted ? "✅ verified — " : "❌ rejected — ") + v.reason;
+  out.textContent = "Verifying with the kernel…";
+  try {
+    const v = await api("/api/submit", {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify({ unitId: current.unitId, backend: current.backend, source }),
+    });
+    out.textContent = (v.accepted ? "✅ verified — " : "❌ rejected — ") + v.reason;
+    if (v.accepted) loadUnits(); // refresh: the unit drops off the open list
+  } catch (e) {
+    out.textContent = `Error: ${e.message}`;
+  }
 });
+
+loadUnits();
