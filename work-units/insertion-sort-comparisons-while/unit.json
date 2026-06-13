@@ -1,0 +1,24 @@
+{
+  "id": "insertion-sort-comparisons-while",
+  "title": "Worst-case key-comparison count of insertion sort (WHILE / imperative)",
+  "statement_informal": "Sorting a list of length n by in-place insertion sort, written in a WHILE language, performs at most n(n-1)/2 key comparisons.",
+  "domain": "sorting",
+  "claim_kind": "complexity",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "cost_model": {
+    "kind": "while-ops",
+    "counts": ["key-comparison"],
+    "notes": "Big-step cost-annotated semantics of a small WHILE language; only key comparisons (the BKLe form, array element vs. held key) are counted. Index/bookkeeping tests (BLe) are free."
+  },
+  "references": [
+    "Neil D. Jones, Computability and Complexity from a Programming Perspective — WHILE as the canonical language for complexity",
+    "Nielson & Nielson, Semantics with Applications — cost-annotated operational semantics"
+  ],
+  "status": {
+    "rocq": "open",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

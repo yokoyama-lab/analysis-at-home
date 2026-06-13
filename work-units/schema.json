@@ -25,6 +25,26 @@
       "items": { "type": "string", "enum": ["rocq", "lean", "agda", "isabelle"] }
     },
     "prompt_template": { "type": "string" },
+    "cost_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "counts"],
+      "description": "How a step is costed. Required for complexity/closed-form claims.",
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["func-ops", "while-ops", "riscv", "llvm"],
+          "description": "func-ops: operation count on a functional core; while-ops: operation count on a WHILE imperative core; riscv/llvm: concrete-cost layers."
+        },
+        "counts": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" },
+          "description": "Designated operations counted as unit cost, e.g. [\"comparison\"], [\"key-comparison\"], [\"multiplication\"]."
+        },
+        "notes": { "type": "string" }
+      }
+    },
     "references": {
       "type": "array",
       "items": { "type": "string" }
@@ -37,5 +57,13 @@
         "enum": ["open", "submitted", "verified"]
       }
     }
+  },
+  "if": {
+    "properties": {
+      "claim_kind": { "enum": ["complexity", "closed-form"] }
+    }
+  },
+  "then": {
+    "required": ["cost_model"]
   }
 }

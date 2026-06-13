@@ -10,10 +10,14 @@ jobs:
     container: coqorg/coq:8.18
     steps:
       - uses: actions/checkout@v4
-      - name: coqc the seed work-unit statement
+      - name: coqc the func-ops seed statement
         run: |
           cd work-units/insertion-sort-comparisons/targets/rocq
           coqc -q InsertionSortComparisons.v
+      - name: coqc the while-ops seed statement
+        run: |
+          cd work-units/insertion-sort-comparisons-while/targets/rocq
+          coqc -q InsertionSortWhileComparisons.v
 
   coordinator-typecheck:
     runs-on: ubuntu-latest

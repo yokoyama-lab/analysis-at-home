@@ -55,6 +55,33 @@ contributor) performs. Rationale:
 The verifier exposes a **pluggable adapter interface**; Rocq is implemented
 first; Lean, Agda, and Isabelle are stubs.
 
+## Cost models
+
+A complexity claim is meaningless without saying **what one step costs**. So
+each work unit whose `claim_kind` is `complexity` or `closed-form` declares a
+`cost_model = { kind, counts, notes }` (enforced by `work-units/schema.json`).
+A cost model factors into three orthogonal axes — *language* × *counted
+operations* × *proof technique* — of which the first two are recorded:
+
+| `kind` | language | typical algorithms | technique |
+|--------|----------|--------------------|-----------|
+| **`func-ops`** (default) | small functional core | divide & conquer, recursion | instrumented count returned + structural induction |
+| **`while-ops`** | WHILE imperative core | in-place loops (classic sorts, union-find, DP) | cost-annotated big-step semantics + loop invariants |
+| `riscv` / `llvm` (optional) | concrete ISA / IR | machine-near claims | separate layer; not the default |
+
+`counts` names the **dominant operation(s)** charged unit cost (e.g.
+`["comparison"]`, `["key-comparison"]`, `["multiplication"]`), following the
+analysis-of-algorithms convention of counting one dominant operation rather than
+all elementary steps. We deliberately avoid pinning the project to a single
+physical machine (e.g. MIX/MMIX): asymptotic claims should be machine-independent
+and composable.
+
+The two insertion-sort seeds show the design: the same `2·k ≤ n(n−1)` bound is
+stated under `func-ops` (`insertion-sort-comparisons`) and `while-ops`
+(`insertion-sort-comparisons-while`). The `while-ops` core is also the on-ramp
+to **reversible** (R-WHILE / Janus-style) cost analysis — a planned
+differentiating sub-corpus only this lab can supply.
+
 ## Reward model (why no crypto)
 
 Contributors earn **non-transferable, non-redeemable reputation**: leaderboard

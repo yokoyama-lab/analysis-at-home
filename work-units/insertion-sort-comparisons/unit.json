@@ -6,6 +6,11 @@
   "claim_kind": "complexity",
   "targets": ["rocq", "lean", "agda", "isabelle"],
   "prompt_template": "prompt-template.md",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["comparison"],
+    "notes": "Each x <=? y test in the instrumented insert counts as one comparison; the count is threaded through structural recursion."
+  },
   "references": [
     "Software Foundations, Vol. 3: Verified Functional Algorithms (Appel) — functional correctness of insertion sort",
     "Charguéraud & Pottier, 'A Fistful of Dollars' — formal verification of asymptotic cost via time credits"
