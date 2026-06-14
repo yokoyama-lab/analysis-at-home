@@ -84,3 +84,5 @@ Theorem selection_sort_comparisons_exact : forall l,
 Proof.
   intros l. unfold comparisons. apply ssort_cost. lia.
 Qed.
+
+(* contributor: trivial re-check *)

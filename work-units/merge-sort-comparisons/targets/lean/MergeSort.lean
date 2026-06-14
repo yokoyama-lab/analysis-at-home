@@ -128,3 +128,5 @@ theorem msort_cost (k : Nat) : ∀ l, l.length ≤ 2 ^ k → comparisons k l ≤
 
 theorem merge_sort_comparisons_nlogn (k : Nat) (l : List Nat) (h : l.length ≤ 2 ^ k) :
     comparisons k l ≤ k * l.length := msort_cost k l h
+
+-- contributor: trivial re-check
