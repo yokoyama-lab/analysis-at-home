@@ -1,0 +1,34 @@
+{
+  "id": "quickselect-worst-case",
+  "title": "Quickselect worst case: n(n-1)/2 comparisons",
+  "statement_informal": "Quickselect (Hoare's FIND) performs at most n(n-1)/2 comparisons in the worst case.",
+  "domain": "selection",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "quickselect_worst_case",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "Each partition uses n-1 comparisons; the worst case (extreme pivot) recurses on n-1."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.3.3 — selection; FIND. (Average case is linear — a harder unit.)"
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

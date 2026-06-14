@@ -62,17 +62,28 @@ Structural cost counts and sum identities, all kernel-verified (Rocq):
 `naive-power-mults`, `ordered-insertion-comparisons`, and the summation unit
 `geometric-weighted-sum`.)
 
+### Search/sort gaps filled
+
+The classic search/sort canon is now well covered. Recently added:
+`binary-search-comparisons` (⌊lg n⌋+1, the array binary search, Vol 3 §6.2.1),
+`heap-siftdown-comparisons` (≤ 2·height, the heapsort primitive, Vol 3 §5.2.3),
+and the inversion theory behind bubble sort (Vol 3 §5.2.2):
+`inversions-adjacent-swap` (one swap removes one inversion) +
+`sorted-zero-inversions` (sorted ⇒ 0) — together the crux of "bubble exchanges =
+inversions". `quickselect-worst-case` (n(n−1)/2, Vol 3 §5.3.3) covers FIND's worst case.
+
 ## Queued — next in the series
 
 | Algorithm | TAOCP | Why it's interesting |
 |---|---|---|
+| Bubble exchanges = inversions (full run) | Vol 3 §5.2.2 | assemble from the two inversion lemmas via a decreasing measure; needs a permutation proof |
+| Quickselect / FIND **average** (linear) | Vol 3 §5.3.3 | E[comparisons] = O(n); quicksort-style recurrence with harmonic terms |
+| Comparison-sort lower bound ⌈lg n!⌉ | Vol 3 §5.3.1 | information-theoretic Ω(n log n); decision-tree argument |
+| Distribution / counting / radix sort | Vol 3 §5.2.5 | exact linear operation count |
+| Hashing (expected probes) | Vol 3 §6.4 | average-case, ties to the conjecture track |
 | Lamé's theorem (tight Euclid bound) | Vol 2 §4.5.3 | worst case = consecutive Fibonacci numbers; O(log) bound |
 | Algorithm M average = Hₙ−1 | Vol 1 §1.2.10 | kernel twin of the conjecture (harmonic; we now have QArith harmonic) |
 | Balanced-tree height ⇒ O(log n) | Vol 3 §6.2.1–6.2.3 | upgrade `bst-search-comparisons` corollary to ⌊lg n⌋+1 on balanced trees |
-| Bubble sort exchanges = #inversions | Vol 3 §5.2.2 | ties to the inversions distribution (Gaussian, mean n(n−1)/4) |
-| Distribution counting sort | Vol 3 §5.2 | exact linear operation count |
-| Heapsort sift-up | Vol 3 §5.2.3 | ≤ ⌊lg n⌋ per sift |
-| Quickselect / FIND (average) | Vol 3 §5.3.3 | linear expected, another harmonic-flavored average |
 | Lexicographic permutations (Algorithm L) | Vol 4A §7.2.1.2 | amortized cost per permutation |
 | Gray code generation | Vol 4A §7.2.1.1 | one bit change per step |
 | Classical multiplication | Vol 2 §4.3.1 (Algorithm M) | n·m digit multiplications |

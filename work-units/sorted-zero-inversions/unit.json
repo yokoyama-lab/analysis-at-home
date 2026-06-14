@@ -1,0 +1,24 @@
+{
+  "id": "sorted-zero-inversions",
+  "title": "A sorted list has zero inversions",
+  "statement_informal": "A nondecreasing list has no inversions.",
+  "domain": "sorting",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "sorted_zero_inversions",
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.2 — inversions and sortedness."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

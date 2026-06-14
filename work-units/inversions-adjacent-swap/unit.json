@@ -1,0 +1,24 @@
+{
+  "id": "inversions-adjacent-swap",
+  "title": "Swapping an adjacent inverted pair removes one inversion",
+  "statement_informal": "Exchanging an out-of-order adjacent pair decreases the inversion count by exactly one (Knuth's bubble-sort crux).",
+  "domain": "sorting",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "inversions_adjacent_swap",
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.2 — bubble sort; exchanges equal inversions."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

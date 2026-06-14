@@ -1,0 +1,34 @@
+{
+  "id": "binary-search-comparisons",
+  "title": "Binary search uses at most ⌊lg n⌋+1 comparisons",
+  "statement_informal": "Binary search on a sorted region of fewer than 2^k keys uses at most k comparisons (= ⌊lg n⌋+1).",
+  "domain": "searching",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "binary_search_comparisons",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "Each probe halves the region; if n < 2^k then at most k comparisons."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §6.2.1 — binary search (Algorithm B)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
