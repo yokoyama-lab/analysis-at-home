@@ -59,8 +59,10 @@ Submitted proof scripts are untrusted code, so the kernel runs inside
 CPU-time and wall-clock limit. The `rocq`, `lean`, and `agda` adapters invoke
 the kernel through it.
 
-Caveats: memory is **not** capped by `ulimit -v` (OCaml/Lean reserve huge
-*virtual* space and would abort) — bound it with cgroups on a real deployment.
-Where `bwrap` is absent (e.g. some CI), `sandbox.sh` falls back to
-rlimits+timeout only and warns. The `isabelle` adapter is **not** sandboxed yet
-(it needs a writable Isabelle home) and is intended for a dedicated runner.
+Memory is capped via a **cgroup** (a `systemd --user` scope with `MemoryMax`),
+not `ulimit -v` — OCaml 5 (Rocq) and Lean reserve huge *virtual* space and abort
+under `-v`, but a cgroup limits real RSS (verified: a 20M cap OOM-kills `coqc`).
+Where `systemd-run` is absent the cap is skipped (CPU+wall limits still apply);
+where `bwrap` is absent, `sandbox.sh` falls back to rlimits+timeout only and
+warns. The `isabelle` adapter is **not** sandboxed yet (it needs a writable
+Isabelle home) and is intended for a dedicated runner.

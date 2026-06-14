@@ -18,7 +18,7 @@
 //     against spec + the already-verified dependency proofs. Progress is k/N.
 
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { readFile, readdir, writeFile, mkdtemp, rm, access } from "node:fs/promises";
+import { readFile, readdir, writeFile, mkdtemp, rm, access, appendFile } from "node:fs/promises";
 import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { join, dirname } from "node:path";
@@ -38,6 +38,10 @@ const PORT = Number(process.env.PORT ?? 8787);
 // needs_split (adaptive grain: too big a job — decompose it further).
 const LEDGER = join(REPO, "coordinator", "ledger.json");
 const SPLIT_THRESHOLD = Number(process.env.AAH_SPLIT_THRESHOLD ?? 3);
+// Audit log (gitignored, JSONL) of every submission attempt; per-IP rate limit.
+const AUDIT = join(REPO, "coordinator", "audit.log");
+const RATE_MAX = Number(process.env.AAH_RATE_MAX ?? 30);
+const RATE_WINDOW_MS = Number(process.env.AAH_RATE_WINDOW_MS ?? 60_000);
 
 type UnitRec = WorkUnit & { dir: string; expected_theorem?: string };
 const units = new Map<string, UnitRec>();
@@ -216,6 +220,27 @@ function send(res: ServerResponse, status: number, body: string | Buffer, type =
   res.end(body);
 }
 
+// Per-IP sliding-window rate limit (defense against submission floods).
+const rate = new Map<string, number[]>();
+function ipOf(req: IncomingMessage): string {
+  const xf = req.headers["x-forwarded-for"];
+  return (typeof xf === "string" ? xf.split(",")[0]!.trim() : "") || req.socket.remoteAddress || "unknown";
+}
+function rateLimited(ip: string): boolean {
+  const now = Date.now();
+  const arr = (rate.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
+  if (arr.length >= RATE_MAX) { rate.set(ip, arr); return true; }
+  arr.push(now);
+  rate.set(ip, arr);
+  return false;
+}
+
+// Append-only audit trail of every submission attempt.
+async function audit(entry: Record<string, unknown>): Promise<void> {
+  try { await appendFile(AUDIT, JSON.stringify({ t: new Date().toISOString(), ...entry }) + "\n", "utf8"); }
+  catch { /* best-effort; never block a request on logging */ }
+}
+
 function readBody(req: IncomingMessage): Promise<string> {
   return new Promise((resolve, reject) => {
     let d = "";
@@ -290,13 +315,20 @@ const server = createServer(async (req, res) => {
     }
 
     if (req.method === "POST" && url.pathname === "/api/submit-leaf") {
+      const ip = ipOf(req);
+      if (rateLimited(ip)) { await audit({ ip, kind: "leaf", limited: true }); return send(res, 429, JSON.stringify({ accepted: false, reason: "rate limit exceeded" })); }
       const b = JSON.parse(await readBody(req)) as { unit: string; leaf: string; source: string };
-      return send(res, 200, JSON.stringify(await submitLeaf(b.unit, b.leaf, b.source)));
+      const v = await submitLeaf(b.unit, b.leaf, b.source);
+      await audit({ ip, kind: "leaf", unit: b.unit, leaf: b.leaf, accepted: v.accepted, reason: v.reason });
+      return send(res, 200, JSON.stringify(v));
     }
 
     if (req.method === "POST" && url.pathname === "/api/submit") {
+      const ip = ipOf(req);
+      if (rateLimited(ip)) { await audit({ ip, kind: "theorem", limited: true }); return send(res, 429, JSON.stringify({ accepted: false, reason: "rate limit exceeded" })); }
       const sub = JSON.parse(await readBody(req)) as Submission;
       const verdict = await submit(sub);
+      await audit({ ip, kind: "theorem", unit: sub.unitId, backend: sub.backend, accepted: verdict.accepted, reason: verdict.reason });
       return send(res, 200, JSON.stringify({ ...verdict, status: units.get(sub.unitId)?.status }));
     }
 

@@ -2,8 +2,9 @@
 node_modules/
 *.log
 
-# Coordinator runtime state (verified-status + attempts ledger)
+# Coordinator runtime state (verified-status + attempts ledger; audit trail)
 coordinator/ledger.json
+coordinator/audit.log
 
 # Rocq / Coq build artifacts
 *.vo

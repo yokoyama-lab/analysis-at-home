@@ -41,11 +41,19 @@ the status to `verified` on success.
   to `verifier/verify.sh`); status is in-memory and resets to the on-disk
   `unit.json` on restart
 
-## Not yet (Phase 1)
+## Hardening (implemented)
 
-Persistence, rate-limiting/anti-spam without auth, and running the verifier
-inside a sandbox (see `verifier/README.md`) — all required before exposing this
-publicly.
+- **Persistence**: verified statuses + per-leaf attempts are written to a
+  gitignored `ledger.json` and restored on startup.
+- **Rate limit**: per-IP sliding window (`AAH_RATE_MAX`/min, default 30); excess
+  submissions get HTTP 429.
+- **Audit log**: every submission attempt is appended to `audit.log` (JSONL,
+  gitignored): time, ip, unit/leaf, backend, accepted, reason.
+- **Sandbox**: the verifier runs the kernel confined (see `verifier/README.md`).
+
+Still open before a public launch: authn for higher rate tiers, signature-
+equivalence for whole-theorem submissions, and a durable store behind the
+in-memory model.
 
 ## Dev
 
