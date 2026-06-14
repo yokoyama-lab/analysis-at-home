@@ -64,7 +64,7 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 
 ### Vol 2
 - ✅ `base-b-digit-count`, `classical-addition`, `classical-multiplication`, `trial-division-checks`.
-- ⏸ Karatsuba (recurrence), extended Euclid & binary GCD (ℤ / case analysis), Sieve, Lamé, addition-chain bound, polynomial division, FFT.
+- ✅ `karatsuba-multiplications` — 3 sub-mults/level => 3^k = n^lg3. ⏸ extended Euclid & binary GCD (ℤ / case analysis), Sieve, Lamé, addition-chain bound, polynomial division, FFT.
 
 ### Vol 3
 - ✅ `cocktail-bubble-comparisons`, `radix-sort-passes`, `counting-sort-histogram`, `merge-comparisons`, `min-and-max-comparisons`, `heap-siftdown-comparisons`, `binary-search-comparisons`, `decision-tree-leaves-bound`, `quickselect-worst-case`, the inversion lemmas.
@@ -78,6 +78,8 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 ### Graphs & strings (§7.4 etc.)
 - ✅ `warshall-operations` (V³), `dp-table-fill` (LCS/edit/matrix-chain n·m), `prefix-match-comparisons` (naive-match core).
 - ⏸ BFS/DFS/topological-sort (need a graph model), Union-Find (amortized α), Dijkstra/Bellman-Ford/Kruskal/Prim, KMP/Boyer-Moore/Rabin-Karp, optimal BST.
+
+Divide-and-conquer recurrences are now covered by `mergesort-recurrence` (n log n), `karatsuba-multiplications` (n^lg3), `divide-and-conquer-linear` (O(n)), and `median-of-medians-linear` — the master-theorem regimes as verified recurrence bounds.
 
 **Net:** every easy/medium candidate is now a verified unit or computed result; the
 remaining ⏸ are research-level formalizations (graph models, amortized analysis,

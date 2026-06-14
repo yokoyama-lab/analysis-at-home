@@ -1,0 +1,31 @@
+{
+  "id": "divide-and-conquer-linear",
+  "title": "One recursive call + linear work is linear (Master Theorem)",
+  "statement_informal": "Any cost obeying T(n) <= T(n/2)+n satisfies T(2^k) <= 2^(k+1) (linear, O(n)).",
+  "domain": "recursion",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "dc_linear_recurrence",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "operation"
+    ],
+    "notes": "T(n)=T(n/2)+n is dominated by the top level: total ~ 2n."
+  },
+  "references": [
+    "Master theorem (case a < b^d); Cormen et al.; cf. Knuth's divide-and-conquer analyses."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

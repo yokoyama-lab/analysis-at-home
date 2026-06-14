@@ -1,0 +1,31 @@
+{
+  "id": "karatsuba-multiplications",
+  "title": "Karatsuba uses 3^k multiplications (n^lg3)",
+  "statement_informal": "Karatsuba multiplication makes 3 sub-multiplications per level, so M(2^k) = 3^k = n^{lg 3}.",
+  "domain": "arithmetic",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "karatsuba_multiplications",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "multiplication"
+    ],
+    "notes": "Each level makes 3 recursive multiplications instead of 4; on 2^k digits this is 3^k = n^(log2 3)."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 2 §4.3.3 — Karatsuba multiplication."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

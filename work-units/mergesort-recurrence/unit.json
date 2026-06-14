@@ -1,0 +1,31 @@
+{
+  "id": "mergesort-recurrence",
+  "title": "Mergesort recurrence is n log n",
+  "statement_informal": "Any cost obeying T(n) <= 2T(n/2)+n satisfies T(2^k) <= k*2^k (= n log n).",
+  "domain": "sorting",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "mergesort_recurrence",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "T(n)=2T(n/2)+n on 2^k inputs gives T = k*2^k = n*lg n."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.4 — merge sorting; the divide-and-conquer recurrence."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
