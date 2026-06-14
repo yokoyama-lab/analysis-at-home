@@ -1,0 +1,31 @@
+{
+  "id": "linear-recursion-quadratic",
+  "title": "Linear recursion with linear work is quadratic",
+  "statement_informal": "T(n)=T(n-1)+n gives n(n+1)/2 (e.g. insertion sort's total comparisons).",
+  "domain": "recursion",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "linear_recursion_quadratic",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "operation"
+    ],
+    "notes": "Peeling one element with linear work per step accumulates to n(n+1)/2."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.1 — insertion sort."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

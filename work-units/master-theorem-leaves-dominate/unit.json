@@ -1,0 +1,31 @@
+{
+  "id": "master-theorem-leaves-dominate",
+  "title": "Leaves-dominate divide-and-conquer is n^2",
+  "statement_informal": "When leaves dominate (a=4>b^d=2), T(n)=4T(n/2)+n is Theta(n^2).",
+  "domain": "recursion",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "master_leaves_dominate",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "operation"
+    ],
+    "notes": "Master theorem a>b^d: dominated by the 4^k = n^2 leaves."
+  },
+  "references": [
+    "Master theorem (case a > b^d); cf. Cormen et al. & Knuth's analyses."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

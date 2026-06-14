@@ -1,0 +1,31 @@
+{
+  "id": "sum-fourth-powers",
+  "title": "Sum of fourth powers",
+  "statement_informal": "1^4 + ... + n^4 = n(n+1)(2n+1)(3n^2+3n-1)/30.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "sum_fourth_powers",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Faulhaber degree 4; stated without subtraction."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums of powers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
