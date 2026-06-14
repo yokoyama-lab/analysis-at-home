@@ -17,8 +17,8 @@
   ],
   "status": {
     "rocq": "verified",
-    "lean": "open",
+    "lean": "verified",
     "agda": "open",
-    "isabelle": "open"
+    "isabelle": "verified"
   }
 }

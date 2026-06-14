@@ -28,8 +28,20 @@ the contributor or the LLM that produced the proof — see [`../docs/design.md`]
 Exit code `0` = accepted, non-zero = rejected. A machine-readable verdict is
 printed to stdout as JSON: `{ "accepted": bool, "reason": string }`.
 
-Adapters live in `adapters/<backend>.sh` and implement the actual kernel call.
-Only `rocq` is wired up; `lean`, `agda`, and `isabelle` are stubs.
+Adapters live in `adapters/<backend>.sh` and implement the actual kernel call:
+
+| backend | kernel check | completeness check |
+|---------|--------------|--------------------|
+| `rocq` | `coqc` compiles | `Print Assumptions` ⇒ "Closed under the global context" |
+| `lean` | `lean` compiles | `#print axioms` ⇒ no `sorryAx` (standard axioms OK) |
+| `isabelle` | `isabelle build` (one-theory session) | no `sorry`/`oops` (textual, Phase 1) |
+| `agda` | `agda --safe` type-checks | no `postulate` (textual, Phase 1) |
+
+The `binary-counter-increments` theorem is verified in **rocq, lean, and
+isabelle** (three independent kernels). `isabelle build` is heavy (loads the HOL
+image) so the isabelle adapter is not wired into CI yet. The textual
+sorry/oops/postulate checks for isabelle/agda are a Phase 1 simplification (see
+the per-adapter notes) — a kernel-level check is the robust follow-up.
 
 ## Signature equivalence (TODO — Phase 1)
 
