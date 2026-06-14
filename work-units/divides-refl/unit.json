@@ -1,0 +1,24 @@
+{
+  "id": "divides-refl",
+  "title": "Divisibility is reflexive",
+  "statement_informal": "Every number divides itself.",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "divides_refl",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.4 — divisibility."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "divides-add",
+  "title": "Divisibility is closed under addition",
+  "statement_informal": "If a divides b and c then a divides b+c.",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "divides_add",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.4 — divisibility."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "mult-positive",
+  "title": "Product of positives is positive",
+  "statement_informal": "0<a and 0<b imply 0<a*b.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "mult_pos",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.4 — divisibility & integer functions."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "divides-mult",
+  "title": "A divisor of b divides any multiple of b",
+  "statement_informal": "If a divides b then a divides b*c.",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "divides_mult_r",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.4 — divisibility."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

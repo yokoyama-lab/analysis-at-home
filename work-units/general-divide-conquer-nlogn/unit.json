@@ -1,0 +1,31 @@
+{
+  "id": "general-divide-conquer-nlogn",
+  "title": "Balanced divide-and-conquer is n log_b n",
+  "statement_informal": "Splitting into b parts of size n/b with linear merge gives T(b^k) <= k*b^k (n log_b n); subsumes mergesort (b=2) and ternary (b=3).",
+  "domain": "recursion",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "general_dc_nlogn",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "One general theorem for the balanced n log n regime, any branching factor b."
+  },
+  "references": [
+    "Master theorem; cf. Knuth's divide-and-conquer analyses."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
