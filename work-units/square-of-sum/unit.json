@@ -1,0 +1,24 @@
+{
+  "id": "square-of-sum",
+  "title": "(a+b)^2 = a^2 + 2ab + b^2",
+  "statement_informal": "The binomial square identity.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "square_of_sum",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2 — mathematical preliminaries."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

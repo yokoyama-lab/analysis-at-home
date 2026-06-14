@@ -1,0 +1,31 @@
+{
+  "id": "octagonal-numbers",
+  "title": "Octagonal numbers: sum of 6i-5 = n(3n-2)",
+  "statement_informal": "1 + 7 + 13 + ... + (6n-5) = n(3n-2).",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "octagonal_numbers",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "n-th octagonal number; stated without subtraction."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums (figurate numbers)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

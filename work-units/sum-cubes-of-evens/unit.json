@@ -1,0 +1,31 @@
+{
+  "id": "sum-cubes-of-evens",
+  "title": "Sum of cubes of the first n even numbers",
+  "statement_informal": "(2)^3 + (4)^3 + ... + (2n)^3 = 2(n(n+1))^2.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "sum_cubes_of_evens",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "8 times the sum of cubes."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums (figurate numbers)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "amgm-squares",
+  "title": "2ab <= a^2 + b^2",
+  "statement_informal": "AM-GM: twice the product is at most the sum of squares.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "amgm_squares",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2 — mathematical preliminaries."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

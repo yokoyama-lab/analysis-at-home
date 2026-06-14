@@ -1,0 +1,31 @@
+{
+  "id": "pentagonal-numbers",
+  "title": "Pentagonal numbers: sum of 3i-2 = n(3n-1)/2",
+  "statement_informal": "1 + 4 + 7 + ... + (3n-2) = n(3n-1)/2.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "pentagonal_numbers",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "n-th pentagonal number; stated without subtraction."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums (figurate numbers)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

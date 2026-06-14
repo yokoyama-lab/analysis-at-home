@@ -1,0 +1,31 @@
+{
+  "id": "geometric-sum-five",
+  "title": "Sum of powers of five",
+  "statement_informal": "5^0 + ... + 5^(n-1) = (5^n - 1)/4.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "geometric_sum_five",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Radix-5 geometric series."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums (figurate numbers)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

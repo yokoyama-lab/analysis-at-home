@@ -1,0 +1,31 @@
+{
+  "id": "sum-multiples-of-k",
+  "title": "Sum of the first n multiples of k",
+  "statement_informal": "k + 2k + ... + nk = k*n(n+1)/2.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "sum_multiples_of_k",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Arithmetic series with common difference k."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums (figurate numbers)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

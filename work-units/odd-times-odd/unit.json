@@ -1,0 +1,24 @@
+{
+  "id": "odd-times-odd",
+  "title": "odd * odd = odd",
+  "statement_informal": "The product of two odd numbers is odd.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "odd_times_odd_odd",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2 — mathematical preliminaries."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "merge-comparisons",
+  "title": "Merging two lists uses at most |l1|+|l2| comparisons",
+  "statement_informal": "Merging two lists uses at most length(l1)+length(l2) key comparisons.",
+  "domain": "sorting",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "merge_comparisons",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "At most one comparison per element consumed."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.4 — merging."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

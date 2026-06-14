@@ -1,0 +1,31 @@
+{
+  "id": "classical-addition",
+  "title": "Multi-precision addition uses n digit-additions",
+  "statement_informal": "Adding two n-digit numbers uses exactly n digit-additions.",
+  "domain": "arithmetic",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "classical_addition",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "digit-addition"
+    ],
+    "notes": "One digit-add (with carry) per position."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 2 §4.3.1 — classical multiple-precision addition."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

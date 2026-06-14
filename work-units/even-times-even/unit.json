@@ -1,0 +1,24 @@
+{
+  "id": "even-times-even",
+  "title": "even * anything = even",
+  "statement_informal": "An even factor makes the product even.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "even_times_even",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2 — mathematical preliminaries."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "classical-multiplication",
+  "title": "Schoolbook multiplication uses n*m digit products",
+  "statement_informal": "Multiplying an n-digit by an m-digit number uses n*m digit products.",
+  "domain": "arithmetic",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "classical_multiplication_products",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "digit-multiplication"
+    ],
+    "notes": "Each of the n digits multiplies each of the m digits."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 2 §4.3.1 — classical multiple-precision multiplication (Algorithm M)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
