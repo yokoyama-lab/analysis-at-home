@@ -1,0 +1,24 @@
+{
+  "id": "graph-edge-count",
+  "title": "Adjacency entries = number of edges (the E in O(V+E))",
+  "statement_informal": "In a directed graph stored as adjacency lists, the total number of adjacency entries equals the number of edges; with |V| = length g this is the basis of the O(V+E) traversal cost.",
+  "domain": "graphs",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "handshake_edges",
+  "references": [
+    "Knuth, TAOCP Vol. 4 / graph algorithms; the O(V+E) adjacency-list traversal bound."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

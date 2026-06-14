@@ -78,7 +78,8 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 
 ### Graphs & strings (§7.4 etc.)
 - ✅ `warshall-operations` (V³), `dp-table-fill` (LCS/edit/matrix-chain n·m), `prefix-match-comparisons` (naive-match core).
-- ⏸ BFS/DFS/topological-sort (need a graph model), Union-Find (amortized α), Dijkstra/Bellman-Ford/Kruskal/Prim, KMP/Boyer-Moore/Rabin-Karp, optimal BST.
+- ✅ `graph-edge-count` — adjacency entries = #edges (the E in O(V+E); graph domain opened).
+- ⏸ full BFS/DFS/topological-sort (need a visited-set traversal model), Union-Find (amortized α), Dijkstra/Bellman-Ford/Kruskal/Prim, KMP/Boyer-Moore/Rabin-Karp, optimal BST.
 
 Divide-and-conquer recurrences are now covered by `mergesort-recurrence` (n log n), `karatsuba-multiplications` (n^lg3), `divide-and-conquer-linear` (O(n)), and `median-of-medians-linear` — the master-theorem regimes as verified recurrence bounds.
 
