@@ -1,0 +1,24 @@
+{
+  "id": "tree-map-compose",
+  "title": "Map fusion on trees",
+  "statement_informal": "map_tree g (map_tree f t) = map_tree (g . f) t.",
+  "domain": "trees",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "tree_map_compose",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "list-concat-append",
+  "title": "concat distributes over append",
+  "statement_informal": "concat (ls1 ++ ls2) = concat ls1 ++ concat ls2.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_concat_append",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list processing."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

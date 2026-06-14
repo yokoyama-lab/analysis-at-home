@@ -1,0 +1,24 @@
+{
+  "id": "tree-mirror-internal",
+  "title": "Mirroring preserves the internal-node count",
+  "statement_informal": "Mirroring a binary tree preserves its number of internal nodes.",
+  "domain": "trees",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "tree_mirror_internal",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

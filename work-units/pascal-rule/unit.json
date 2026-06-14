@@ -1,0 +1,24 @@
+{
+  "id": "pascal-rule",
+  "title": "Pascal's rule",
+  "statement_informal": "C(n+1,k+1) = C(n,k) + C(n,k+1).",
+  "domain": "combinatorics",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "binom_pascal",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.6 — binomial coefficients."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

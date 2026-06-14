@@ -1,0 +1,24 @@
+{
+  "id": "fibonacci-le-lucas",
+  "title": "F_n <= L_n",
+  "statement_informal": "Each Fibonacci number is at most the corresponding Lucas number.",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "fib_le_lucas",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.8 — Fibonacci & Lucas numbers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

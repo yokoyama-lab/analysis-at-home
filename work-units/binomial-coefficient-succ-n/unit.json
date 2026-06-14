@@ -1,0 +1,24 @@
+{
+  "id": "binomial-coefficient-succ-n",
+  "title": "C(n+1,n) = n+1",
+  "statement_informal": "The binomial coefficient C(n+1,n) equals n+1.",
+  "domain": "combinatorics",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "binom_succ_n",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.6 — binomial coefficients."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "divides-antisymmetry",
+  "title": "Divisibility is antisymmetric",
+  "statement_informal": "If a divides b and b divides a then a = b.",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "divides_antisym",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.4 — divisibility."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
