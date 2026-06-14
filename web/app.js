@@ -30,9 +30,11 @@ async function loadDecomp() {
   for (const l of leaves) {
     const b = document.createElement("button");
     b.className = "leaf" + (l.status === "verified" ? " done" : "");
-    b.textContent = `${l.id} ★${l.difficulty}${l.status === "verified" ? " ✓" : ""}`;
+    const flag = l.status === "verified" ? " ✓" : l.needs_split ? " ⚠split" : "";
+    b.textContent = `${l.id} ★${l.difficulty}${flag}`;
     b.disabled = l.status === "verified" || l.blocked;
     if (l.blocked) b.title = `blocked: needs ${l.depends_on.join(", ")}`;
+    else if (l.needs_split) b.title = `failed ${l.attempts}× — too big a job; split it into sub-leaves`;
     b.onclick = () => selectLeaf(l.id);
     box.appendChild(b);
   }

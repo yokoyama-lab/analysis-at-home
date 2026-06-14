@@ -24,7 +24,7 @@ import { promisify } from "node:util";
 import { join, dirname } from "node:path";
 import { tmpdir } from "node:os";
 import { fileURLToPath } from "node:url";
-import type { WorkUnit, Submission, Verdict } from "./types.js";
+import type { WorkUnit, Submission, Verdict, Backend } from "./types.js";
 
 const execFileP = promisify(execFile);
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -33,6 +33,11 @@ const WORK_UNITS = join(REPO, "work-units");
 const WEB = join(REPO, "web");
 const VERIFY = join(REPO, "verifier", "verify.sh");
 const PORT = Number(process.env.PORT ?? 8787);
+// Runtime ledger (gitignored): verified statuses + per-leaf attempts survive
+// restart. A leaf that fails this many times without success is flagged
+// needs_split (adaptive grain: too big a job — decompose it further).
+const LEDGER = join(REPO, "coordinator", "ledger.json");
+const SPLIT_THRESHOLD = Number(process.env.AAH_SPLIT_THRESHOLD ?? 3);
 
 type UnitRec = WorkUnit & { dir: string; expected_theorem?: string };
 const units = new Map<string, UnitRec>();
@@ -45,8 +50,53 @@ type Decomp = {
   leaves: LeafRec[];
   status: Map<string, "open" | "verified">;
   proof: Map<string, string>; // full wrapped lemma text of a verified leaf
+  attempts: Map<string, number>; // failed attempts per leaf (for adaptive split)
 };
 const decomps = new Map<string, Decomp>();
+
+type Ledger = {
+  units?: Record<string, Record<string, string>>;
+  leaves?: Record<string, Record<string, { status?: string; attempts?: number; proof?: string }>>;
+};
+
+async function loadLedger(): Promise<void> {
+  if (!(await exists(LEDGER))) return;
+  let led: Ledger;
+  try { led = JSON.parse(await readFile(LEDGER, "utf8")) as Ledger; } catch { return; }
+  for (const [uid, backends] of Object.entries(led.units ?? {})) {
+    const u = units.get(uid);
+    if (u) for (const [b, st] of Object.entries(backends)) if (st === "verified") u.status[b as Backend] = "verified";
+  }
+  for (const [uid, leaves] of Object.entries(led.leaves ?? {})) {
+    const dc = decomps.get(uid);
+    if (!dc) continue;
+    for (const [lid, rec] of Object.entries(leaves)) {
+      if (rec.status === "verified") dc.status.set(lid, "verified");
+      if (typeof rec.attempts === "number") dc.attempts.set(lid, rec.attempts);
+      if (rec.proof) dc.proof.set(lid, rec.proof);
+    }
+  }
+}
+
+async function saveLedger(): Promise<void> {
+  const led: Ledger = { units: {}, leaves: {} };
+  for (const u of units.values()) {
+    const v: Record<string, string> = {};
+    for (const b of u.targets) if (u.status[b] === "verified") v[b] = "verified";
+    if (Object.keys(v).length) led.units![u.id] = v;
+  }
+  for (const dc of decomps.values()) {
+    const lv: Record<string, { status?: string; attempts?: number; proof?: string }> = {};
+    for (const l of dc.leaves) {
+      const status = dc.status.get(l.id);
+      const attempts = dc.attempts.get(l.id) ?? 0;
+      const proof = dc.proof.get(l.id);
+      if (status === "verified" || attempts > 0) lv[l.id] = { status, attempts, ...(proof ? { proof } : {}) };
+    }
+    if (Object.keys(lv).length) led.leaves![dc.unitId] = lv;
+  }
+  await writeFile(LEDGER, JSON.stringify(led, null, 2), "utf8");
+}
 
 const exists = (p: string) => access(p).then(() => true, () => false);
 
@@ -87,6 +137,7 @@ async function loadDecomp(unitId: string, ddir: string, manifestPath: string): P
     unitId, theorem: m.theorem, specSrc, leaves,
     status: new Map(leaves.map((l) => [l.id, "open"])),
     proof: new Map(),
+    attempts: new Map(leaves.map((l) => [l.id, 0])),
   });
 }
 
@@ -117,11 +168,12 @@ async function submit(s: Submission): Promise<Verdict> {
   if (!u) return { accepted: false, reason: `unknown unit: ${s.unitId}` };
   if (!u.targets.includes(s.backend)) return { accepted: false, reason: `backend ${s.backend} not in scope` };
   if (!u.expected_theorem) return { accepted: false, reason: "unit has no expected_theorem" };
+  const prev = u.status[s.backend];
   u.status[s.backend] = "submitted";
   const verdict = await verifyFile(s.source, s.backend, u.expected_theorem);
   // do not downgrade an already-verified target on a failed attempt
-  if (verdict.accepted) u.status[s.backend] = "verified";
-  else if (u.status[s.backend] === "submitted") u.status[s.backend] = "open";
+  if (verdict.accepted) { u.status[s.backend] = "verified"; await saveLedger(); }
+  else u.status[s.backend] = prev === "verified" ? "verified" : "open";
   return verdict;
 }
 
@@ -148,7 +200,14 @@ async function submitLeaf(unitId: string, leafId: string, tactics: string): Prom
     .join("\n");
   const combined = `${dc.specSrc}\n${deps}\n${wrapped}`;
   const verdict = await verifyFile(combined, "rocq", leafId);
-  if (verdict.accepted) { dc.proof.set(leafId, wrapped); dc.status.set(leafId, "verified"); }
+  if (verdict.accepted) {
+    dc.proof.set(leafId, wrapped);
+    dc.status.set(leafId, "verified");
+    dc.attempts.set(leafId, 0);
+  } else {
+    dc.attempts.set(leafId, (dc.attempts.get(leafId) ?? 0) + 1);
+  }
+  await saveLedger();
   return { ...verdict, progress: progress(dc) };
 }
 
@@ -207,6 +266,8 @@ const server = createServer(async (req, res) => {
         id: l.id, difficulty: l.difficulty, depends_on: l.depends_on,
         status: dc.status.get(l.id),
         blocked: l.depends_on.some((d) => dc.status.get(d) !== "verified"),
+        attempts: dc.attempts.get(l.id) ?? 0,
+        needs_split: dc.status.get(l.id) !== "verified" && (dc.attempts.get(l.id) ?? 0) >= SPLIT_THRESHOLD,
       }));
       return send(res, 200, JSON.stringify({ theorem: dc.theorem, ...progress(dc), leaves }));
     }
@@ -246,6 +307,7 @@ const server = createServer(async (req, res) => {
 });
 
 await loadUnits();
+await loadLedger();
 server.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`analysis@home coordinator on http://localhost:${PORT} (${units.size} units, ${decomps.size} decompositions; verifier=${VERIFY})`);
