@@ -1,0 +1,31 @@
+{
+  "id": "union-find-rank-bound",
+  "title": "Union by rank is balanced: rank-r tree has 2^r nodes",
+  "statement_informal": "A union-by-rank tree of rank r has at least 2^r elements (N(r)=2*N(r-1)), so its rank is at most lg n and find/union are O(log n).",
+  "domain": "data-structures",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "union_find_rank_bound",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "node"
+    ],
+    "notes": "Rank-r tree has >= 2^r nodes => rank <= lg n => find is O(log n)."
+  },
+  "references": [
+    "Tarjan; Knuth TAOCP — disjoint-set union (union by rank)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

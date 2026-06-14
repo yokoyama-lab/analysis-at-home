@@ -1,0 +1,31 @@
+{
+  "id": "toposort-vertex-bound",
+  "title": "Topological sort processes each vertex at most once",
+  "statement_informal": "A concrete Kahn-style topological sort keeps its output distinct (NoDup) and bounded by |V|, so it emits at most |V| vertices (the V term of O(V+E)).",
+  "domain": "graphs",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "toposort_vertex_bound",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "vertex-process"
+    ],
+    "notes": "Each vertex emitted once; output NoDup + bounded => length <= |V|."
+  },
+  "references": [
+    "Kahn (1962); Knuth TAOCP — topological sorting."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
