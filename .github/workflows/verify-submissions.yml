@@ -1,0 +1,46 @@
+name: verify-submissions
+# On every PR, kernel-check the proof targets it adds or changes, so "anyone can
+# contribute" stays trustless: a PR only goes green if the kernel accepts the
+# submission. rocq runs in the coq container; lean installs a pinned toolchain.
+# agda/isabelle are heavier — verify them locally with tools/verify_changed.sh
+# (the same script) or on a dedicated runner until wired here.
+on:
+  pull_request:
+
+jobs:
+  rocq:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+      - uses: coq-community/docker-coq-action@v1
+        with:
+          coq_version: "8.18"
+          custom_script: |
+            startGroup "verify changed rocq targets"
+              bash tools/verify_changed.sh "origin/${{ github.base_ref }}" rocq
+            endGroup
+
+  lean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+      - name: any changed lean targets?
+        id: c
+        run: |
+          n=$(git diff --name-only --diff-filter=AM "origin/${{ github.base_ref }}...HEAD" \
+                | grep -Ec '^work-units/.+/targets/lean/.+\.lean$' || true)
+          echo "n=$n" >> "$GITHUB_OUTPUT"
+      - if: steps.c.outputs.n != '0'
+        name: install Lean (elan, pinned)
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/leanprover/elan/master/elan-init.sh \
+            | sh -s -- -y --default-toolchain leanprover/lean4:v4.30.0
+          echo "$HOME/.elan/bin" >> "$GITHUB_PATH"
+      - if: steps.c.outputs.n != '0'
+        run: bash tools/verify_changed.sh "origin/${{ github.base_ref }}" lean
