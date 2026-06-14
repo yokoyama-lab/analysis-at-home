@@ -26,6 +26,6 @@
     "rocq": "verified",
     "lean": "verified",
     "agda": "open",
-    "isabelle": "open"
+    "isabelle": "verified"
   }
 }
