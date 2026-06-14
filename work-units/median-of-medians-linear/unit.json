@@ -1,0 +1,32 @@
+{
+  "id": "median-of-medians-linear",
+  "title": "Median-of-medians selection is worst-case linear",
+  "statement_informal": "Any cost obeying the median-of-medians recurrence T(n) <= T(n/5) + T(7n/10) + n is at most 10n (worst-case linear selection).",
+  "domain": "selection",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "mom_linear",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "The recurrence's contraction 1/5 + 7/10 = 9/10 < 1 forces linear total work."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.3.3 — selection.",
+    "Blum, Floyd, Pratt, Rivest, Tarjan (1973) — Time bounds for selection (median-of-medians / BFPRT)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
