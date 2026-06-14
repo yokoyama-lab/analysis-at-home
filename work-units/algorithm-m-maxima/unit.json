@@ -1,0 +1,23 @@
+{
+  "id": "algorithm-m-maxima",
+  "title": "TAOCP Algorithm M: worst-case running-maximum updates",
+  "statement_informal": "Scanning a list left to right keeping a running maximum, the number of times the maximum is updated is at most the list length (worst case = strictly increasing input).",
+  "domain": "fundamental",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "algorithm_m_changes_le",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["max-update"],
+    "notes": "One potential max-update (the assignment k:=j in Algorithm M) per scanned element; at most length-many."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.10 — Algorithm M (finding the maximum) and its average-case analysis (number of register changes = H_n − 1).",
+    "Average case is the conjecture-track artifact tools/conjecture/results/algorithm-m-maxima.json (E = H_n − 1 updates; H_n left-to-right maxima)."
+  ],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

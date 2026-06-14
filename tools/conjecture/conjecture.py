@@ -203,6 +203,11 @@ def _peval(p: list[Fraction], x: int) -> Fraction:
     return acc
 
 
+def harmonic(n: int) -> Fraction:
+    """The n-th harmonic number H_n = sum_{i=1}^n 1/i (exact)."""
+    return sum((Fraction(1, i) for i in range(1, n + 1)), Fraction(0))
+
+
 # ---------- moments ----------
 def moments(pmf: Counter) -> tuple[Fraction, Fraction]:
     total = sum(pmf.values())
@@ -260,6 +265,20 @@ def linear_search_pmf(n: int) -> Counter:
     return Counter({i: 1 for i in range(1, n + 1)})
 
 
+def lr_maxima_pmf(n: int) -> Counter:
+    """Number of left-to-right maxima of a uniformly random permutation of n
+    elements (TAOCP Algorithm M: the running maximum is set on the first element
+    and on each later record). Expected value = H_n."""
+    c: Counter = Counter()
+    for p in itertools.permutations(range(n)):
+        m, k = -1, 0
+        for v in p:
+            if v > m:
+                m, k = v, k + 1
+        c[k] += 1
+    return c
+
+
 def inversions_pmf(n: int) -> Counter:
     """#inversions of a uniformly random permutation of n elements (the
     displacement cost underlying insertion sort), exhaustively."""
@@ -278,7 +297,13 @@ def analyse(name: str, pmf_fn, small_ns: list[int], limit_n: int) -> dict:
     coeffs = poly_from_values(means)
     if coeffs is not None:
         coeffs = shift_poly(coeffs, small_ns[0])
-    mean_form = poly_str(coeffs) if coeffs else "(non-polynomial / need more points)"
+        mean_form = poly_str(coeffs)
+    elif all(means[i] == harmonic(small_ns[i]) for i in range(len(means))):
+        mean_form = "H_n (n-th harmonic number)"
+    elif all(means[i] == harmonic(small_ns[i]) - 1 for i in range(len(means))):
+        mean_form = "H_n − 1"
+    else:
+        mean_form = "(non-polynomial / need more points)"
     big = pmf_fn(limit_n)
     bmean, bvar = moments(big)
     # expand pmf to a sample list for the limit fit
@@ -304,6 +329,8 @@ def main() -> None:
          "linear-search.json"),
         ("insertion-sort inversions (random permutation)", inversions_pmf,
          list(range(0, 8)), 8, "insertion-sort-inversions.json"),
+        ("algorithm-M left-to-right maxima (random permutation)", lr_maxima_pmf,
+         list(range(1, 9)), 8, "algorithm-m-maxima.json"),
     ]
     for name, fn, ns, lim, out in jobs:
         r = analyse(name, fn, ns, lim)

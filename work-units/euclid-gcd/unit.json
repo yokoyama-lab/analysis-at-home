@@ -1,0 +1,20 @@
+{
+  "id": "euclid-gcd",
+  "title": "Euclid's algorithm (TAOCP Algorithm E): division-step bound + correctness",
+  "statement_informal": "Euclid's algorithm computes gcd(a,b) and performs at most b division steps. (TAOCP's first algorithm; the tight O(log) / Fibonacci bound is a separate harder unit.)",
+  "domain": "number-theory",
+  "claim_kind": "complexity",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "euclid_steps_le",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["division"],
+    "notes": "Each iteration performs one a mod b. The second argument strictly decreases (a mod b < b), so there are at most b steps."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.1 and Vol. 2 §4.5.2 — Algorithm E (Euclidean algorithm), the first algorithm in the book.",
+    "Lamé's theorem: the worst case occurs at consecutive Fibonacci numbers (tight O(log) bound — future unit)."
+  ],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}
