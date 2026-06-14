@@ -51,10 +51,16 @@ name. The remaining check is to confirm the submission proves the **same
 statement** as the unit's seed, e.g. by appending `Check (<thm> : <expected_type>).`
 where `<expected_type>` comes from the seed.
 
-## Sandbox (TODO — Phase 1)
+## Sandbox
 
-Submitted proof scripts are untrusted code and must run in isolation
-(container / no network / CPU+time limits / read-only FS except a scratch dir).
-The current adapters run `coqc` directly with **no sandbox** — fine for local
-trusted use, **not** safe for accepting submissions from the internet. Wiring a
-real sandbox is a Phase 1 blocker before the public web MVP goes live.
+Submitted proof scripts are untrusted code, so the kernel runs inside
+[`sandbox.sh`](sandbox.sh) (bubblewrap): **no network**, the filesystem
+**read-only except the scratch dir**, a new PID/IPC/UTS namespace, plus a
+CPU-time and wall-clock limit. The `rocq`, `lean`, and `agda` adapters invoke
+the kernel through it.
+
+Caveats: memory is **not** capped by `ulimit -v` (OCaml/Lean reserve huge
+*virtual* space and would abort) — bound it with cgroups on a real deployment.
+Where `bwrap` is absent (e.g. some CI), `sandbox.sh` falls back to
+rlimits+timeout only and warns. The `isabelle` adapter is **not** sandboxed yet
+(it needs a writable Isabelle home) and is intended for a dedicated runner.

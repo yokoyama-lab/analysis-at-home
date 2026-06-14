@@ -28,9 +28,9 @@ cp "$submission" "$work/Submission.v"
 # Ask the kernel to report what the theorem actually depends on.
 printf '\nPrint Assumptions %s.\n' "$theorem" >> "$work/Submission.v"
 
-# TODO (sandbox): run this inside an isolated container before accepting
-# submissions from the public internet (see verifier/README.md).
-if ( cd "$work" && "${COMPILE[@]}" Submission.v ) >"$work/out" 2>&1; then
+# Run the kernel sandboxed (no network, read-only FS except $work, rlimits).
+sandbox="$(dirname "$0")/../sandbox.sh"
+if AAH_SANDBOX_RW="$work" bash "$sandbox" "${COMPILE[@]}" Submission.v >"$work/out" 2>&1; then
   if grep -q "Closed under the global context" "$work/out"; then
     verdict true "kernel-checked: ${theorem} is closed under the global context"
   else

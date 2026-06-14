@@ -29,7 +29,8 @@ grep -Eq "(^|[[:space:]])${theorem}([[:space:]]|:)" "$submission" \
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
 cp "$submission" "$work/Sub.agda"
-if ( cd "$work" && agda --safe Sub.agda ) >"$work/out" 2>&1; then
+sandbox="$(dirname "$0")/../sandbox.sh"
+if AAH_SANDBOX_RW="$work" bash "$sandbox" agda --safe Sub.agda >"$work/out" 2>&1; then
   verdict true "agda --safe type-checked ${theorem}; no postulate"
 else
   verdict false "agda rejected: $(clean "$(cat "$work/out")")"

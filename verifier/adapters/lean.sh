@@ -21,7 +21,8 @@ trap 'rm -rf "$work"' EXIT
 cp "$submission" "$work/Sub.lean"
 printf '\n#print axioms %s\n' "$theorem" >> "$work/Sub.lean"
 
-if ( cd "$work" && lean Sub.lean ) >"$work/out" 2>&1; then
+sandbox="$(dirname "$0")/../sandbox.sh"
+if AAH_SANDBOX_RW="$work" bash "$sandbox" lean Sub.lean >"$work/out" 2>&1; then
   if grep -q "sorryAx" "$work/out"; then
     verdict false "depends on sorryAx (sorry/admit): $(clean "$(cat "$work/out")")"
     exit 1
