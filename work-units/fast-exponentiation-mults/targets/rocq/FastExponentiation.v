@@ -41,3 +41,19 @@ Proof.
     specialize (IH (sq * sq)). rewrite E in IH. simpl in IH.
     destruct d; simpl; lia.
 Qed.
+
+(* Correctness companion: square-and-multiply computes the right power
+   (value = base ^ exponent). Also axiom-free. *)
+Theorem square_and_multiply_correct : forall ds sq,
+  fst (sqm sq ds) = sq ^ denote ds.
+Proof.
+  induction ds as [|d r IH]; intros sq.
+  - reflexivity.
+  - cbn [sqm]. destruct (sqm (sq * sq) r) as [acc c] eqn:E.
+    specialize (IH (sq * sq)). rewrite E in IH. simpl in IH.
+    assert (Hsq : (sq * sq) ^ denote r = sq ^ (2 * denote r)).
+    { rewrite Nat.pow_mul_l, <- Nat.pow_add_r. f_equal. lia. }
+    destruct d.
+    + cbn [fst denote]. rewrite IH, Hsq, <- Nat.pow_succ_r'; try reflexivity.
+    + cbn [fst denote]. rewrite IH, Hsq; try reflexivity.
+Qed.

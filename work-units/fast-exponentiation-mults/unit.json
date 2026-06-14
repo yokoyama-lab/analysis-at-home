@@ -17,7 +17,7 @@
     "counts": [
       "multiplication"
     ],
-    "notes": "Exponent given as a binary digit list; cost bounded by 2 * length (= 2*(floor(log2 e)+1)). A value-correctness companion is a future leaf."
+    "notes": "Exponent given as a binary digit list; cost bounded by 2 * length (= 2*(floor(log2 e)+1)). The Rocq target also proves the value-correctness companion square_and_multiply_correct."
   },
   "references": [
     "Knuth, TAOCP Vol. 2, evaluation of powers (fact only)"
