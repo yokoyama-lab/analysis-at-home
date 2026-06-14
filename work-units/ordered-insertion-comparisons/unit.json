@@ -1,0 +1,17 @@
+{
+  "id": "ordered-insertion-comparisons",
+  "title": "Comparison bound of ordered insertion",
+  "statement_informal": "Inserting one element into a sorted list of length n (the inner step of insertion sort) uses at most n comparisons.",
+  "domain": "sorting",
+  "claim_kind": "complexity",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "ordered_insertion_comparisons",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["comparison"],
+    "notes": "One x <=? y test per element scanned; bounded by the list length."
+  },
+  "references": ["Knuth, TAOCP Vol. 3 (insertion) — fact only."],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

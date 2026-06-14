@@ -1,0 +1,17 @@
+{
+  "id": "list-maximum-comparisons",
+  "title": "Exact comparison count of list maximum",
+  "statement_informal": "Finding the maximum of a list of length n uses exactly n-1 comparisons.",
+  "domain": "searching",
+  "claim_kind": "closed-form",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_maximum_comparisons",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["comparison"],
+    "notes": "One comparison per element after the first; exact equality snd (maxc l) = length l - 1."
+  },
+  "references": ["Classic; exact n-1."],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

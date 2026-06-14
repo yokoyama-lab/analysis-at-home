@@ -1,0 +1,17 @@
+{
+  "id": "naive-power-mults",
+  "title": "Linear multiplication count of naive exponentiation",
+  "statement_informal": "Naive exponentiation b^e by repeated multiplication uses exactly e multiplications (contrast the logarithmic fast-exponentiation).",
+  "domain": "arithmetic",
+  "claim_kind": "closed-form",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "naive_power_mults",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["multiplication"],
+    "notes": "One multiply per exponent step: snd (powc b e) = e. The Rocq target also proves value = b^e. Pairs with fast-exponentiation-mults (2*bits) to show the cost gap."
+  },
+  "references": ["Knuth, TAOCP Vol. 2, evaluation of powers (fact only)."],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

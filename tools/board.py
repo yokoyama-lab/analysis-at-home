@@ -75,10 +75,19 @@ def collect() -> dict:
                 "targets": targets, "status": status,
                 "has_decomposition": dec.exists(),
             })
+    leaf_jobs = []
+    for uid, dc in decomps.items():
+        for l in dc.get("leaves", []):
+            leaf_jobs.append({
+                "theorem": dc.get("theorem", ""), "unit": uid, "id": l["id"],
+                "difficulty": l.get("difficulty", 0), "depends_on": l.get("depends_on", []),
+            })
+    leaf_jobs.sort(key=lambda j: (j["difficulty"], j["unit"], j["id"]))
     return {
         "repo": OWNER_REPO, "backends": BACKENDS, "units": units,
-        "open_jobs": open_jobs, "decompositions": decomps,
-        "stats": {"targets": total, "verified": verified, "open": total - verified},
+        "open_jobs": open_jobs, "decompositions": decomps, "leaf_jobs": leaf_jobs,
+        "stats": {"targets": total, "verified": verified, "open": total - verified,
+                  "leaves": len(leaf_jobs)},
     }
 
 
@@ -103,6 +112,7 @@ button,a.btn{font:inherit;padding:.35rem .7rem;border:1px solid #8886;border-rad
 pre{background:#0001;padding:.6rem;border-radius:6px;overflow:auto;white-space:pre-wrap;max-height:340px;font-size:.85em}
 details{margin:.3rem 0}.note{font-size:.85em;color:#888}
 .leaf{display:inline-block;margin:.12rem;padding:.15rem .45rem;border:1px solid #8884;border-radius:6px;font-size:.85em}
+.leaf.good{border-color:#4caf50;color:#4caf50}
 </style></head><body>
 <h1>analysis@home</h1>
 <p class="tag"><b>Spare AI, turned into proven math.</b> Pick an open job, prove
@@ -124,10 +134,15 @@ result. Locally you can self-check first:
 <code>verifier/verify.sh &lt;backend&gt; &lt;file&gt; &lt;theorem&gt;</code>.</p>
 <div id="jobs"></div>
 
-<h2>How decomposition works</h2>
+<h2>Bite-sized leaves — good first</h2>
 <p class="note">Hard theorems are split into small, independently kernel-checked
-<b>leaves</b> (★ = difficulty). Many small proofs assemble into the whole — see
-these examples.</p>
+<b>leaves</b> (★ = difficulty, green = ★1–2). A great first contribution is to
+port one of these small lemmas to another backend. <b id="lc">0</b> leaves in all.</p>
+<div id="leaves"></div>
+
+<h2>How decomposition works</h2>
+<p class="note">Many small proofs assemble into the whole — these examples show
+the leaf structure per theorem.</p>
 <div id="decomp"></div>
 
 <h2>Contribute in 5 minutes</h2>
@@ -182,6 +197,14 @@ fetch('data.json').then(r=>r.json()).then(D=>{
     row.append(E('a',{className:'btn',href:j.pr_url,target:'_blank',rel:'noopener',textContent:'Create a PR →'}));
     box.append(row);
     jobs.append(box);
+  });
+
+  // bite-sized leaves (good first)
+  const lj = D.leaf_jobs || [];
+  document.getElementById('lc').textContent = lj.length;
+  lj.forEach(j=>{
+    const t = 'in '+j.theorem + (j.depends_on.length ? ('  — needs '+j.depends_on.join(', ')) : '');
+    leaves.append(E('span',{className:'leaf'+(j.difficulty<=2?' good':''),title:t,textContent:j.id+' ★'+j.difficulty}));
   });
 
   // decompositions
