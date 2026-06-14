@@ -1,0 +1,31 @@
+{
+  "id": "radix-sort-passes",
+  "title": "Radix sort: d linear passes = d*n operations",
+  "statement_informal": "Radix sort performs d passes, each a linear distribution over n keys: d*n bucket operations.",
+  "domain": "sorting",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "radix_sort_passes",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "bucket-operation"
+    ],
+    "notes": "d digit-passes, each linear in n; iterates counting sort."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.5 — distribution / radix sorting."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

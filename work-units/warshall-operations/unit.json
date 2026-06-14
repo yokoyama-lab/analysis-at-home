@@ -1,0 +1,31 @@
+{
+  "id": "warshall-operations",
+  "title": "Warshall transitive closure does V^3 operations",
+  "statement_informal": "Floyd-Warshall's three nested loops perform V^3 relaxations.",
+  "domain": "graphs",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "warshall_operations",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "operation"
+    ],
+    "notes": "Three nested loops over V vertices."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 (graph algorithms) / Floyd-Warshall §; transitive closure."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

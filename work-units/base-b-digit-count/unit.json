@@ -1,0 +1,34 @@
+{
+  "id": "base-b-digit-count",
+  "title": "Base-b digit count: n < b^k => at most k digits",
+  "statement_informal": "A number below b^k has at most k base-b digits (= floor(log_b n)+1).",
+  "domain": "number-theory",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "digit_count_bound",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "division"
+    ],
+    "notes": "Each digit costs one division by b; generalizes binary search."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 2 §4.1 / §4.4 — positional number systems, radix conversion."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

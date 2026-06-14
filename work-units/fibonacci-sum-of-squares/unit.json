@@ -1,0 +1,31 @@
+{
+  "id": "fibonacci-sum-of-squares",
+  "title": "Sum of squares of Fibonacci numbers = F_n * F_{n+1}",
+  "statement_informal": "F_1^2 + ... + F_n^2 = F_n * F_{n+1}.",
+  "domain": "number-theory",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "fib_sq_sum",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Telescoping via the Fibonacci recurrence."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.8 — Fibonacci numbers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

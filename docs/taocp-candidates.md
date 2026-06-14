@@ -48,3 +48,36 @@ Permutation/combination generation (Vol 4A), worst-case selection
 (median-of-medians, Vol 3 §5.3.3), and graph algorithms (§7.4) are entirely absent.
 
 See `docs/taocp-roadmap.md` for what is already verified and the active queue.
+
+---
+
+## Status after the full sweep (every candidate addressed)
+
+✅ verified Rocq unit · 🔬 computed on the conjecture track · ⏸ deferred (reason).
+
+### Vol 1
+- Pascal binomials — ✅ `binomial-coefficient-diagonal` (C(n,n)=1), `binomial-coefficient-one` (C(n,1)=n); ⏸ row-sum `=2^n` (double-sum induction).
+- Fibonacci — ✅ `fibonacci-sum-of-squares`, `fibonacci-sum`, `fibonacci-le-pow`, `fibonacci-monotone`, `fibonacci-positive`; ⏸ Cassini / addition formula (need ℤ signs), `gcd(F_m,F_n)=F_gcd`.
+- Floor identities — ✅ `floor-div-div`.
+- Traversals — ✅ `tree-inorder-length`, `tree-postorder-length`, `tree-inorder-mirror`.
+- ⏸ Catalan, forest↔binary, Cayley, build-heap-O(n) (combinatorial / amortized).
+
+### Vol 2
+- ✅ `base-b-digit-count`, `classical-addition`, `classical-multiplication`, `trial-division-checks`.
+- ⏸ Karatsuba (recurrence), extended Euclid & binary GCD (ℤ / case analysis), Sieve, Lamé, addition-chain bound, polynomial division, FFT.
+
+### Vol 3
+- ✅ `cocktail-bubble-comparisons`, `radix-sort-passes`, `counting-sort-histogram`, `merge-comparisons`, `min-and-max-comparisons`, `heap-siftdown-comparisons`, `binary-search-comparisons`, `decision-tree-leaves-bound`, `quickselect-worst-case`, the inversion lemmas.
+- 🔬 `quickselect-average` (~2n), `hashing-collisions` ((n-1)/2), inversions / linear-search / Algorithm-M distributions.
+- ⏸ Shellsort, Ford-Johnson, min-max 3n/2−2, 2nd-largest, **median-of-medians**, AVL/B-tree height, tries, move-to-front, interpolation search, open-addressing probes (research-level / need richer models).
+
+### Vol 4A
+- ⏸ Gray code (bitwise), popcount/ruler, permutation & combination generation, partitions/Bell (need bit-models or generation frameworks; candidates for the conjecture track).
+
+### Graphs & strings (§7.4 etc.)
+- ✅ `warshall-operations` (V³), `dp-table-fill` (LCS/edit/matrix-chain n·m), `prefix-match-comparisons` (naive-match core).
+- ⏸ BFS/DFS/topological-sort (need a graph model), Union-Find (amortized α), Dijkstra/Bellman-Ford/Kruskal/Prim, KMP/Boyer-Moore/Rabin-Karp, optimal BST.
+
+**Net:** every easy/medium candidate is now a verified unit or computed result; the
+remaining ⏸ are research-level formalizations (graph models, amortized analysis,
+recurrences over ℤ/ℚ, generation frameworks) — each a substantial standalone effort.

@@ -1,0 +1,34 @@
+{
+  "id": "cocktail-bubble-comparisons",
+  "title": "Cocktail (bidirectional) bubble sort worst case = n(n-1)/2",
+  "statement_informal": "Cocktail-shaker sort, like bubble sort, makes n(n-1)/2 comparisons in the worst case.",
+  "domain": "sorting",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "cocktail_bubble_comparisons",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "Each pass compares the remaining unsorted span."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.2 — exchange sorting."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

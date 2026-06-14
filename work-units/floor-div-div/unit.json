@@ -1,0 +1,24 @@
+{
+  "id": "floor-div-div",
+  "title": "Iterated floor division: (n/a)/b = n/(ab)",
+  "statement_informal": "Dividing by a then by b equals dividing by a*b (floor division).",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "floor_div_div",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.4 — integer functions, floor identities."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

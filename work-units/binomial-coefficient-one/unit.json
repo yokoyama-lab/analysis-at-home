@@ -1,0 +1,24 @@
+{
+  "id": "binomial-coefficient-one",
+  "title": "C(n,1) = n",
+  "statement_informal": "The binomial coefficient C(n,1) equals n.",
+  "domain": "combinatorics",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "binom_one",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.6 — binomial coefficients."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
