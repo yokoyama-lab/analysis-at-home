@@ -23,3 +23,6 @@ coordinator/audit.log
 
 # OS / editor
 .DS_Store
+
+# Generated static board (built in CI, deployed to Pages)
+site/
