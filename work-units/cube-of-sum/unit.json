@@ -1,0 +1,24 @@
+{
+  "id": "cube-of-sum",
+  "title": "(a+b)^3 = a^3+3a^2b+3ab^2+b^3",
+  "statement_informal": "The binomial cube expansion.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "cube_of_sum",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2 — mathematical preliminaries."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

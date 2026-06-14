@@ -1,0 +1,31 @@
+{
+  "id": "ternary-mergesort-recurrence",
+  "title": "Three-way mergesort: T(n)=3T(n/3)+n => n log_3 n",
+  "statement_informal": "A 3-way divide-and-conquer with linear merge costs k*3^k on 3^k inputs (n log_3 n).",
+  "domain": "sorting",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "ternary_mergesort_recurrence",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "Generalizes the 2-way mergesort recurrence to base 3."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.4 — multiway merging."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

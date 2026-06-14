@@ -1,0 +1,31 @@
+{
+  "id": "geometric-recursion-count",
+  "title": "Geometric recursion: a calls/level => a^k subproblems",
+  "statement_informal": "A divide-and-conquer making a recursive calls per level has a^k subproblems at depth k (Karatsuba a=3, Strassen a=7, Toom-3 a=5).",
+  "domain": "recursion",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "geometric_recursion_count",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "recursive-call"
+    ],
+    "notes": "a^k = n^(log_b a) subproblems."
+  },
+  "references": [
+    "Master theorem / divide-and-conquer recurrences; cf. Knuth's analyses & Cormen et al."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

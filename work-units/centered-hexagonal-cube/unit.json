@@ -1,0 +1,31 @@
+{
+  "id": "centered-hexagonal-cube",
+  "title": "Sum of the first n centered hexagonal numbers = n^3",
+  "statement_informal": "1 + 7 + 19 + ... (centered hexagonals) sums to a perfect cube n^3.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "centered_hexagonal_cube",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "A striking identity: partial sums of centered hexagonals are exactly the cubes."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums and figurate numbers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

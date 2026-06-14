@@ -1,0 +1,31 @@
+{
+  "id": "sum-arithmetic-progression",
+  "title": "General arithmetic progression sum",
+  "statement_informal": "Sum of a + (a+d) + ... + (a+(n-1)d) = n*a + d*n(n-1)/2.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "sum_arithmetic_progression",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "General arithmetic series (first term a, common difference d)."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

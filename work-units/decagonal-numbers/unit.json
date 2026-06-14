@@ -1,0 +1,31 @@
+{
+  "id": "decagonal-numbers",
+  "title": "Decagonal numbers: sum of 8i-7 = n(4n-3)",
+  "statement_informal": "1 + 9 + 17 + ... + (8n-7) = n(4n-3).",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "decagonal_numbers",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "n-th decagonal number; stated without subtraction."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums and figurate numbers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "cube-difference",
+  "title": "(n+1)^3 - n^3 = 3n^2+3n+1",
+  "statement_informal": "Consecutive cubes differ by 3n^2+3n+1.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "cube_difference",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

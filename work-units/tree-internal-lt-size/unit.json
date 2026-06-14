@@ -1,0 +1,24 @@
+{
+  "id": "tree-internal-lt-size",
+  "title": "Internal nodes < size",
+  "statement_informal": "A binary tree has strictly fewer internal nodes than total nodes.",
+  "domain": "trees",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "tree_internal_lt_size",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

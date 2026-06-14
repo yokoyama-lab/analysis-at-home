@@ -1,0 +1,31 @@
+{
+  "id": "lucas-numbers-sum",
+  "title": "Sum of the first n Lucas numbers = L(n+2) - 3",
+  "statement_informal": "L_1 + ... + L_n = L_{n+2} - 3 (Lucas analogue of the Fibonacci sum).",
+  "domain": "number-theory",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "lucas_sum",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Telescopes via the Lucas recurrence."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.8 — Fibonacci & Lucas numbers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

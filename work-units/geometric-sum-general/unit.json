@@ -1,0 +1,31 @@
+{
+  "id": "geometric-sum-general",
+  "title": "General geometric series sum",
+  "statement_informal": "For base r>=2, the geometric sum obeys (r-1)*sum + 1 = r^n (generalizes the base-2/3/4/5 units).",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "geometric_sum_general",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "One unit subsuming geometric-sum-two/three/four/five."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

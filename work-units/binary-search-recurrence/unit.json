@@ -1,0 +1,31 @@
+{
+  "id": "binary-search-recurrence",
+  "title": "Binary search recurrence: T(n)=T(n/2)+1 => lg n probes",
+  "statement_informal": "Halving with O(1) work per level makes k = lg n probes on a 2^k array.",
+  "domain": "searching",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "binary_search_recurrence",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "One comparison per halving."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §6.2.1 — binary search."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

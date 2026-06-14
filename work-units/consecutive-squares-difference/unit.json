@@ -1,0 +1,24 @@
+{
+  "id": "consecutive-squares-difference",
+  "title": "(n+1)^2 - n^2 = 2n+1",
+  "statement_informal": "Consecutive squares differ by the n-th odd number.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "consecutive_squares_difference",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "naive-recursion-exponential",
+  "title": "Un-memoized doubling recursion is exponential",
+  "statement_informal": "A recursion that doubles its subproblems each level (no memoization) has 2^k - 1 calls.",
+  "domain": "recursion",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "naive_recursion_exponential",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "subproblem"
+    ],
+    "notes": "Why naive recursion (e.g. unmemoized Fibonacci) blows up."
+  },
+  "references": [
+    "Master theorem / divide-and-conquer recurrences; cf. Knuth's analyses & Cormen et al."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
