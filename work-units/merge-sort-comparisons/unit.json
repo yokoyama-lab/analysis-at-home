@@ -4,12 +4,19 @@
   "statement_informal": "With a level budget k such that length l <= 2^k, merge sort performs at most k * length l comparisons; for the least such k = ceil(log2 n) this is n*ceil(log2 n).",
   "domain": "sorting",
   "claim_kind": "complexity",
-  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
   "prompt_template": "prompt-template.md",
   "expected_theorem": "merge_sort_comparisons_nlogn",
   "cost_model": {
     "kind": "func-ops",
-    "counts": ["comparison"],
+    "counts": [
+      "comparison"
+    ],
     "notes": "Divide-and-conquer recurrence T(n) <= 2T(n/2)+n, bounded by the level-parameterized k * length l with length l <= 2^k."
   },
   "references": [
@@ -17,7 +24,7 @@
   ],
   "status": {
     "rocq": "verified",
-    "lean": "open",
+    "lean": "verified",
     "agda": "open",
     "isabelle": "open"
   }
