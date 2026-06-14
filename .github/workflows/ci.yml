@@ -37,9 +37,11 @@ jobs:
               done
               ( cd "$d2" && for f in *.v; do coqc -q "$f"; done )
             endGroup
-            startGroup "certify the decomposed (leaf) proof"
-              # assemble.sh resolves its own dir and compiles in a temp dir.
-              bash "$ws/work-units/insertion-sort-comparisons-while/decomposition/assemble.sh"
+            startGroup "certify the decomposed (leaf) proofs"
+              # each assemble.sh resolves its own dir and compiles in a temp dir.
+              for a in "$ws"/work-units/*/decomposition/assemble.sh; do
+                bash "$a"
+              done
             endGroup
 
   coordinator-typecheck:

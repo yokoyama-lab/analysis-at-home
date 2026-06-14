@@ -1,0 +1,9 @@
+{
+  "theorem": "binary_counter_increments_amortized",
+  "spec": "spec.v",
+  "assembly": "main.v",
+  "leaves": [
+    { "id": "incr_flips",        "file": "leaves/01_incr_flips.v",        "difficulty": 2, "depends_on": [] },
+    { "id": "incr_n_invariant",  "file": "leaves/02_incr_n_invariant.v",  "difficulty": 2, "depends_on": ["incr_flips"] }
+  ]
+}

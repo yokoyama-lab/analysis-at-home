@@ -1,0 +1,10 @@
+{
+  "theorem": "selection_sort_comparisons_exact",
+  "spec": "spec.v",
+  "assembly": "main.v",
+  "leaves": [
+    { "id": "select_count", "file": "leaves/01_select_count.v", "difficulty": 2, "depends_on": [] },
+    { "id": "select_len",   "file": "leaves/02_select_len.v",   "difficulty": 2, "depends_on": [] },
+    { "id": "ssort_cost",   "file": "leaves/03_ssort_cost.v",   "difficulty": 3, "depends_on": ["select_count", "select_len"] }
+  ]
+}

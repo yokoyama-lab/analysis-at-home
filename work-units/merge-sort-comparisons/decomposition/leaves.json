@@ -1,0 +1,12 @@
+{
+  "theorem": "merge_sort_comparisons_nlogn",
+  "spec": "spec.v",
+  "assembly": "main.v",
+  "leaves": [
+    { "id": "split_total",   "file": "leaves/01_split_total.v",   "difficulty": 2, "depends_on": [] },
+    { "id": "split_balance", "file": "leaves/02_split_balance.v", "difficulty": 2, "depends_on": [] },
+    { "id": "merge_length",  "file": "leaves/03_merge_length.v",  "difficulty": 2, "depends_on": [] },
+    { "id": "merge_cost",    "file": "leaves/04_merge_cost.v",    "difficulty": 2, "depends_on": [] },
+    { "id": "msort_length",  "file": "leaves/05_msort_length.v",  "difficulty": 3, "depends_on": ["split_total", "merge_length"] }
+  ]
+}
