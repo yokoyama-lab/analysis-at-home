@@ -1,0 +1,24 @@
+{
+  "id": "counting-sort-histogram",
+  "title": "Counting sort: the buckets partition the input (histogram sums to n)",
+  "statement_informal": "In counting/distribution sort, the per-value buckets partition the input, so the histogram sums to the input length.",
+  "domain": "sorting",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "counting_sort_histogram",
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.5 — distribution counting / radix sort."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

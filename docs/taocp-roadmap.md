@@ -74,13 +74,23 @@ inversions". `quickselect-worst-case` (n(n−1)/2, Vol 3 §5.3.3) covers FIND's 
 
 ## Queued — next in the series
 
+**Recently addressed (this round).** Comparison-sort lower bound: the
+decision-tree core `leaves t ≤ 2^height t` is verified (`decision-tree-leaves-bound`)
+— a height-h tree has ≤ 2^h leaves, so distinguishing n! orderings forces
+h ≥ ⌈lg n!⌉. Counting/radix sort: the partition invariant `sumhist = length` is
+verified (`counting-sort-histogram`, comparison-free & linear). Bubble: the
+swap-anywhere lemma `inversions-swap-anywhere` is verified (each swap removes one
+inversion at any position). Quickselect **average** and **hashing** expected
+collisions are now computed on the conjecture track (E[quickselect] grows ~2n;
+E[collisions at load 1] = (n−1)/2, exact).
+
 | Algorithm | TAOCP | Why it's interesting |
 |---|---|---|
-| Bubble exchanges = inversions (full run) | Vol 3 §5.2.2 | assemble from the two inversion lemmas via a decreasing measure; needs a permutation proof |
-| Quickselect / FIND **average** (linear) | Vol 3 §5.3.3 | E[comparisons] = O(n); quicksort-style recurrence with harmonic terms |
-| Comparison-sort lower bound ⌈lg n!⌉ | Vol 3 §5.3.1 | information-theoretic Ω(n log n); decision-tree argument |
-| Distribution / counting / radix sort | Vol 3 §5.2.5 | exact linear operation count |
-| Hashing (expected probes) | Vol 3 §6.4 | average-case, ties to the conjecture track |
+| Bubble exchanges = inversions (full run) | Vol 3 §5.2.2 | assemble swap-anywhere + sorted-zero via a decreasing measure; needs a permutation/termination proof |
+| Quickselect average — kernel twin | Vol 3 §5.3.3 | promote the computed ~2n to a theorem (QArith recurrence with harmonic terms) |
+| ⌈lg n!⌉ exact lower bound | Vol 3 §5.3.1 | tie `decision-tree-leaves-bound` to n! permutation leaves |
+| Radix sort (d passes) | Vol 3 §5.2.5 | iterate counting sort over d digit-passes; total O(d·(n+K)) |
+| Hashing expected probes — kernel twin | Vol 3 §6.4 | promote computed collisions/probes to a theorem |
 | Lamé's theorem (tight Euclid bound) | Vol 2 §4.5.3 | worst case = consecutive Fibonacci numbers; O(log) bound |
 | Algorithm M average = Hₙ−1 | Vol 1 §1.2.10 | kernel twin of the conjecture (harmonic; we now have QArith harmonic) |
 | Balanced-tree height ⇒ O(log n) | Vol 3 §6.2.1–6.2.3 | upgrade `bst-search-comparisons` corollary to ⌊lg n⌋+1 on balanced trees |

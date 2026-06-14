@@ -1,0 +1,30 @@
+{
+  "kind": "distribution",
+  "algorithm": "hashing collisions (n keys, n slots, load 1)",
+  "small_ns": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "exact_means": [
+    "0",
+    "1/2",
+    "1",
+    "3/2",
+    "2",
+    "5/2"
+  ],
+  "conjectured_mean_closed_form": "-1/2 + 1/2·n",
+  "limit_n": 6,
+  "limit_mean": "5/2",
+  "limit_variance": "25/12",
+  "limit_distribution": {
+    "law": "uniform",
+    "ks_normal": 0.2296,
+    "ks_uniform": 0.1941
+  },
+  "histogram_at_limit_n": "  0 | ██ 720\n  1 | █████████████████████████████████ 10800\n  2 | ██████████████████████████████████████████████████ 16200\n  3 | ████████████████████████████ 9000\n  4 | ██████████████████████ 7200\n  5 |  0\n  6 | ██████ 2100\n  7 | █ 450\n  8 |  0\n  9 |  0\n 10 | █ 180\n 11 |  0\n 12 |  0\n 13 |  0\n 14 |  0\n 15 |  6"
+}

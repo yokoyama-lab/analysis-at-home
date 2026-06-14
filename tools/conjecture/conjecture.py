@@ -279,6 +279,42 @@ def lr_maxima_pmf(n: int) -> Counter:
     return c
 
 
+def quickselect_pmf(n: int) -> Counter:
+    """Comparisons of quickselect (Hoare's FIND, first-element pivot) over all
+    permutations of {1..n} AND all target ranks 1..n. The average grows linearly
+    (E ~ 2n) — quickselect is expected-linear, unlike its quadratic worst case
+    (verified in work-units/quickselect-worst-case)."""
+    def qs(arr: list[int], r: int) -> int:
+        if len(arr) <= 1:
+            return 0
+        p, rest = arr[0], arr[1:]
+        less = [x for x in rest if x < p]
+        greater = [x for x in rest if x > p]
+        c, k = len(rest), len(less)
+        if r == k + 1:
+            return c
+        if r <= k:
+            return c + qs(less, r)
+        return c + qs(greater, r - (k + 1))
+    cc: Counter = Counter()
+    for perm in itertools.permutations(range(1, n + 1)):
+        pl = list(perm)
+        for r in range(1, n + 1):
+            cc[qs(pl, r)] += 1
+    return cc
+
+
+def hashing_collisions_pmf(n: int) -> Counter:
+    """#collisions (pairs hashing to the same slot) for n keys in n slots
+    (load factor 1), over all n^n hash assignments. Expected value = (n-1)/2."""
+    cc: Counter = Counter()
+    m = n if n > 0 else 1
+    for assign in itertools.product(range(m), repeat=n):
+        buckets: Counter = Counter(assign)
+        cc[sum(v * (v - 1) // 2 for v in buckets.values())] += 1
+    return cc
+
+
 def inversions_pmf(n: int) -> Counter:
     """#inversions of a uniformly random permutation of n elements (the
     displacement cost underlying insertion sort), exhaustively."""
@@ -331,6 +367,10 @@ def main() -> None:
          list(range(0, 8)), 8, "insertion-sort-inversions.json"),
         ("algorithm-M left-to-right maxima (random permutation)", lr_maxima_pmf,
          list(range(1, 9)), 8, "algorithm-m-maxima.json"),
+        ("quickselect comparisons (random permutation & rank)", quickselect_pmf,
+         list(range(1, 8)), 7, "quickselect-average.json"),
+        ("hashing collisions (n keys, n slots, load 1)", hashing_collisions_pmf,
+         list(range(1, 7)), 6, "hashing-collisions.json"),
     ]
     for name, fn, ns, lim, out in jobs:
         r = analyse(name, fn, ns, lim)

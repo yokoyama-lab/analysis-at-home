@@ -1,0 +1,24 @@
+{
+  "id": "inversions-swap-anywhere",
+  "title": "Swapping any adjacent inverted pair removes one inversion",
+  "statement_informal": "Swapping an out-of-order adjacent pair at any position decreases the inversion count by exactly one.",
+  "domain": "sorting",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "inversions_swap_anywhere",
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.2 — bubble sort; exchanges = inversions."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
