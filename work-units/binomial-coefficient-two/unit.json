@@ -1,0 +1,31 @@
+{
+  "id": "binomial-coefficient-two",
+  "title": "C(n,2) = n(n-1)/2",
+  "statement_informal": "The binomial coefficient C(n,2) equals n(n-1)/2.",
+  "domain": "combinatorics",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "binom_two",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Number of unordered pairs; stated without subtraction."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.6 — binomial coefficients."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

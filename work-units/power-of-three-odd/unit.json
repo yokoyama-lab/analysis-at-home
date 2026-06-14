@@ -1,0 +1,24 @@
+{
+  "id": "power-of-three-odd",
+  "title": "Powers of three are odd",
+  "statement_informal": "3^n is odd for every n.",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "power_of_three_odd",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.4 — powers / parity."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

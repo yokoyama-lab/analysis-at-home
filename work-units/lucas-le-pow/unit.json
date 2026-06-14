@@ -1,0 +1,24 @@
+{
+  "id": "lucas-le-pow",
+  "title": "Lucas numbers grow at most as 2^(n+1)",
+  "statement_informal": "The n-th Lucas number is at most 2^(n+1).",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "lucas_le_pow",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.8 — Fibonacci & Lucas numbers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
