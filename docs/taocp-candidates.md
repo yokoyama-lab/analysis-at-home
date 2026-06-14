@@ -70,7 +70,8 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 - ✅ `cocktail-bubble-comparisons`, `radix-sort-passes`, `counting-sort-histogram`, `merge-comparisons`, `min-and-max-comparisons`, `heap-siftdown-comparisons`, `binary-search-comparisons`, `decision-tree-leaves-bound`, `quickselect-worst-case`, the inversion lemmas.
 - 🔬 `quickselect-average` (~2n), `hashing-collisions` ((n-1)/2), inversions / linear-search / Algorithm-M distributions.
 - ✅ `median-of-medians-linear` — the BFPRT recurrence `T(n) ≤ T(n/5)+T(7n/10)+n` is proved linear (`≤ 10n`); full algorithm model still open.
-- ⏸ Shellsort, Ford-Johnson, min-max 3n/2−2, 2nd-largest, AVL/B-tree height, tries, move-to-front, interpolation search, open-addressing probes (research-level / need richer models).
+- ✅ `avl-min-nodes-fibonacci` — AVL min nodes >= fib(h) => O(log n) height.
+- ⏸ Shellsort, Ford-Johnson, min-max 3n/2−2, 2nd-largest, B-tree height, tries, move-to-front, interpolation search, open-addressing probes (research-level / need richer models).
 
 ### Vol 4A
 - ⏸ Gray code (bitwise), popcount/ruler, permutation & combination generation, partitions/Bell (need bit-models or generation frameworks; candidates for the conjecture track).

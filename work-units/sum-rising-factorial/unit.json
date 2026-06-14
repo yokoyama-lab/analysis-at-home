@@ -1,0 +1,31 @@
+{
+  "id": "sum-rising-factorial",
+  "title": "Sum of i(i+1)(i+2) = n(n+1)(n+2)(n+3)/4",
+  "statement_informal": "Sum of i(i+1)(i+2) for i=1..n equals n(n+1)(n+2)(n+3)/4.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "sum_rising_factorial",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Telescoping product of three consecutive integers."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums of products (rising factorials)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

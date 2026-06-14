@@ -1,0 +1,24 @@
+{
+  "id": "avl-min-nodes-fibonacci",
+  "title": "AVL trees are balanced: min nodes >= Fibonacci",
+  "statement_informal": "An AVL tree of height h has at least fib(h) nodes; since Fibonacci grows exponentially, height is O(log n).",
+  "domain": "trees",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "avl_min_nodes",
+  "references": [
+    "Adelson-Velsky & Landis (1962); Knuth TAOCP Vol. 3 §6.2.3 — balanced trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
