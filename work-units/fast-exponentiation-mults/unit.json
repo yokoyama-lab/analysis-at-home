@@ -4,12 +4,19 @@
   "statement_informal": "Square-and-multiply exponentiation uses at most 2 times the number of bits of the exponent multiplications (logarithmic in the exponent).",
   "domain": "arithmetic",
   "claim_kind": "complexity",
-  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
   "prompt_template": "prompt-template.md",
   "expected_theorem": "square_and_multiply_mults",
   "cost_model": {
     "kind": "func-ops",
-    "counts": ["multiplication"],
+    "counts": [
+      "multiplication"
+    ],
     "notes": "Exponent given as a binary digit list; cost bounded by 2 * length (= 2*(floor(log2 e)+1)). A value-correctness companion is a future leaf."
   },
   "references": [
@@ -17,8 +24,8 @@
   ],
   "status": {
     "rocq": "verified",
-    "lean": "open",
+    "lean": "verified",
     "agda": "open",
-    "isabelle": "open"
+    "isabelle": "verified"
   }
 }
