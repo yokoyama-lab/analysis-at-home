@@ -1,0 +1,25 @@
+{
+  "id": "linear-search-average-comparisons",
+  "title": "Average (expected) comparison count of linear search",
+  "statement_informal": "For a uniformly random present target, linear search performs on average (n+1)/2 comparisons. Proved exactly: the cost at 1-based position p is p, and the n positions sum to n(n+1)/2.",
+  "domain": "searching",
+  "claim_kind": "expected-cost",
+  "analysis": {
+    "case": "average",
+    "input_distribution": "uniform present target in {1..n}",
+    "conjecture_artifact": "tools/conjecture/results/linear-search.json"
+  },
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "linear_search_avg_total",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["comparison"],
+    "notes": "Cost at 1-based position p is exactly p comparisons (lemma lsearch_at). Averaged uniformly over the n positions gives (n+1)/2; the total 1+...+n = n(n+1)/2 is proved without division."
+  },
+  "references": [
+    "Verify-track twin of conjecture artifact tools/conjecture/results/linear-search.json (E[cost]=(n+1)/2, limit law Uniform).",
+    "Cormen, Leiserson, Rivest, Stein — Introduction to Algorithms, average-case analysis of linear search."
+  ],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

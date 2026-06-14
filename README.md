@@ -49,7 +49,8 @@ permanently, and provably.
   credentials.
 - 📈 **Correctness _and_ cost.** Machine-checked complexity, not just
   functional correctness — the part competition-math-focused LLM-proof projects
-  skip.
+  skip. And cost across the full picture: **worst-case, best-case, and average
+  (expected) cost**, plus the **cost distribution** and its **limiting law**.
 - 🌐 **Bring your own LLM.** We coordinate the work and re-verify the results.
   Your unused capacity stops going to waste.
 
@@ -57,11 +58,17 @@ permanently, and provably.
 
 | Track | Tooling | Output |
 |-------|---------|--------|
-| **Conjecture** | Python / SymPy, computer algebra, runtime-distribution experiments | _candidate_ closed forms & bounds (fast, **unproven**) |
+| **Conjecture** | pure-Python computer algebra + exhaustive enumeration: exact cost distributions, closed-form guessing (finite differences), limit-law fitting | _candidate_ closed forms, distributions & limit laws (fast, **unproven**) |
 | **Verify** | Rocq / Lean / Agda / Isabelle kernel (cost via time-credit style reasoning) | **theorems** |
 
 A claim is only called *proven* once it has passed the verify track. The
-conjecture track is a hypothesis generator, never the final word.
+conjecture track is a hypothesis generator, never the final word: it *computes*
+`E[cost(n)]` and the limiting distribution, and the verify track promotes the
+provable part (the exact mean) to a kernel-checked theorem. For example, for
+linear search the conjecture track computes `E[cost] = (n+1)/2` with a **Uniform**
+limit, and `linear-search-average-comparisons` proves the mean exactly; for
+insertion sort, the inversion count is **Gaussian** in the limit with mean
+`n(n−1)/4`.
 
 ## Status
 

@@ -17,6 +17,7 @@ import json, html, pathlib, re
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 WU = ROOT / "work-units"
 SITE = ROOT / "site"
+CONJ = ROOT / "tools" / "conjecture" / "results"
 OWNER_REPO = "yokoyama-lab/analysis-at-home"
 BRANCH = "main"
 BACKENDS = ["rocq", "lean", "agda", "isabelle"]
@@ -45,11 +46,16 @@ def pr_url(unit_id: str, backend: str) -> str:
 
 def collect() -> dict:
     units, open_jobs, decomps = [], [], {}
+    # artifact path (repo-relative) -> the verify-track unit that proves its mean
+    twin = {}
     total = verified = 0
     for d in sorted(WU.iterdir()):
         uj = d / "unit.json"
         if not uj.is_dir() and uj.exists():
             unit = json.loads(uj.read_text(encoding="utf-8"))
+            art = (unit.get("analysis") or {}).get("conjecture_artifact")
+            if art:
+                twin[art] = {"unit": unit["id"], "expected_theorem": unit.get("expected_theorem", "")}
             status = unit.get("status", {})
             targets = unit.get("targets", [])
             for b in targets:
@@ -83,9 +89,25 @@ def collect() -> dict:
                 "difficulty": l.get("difficulty", 0), "depends_on": l.get("depends_on", []),
             })
     leaf_jobs.sort(key=lambda j: (j["difficulty"], j["unit"], j["id"]))
+    conjectures = []
+    if CONJ.is_dir():
+        for f in sorted(CONJ.glob("*.json")):
+            r = json.loads(f.read_text(encoding="utf-8"))
+            rel = f"tools/conjecture/results/{f.name}"
+            conjectures.append({
+                "algorithm": r.get("algorithm", f.stem),
+                "mean_closed_form": r.get("conjectured_mean_closed_form", ""),
+                "limit": (r.get("limit_distribution") or {}).get("law", ""),
+                "ks_normal": (r.get("limit_distribution") or {}).get("ks_normal"),
+                "ks_uniform": (r.get("limit_distribution") or {}).get("ks_uniform"),
+                "histogram": r.get("histogram_at_limit_n", ""),
+                "artifact": rel,
+                "twin": twin.get(rel),
+            })
     return {
         "repo": OWNER_REPO, "backends": BACKENDS, "units": units,
         "open_jobs": open_jobs, "decompositions": decomps, "leaf_jobs": leaf_jobs,
+        "conjectures": conjectures,
         "stats": {"targets": total, "verified": verified, "open": total - verified,
                   "leaves": len(leaf_jobs)},
     }
@@ -126,6 +148,16 @@ not trusted.</i></p>
 
 <h2>Verification matrix</h2>
 <div id="matrix"></div>
+
+<h2>Conjecture track — computed, <i>not</i> trusted</h2>
+<p class="note">Two tracks. The <b>conjecture track</b> (pure-Python computer
+algebra + exhaustive enumeration) <i>computes</i> the cost distribution, guesses a
+closed form for the expected cost <code>E[cost(n)]</code>, and fits the limiting
+law of the standardized cost. None of it is trusted. The <b>verify track</b>
+promotes the provable part — the exact mean — to a kernel-checked theorem. The
+limit law stays a conjecture (an open challenge). Worst-, best- and average-case
+all live in the matrix above.</p>
+<div id="conjectures"></div>
 
 <h2>Open jobs — pick one</h2>
 <p class="note">Each is a port of a proven theorem to another proof assistant.
@@ -180,6 +212,30 @@ fetch('data.json').then(r=>r.json()).then(D=>{
     tbl.append(tr);
   });
   matrix.append(tbl);
+
+  // conjecture track
+  const cj = D.conjectures || [];
+  if(!cj.length) conjectures.append(E('p',{className:'note',textContent:'(run tools/conjecture/conjecture.py to populate)'}));
+  cj.forEach(c=>{
+    const box=E('div',{className:'job'});
+    box.append(E('h3',{}, document.createTextNode(c.algorithm),
+      E('span',{className:'chip',textContent:'CONJECTURE'})));
+    box.append(E('p',{className:'note'}, document.createTextNode('E[cost(n)] ≈ '), E('b',{textContent:c.mean_closed_form})));
+    box.append(E('p',{className:'note',textContent:'limit law (standardized): '+c.limit
+      +'  (KS: normal='+c.ks_normal+', uniform='+c.ks_uniform+')'}));
+    if(c.twin){
+      box.append(E('p',{className:'note'}, document.createTextNode('verified twin: proves the mean exactly via '),
+        E('code',{textContent:c.twin.expected_theorem}),
+        document.createTextNode(' (unit '+c.twin.unit+')')));
+    } else {
+      box.append(E('p',{className:'note',textContent:'no verified twin yet — the mean is a candidate theorem to prove'}));
+    }
+    if(c.histogram){
+      const det=E('details',{}, E('summary',{textContent:'show distribution'}), E('pre',{textContent:c.histogram}));
+      box.append(det);
+    }
+    conjectures.append(box);
+  });
 
   // open jobs
   if(!D.open_jobs.length) jobs.append(E('p',{textContent:'Everything is verified. 🎉'}));

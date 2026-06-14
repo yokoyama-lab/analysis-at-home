@@ -1,0 +1,23 @@
+{
+  "id": "insertion-sort-best-case",
+  "title": "Best-case comparison count of insertion sort",
+  "statement_informal": "Sorting a list of length n by insertion sort performs at least n-1 key comparisons (one per element after the first), achieved by an already-sorted input.",
+  "domain": "sorting",
+  "claim_kind": "best-case",
+  "analysis": {
+    "case": "best"
+  },
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "insertion_sort_best_case",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["comparison"],
+    "notes": "Each x <=? y test in the instrumented insert counts as one comparison. Inserting into a non-empty sorted prefix costs at least one; n-1 such inserts give the lower bound."
+  },
+  "references": [
+    "Lower-bound companion of insertion-sort-comparisons (worst case n(n-1)/2).",
+    "Software Foundations, Vol. 3: Verified Functional Algorithms (Appel)."
+  ],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

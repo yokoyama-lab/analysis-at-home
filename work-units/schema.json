@@ -32,7 +32,38 @@
     },
     "claim_kind": {
       "type": "string",
-      "enum": ["correctness", "complexity", "closed-form"]
+      "enum": [
+        "correctness",
+        "complexity",
+        "closed-form",
+        "worst-case",
+        "best-case",
+        "expected-cost",
+        "distribution",
+        "limit-law"
+      ],
+      "description": "correctness: the algorithm computes the right answer. complexity/closed-form: an asymptotic or exact cost bound. worst-case/best-case: a tight upper/lower bound over all inputs of size n. expected-cost: the exact mean cost under a stated input distribution (the verify-track twin of a conjectured E[cost(n)]). distribution/limit-law: the exact (or limiting) law of the cost — these are computed on the CONJECTURE track and only the provable consequences (e.g. the mean) are promoted to theorems."
+    },
+    "analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Which case is analysed and, for average/distribution/limit claims, the input distribution it is taken over. Required for best/worst/expected/distribution/limit kinds.",
+      "required": ["case"],
+      "properties": {
+        "case": {
+          "type": "string",
+          "enum": ["worst", "best", "average", "distribution", "limit"],
+          "description": "worst/best: extremal over inputs of size n. average: mean over the input distribution. distribution: the full law of the cost. limit: the limiting law of the standardized cost as n grows."
+        },
+        "input_distribution": {
+          "type": "string",
+          "description": "The distribution inputs are drawn from, e.g. \"uniform present target in {1..n}\" or \"uniformly random permutation of n elements\". Omit for worst/best (extremal cases need no distribution)."
+        },
+        "conjecture_artifact": {
+          "type": "string",
+          "description": "Path (repo-relative) to the conjecture-track result this claim is the verified twin of, e.g. tools/conjecture/results/linear-search.json."
+        }
+      }
     },
     "targets": {
       "type": "array",
@@ -78,12 +109,28 @@
       }
     }
   },
-  "if": {
-    "properties": {
-      "claim_kind": { "enum": ["complexity", "closed-form"] }
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "claim_kind": {
+            "enum": ["complexity", "closed-form", "worst-case", "best-case", "expected-cost", "distribution", "limit-law"]
+          }
+        },
+        "required": ["claim_kind"]
+      },
+      "then": { "required": ["cost_model"] }
+    },
+    {
+      "if": {
+        "properties": {
+          "claim_kind": {
+            "enum": ["worst-case", "best-case", "expected-cost", "distribution", "limit-law"]
+          }
+        },
+        "required": ["claim_kind"]
+      },
+      "then": { "required": ["analysis"] }
     }
-  },
-  "then": {
-    "required": ["cost_model"]
-  }
+  ]
 }

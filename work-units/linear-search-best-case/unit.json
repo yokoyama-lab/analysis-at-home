@@ -1,0 +1,20 @@
+{
+  "id": "linear-search-best-case",
+  "title": "Best-case comparison count of linear search",
+  "statement_informal": "Linear search over a non-empty list performs at least one key comparison; this is the universal lower bound, achieved when the target is in the head position.",
+  "domain": "searching",
+  "claim_kind": "best-case",
+  "analysis": {
+    "case": "best"
+  },
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "linear_search_best_case",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["comparison"],
+    "notes": "One x =? y test per element until a match; on a non-empty list at least the head is tested."
+  },
+  "references": ["Classic; the best case of linear search is a constant 1 comparison."],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

@@ -26,11 +26,44 @@ work-units/<id>/
 | `title` | string | one-line human title |
 | `statement_informal` | string | the claim in prose (kept short; full text in `statement.md`) |
 | `domain` | string | e.g. `sorting`, `string-matching`, `graph` |
-| `claim_kind` | enum | `correctness` \| `complexity` \| `closed-form` |
+| `claim_kind` | enum | `correctness` \| `complexity` \| `closed-form` \| `worst-case` \| `best-case` \| `expected-cost` \| `distribution` \| `limit-law` |
+| `analysis` | object | which case is analysed; required for the case/distribution kinds (see below) |
 | `targets` | string[] | backends in scope, subset of `rocq` \| `lean` \| `agda` \| `isabelle` |
 | `prompt_template` | string | path to the prompt file, relative to the unit dir |
 | `references` | string[] | citations (NOT copied prose — pointers only) |
 | `status` | object | per-backend status: `open` \| `submitted` \| `verified` |
+
+### `claim_kind` and the two tracks
+
+A cost claim is analysed in one of several **cases**:
+
+| `claim_kind` | what it certifies | track |
+|--------------|-------------------|-------|
+| `worst-case` | tight upper bound over all inputs of size `n` | verify |
+| `best-case`  | tight lower bound over all inputs of size `n` | verify |
+| `expected-cost` | the exact mean cost under a stated input distribution | verify (twin of a conjecture) |
+| `distribution` | the full law of the cost | conjecture |
+| `limit-law` | the limiting law of the standardized cost as `n → ∞` | conjecture |
+
+(`complexity` / `closed-form` remain for asymptotic/exact bounds not tied to a
+case; `correctness` for functional correctness.)
+
+The **conjecture track** (`tools/conjecture/conjecture.py`, pure stdlib) *computes*
+the distribution, guesses `E[cost(n)]`, and fits the limit law — none of it
+trusted. The **verify track** promotes the provable part (the exact mean) to a
+kernel-checked theorem. An `expected-cost` unit is the verified twin of a
+`distribution`/`limit-law` conjecture; link them via `analysis.conjecture_artifact`.
+
+### `analysis` (required for case/distribution kinds)
+
+| field | type | meaning |
+|-------|------|---------|
+| `case` | enum | `worst` \| `best` \| `average` \| `distribution` \| `limit` |
+| `input_distribution` | string | what inputs are drawn from (omit for worst/best — extremal cases need no distribution) |
+| `conjecture_artifact` | string | repo-relative path to the conjecture-track result this proof is the verified twin of |
+
+A unit needs a `cost_model` for every cost-bearing `claim_kind`, and an `analysis`
+for the case/distribution kinds.
 
 `status` is keyed by backend, e.g. `{ "rocq": "open", "lean": "open" }`. A unit
 is "done" when at least one backend reaches `verified`; reaching it in more is
