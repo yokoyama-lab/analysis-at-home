@@ -37,11 +37,13 @@ Adapters live in `adapters/<backend>.sh` and implement the actual kernel call:
 | `isabelle` | `isabelle build` (one-theory session) | no `sorry`/`oops` (textual, Phase 1) |
 | `agda` | `agda --safe` type-checks | no `postulate` (textual, Phase 1) |
 
-The `binary-counter-increments` theorem is verified in **rocq, lean, and
-isabelle** (three independent kernels). `isabelle build` is heavy (loads the HOL
-image) so the isabelle adapter is not wired into CI yet. The textual
-sorry/oops/postulate checks for isabelle/agda are a Phase 1 simplification (see
-the per-adapter notes) — a kernel-level check is the robust follow-up.
+`binary-counter-increments` and `fast-exponentiation-mults` are each verified in
+**all four kernels** — rocq, lean, isabelle, AND agda. `agda` uses agda-stdlib
+(registered via a generated `scratch.agda-lib`; interfaces pre-compiled so the
+sandboxed run only reads them). `isabelle build` is heavy (loads the HOL image)
+so the isabelle adapter is not wired into CI yet. The textual sorry/oops/
+postulate checks for isabelle/agda are a Phase 1 simplification (see the
+per-adapter notes) — a kernel-level check is the robust follow-up.
 
 ## Signature equivalence (TODO — Phase 1)
 
