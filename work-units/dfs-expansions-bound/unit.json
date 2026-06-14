@@ -1,0 +1,31 @@
+{
+  "id": "dfs-expansions-bound",
+  "title": "A concrete DFS does at most |V| vertex expansions",
+  "statement_informal": "A concrete fuel-based DFS on an adjacency-list graph keeps its visited set distinct (NoDup) and bounded by |V|, so the number of vertex expansions is at most |V| (the V term of O(V+E), for an actual algorithm).",
+  "domain": "graphs",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "dfs_expansions_le_V",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "vertex-expansion"
+    ],
+    "notes": "Each vertex is marked at most once; visited NoDup + bounded => length <= |V|."
+  },
+  "references": [
+    "Knuth, TAOCP graph algorithms; depth-first search and the O(V+E) bound."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
