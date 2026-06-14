@@ -1,0 +1,24 @@
+{
+  "id": "list-sum-append",
+  "title": "Sum distributes over append",
+  "statement_informal": "The sum of l1 ++ l2 is the sum of l1 plus the sum of l2.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_sum_append",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list processing."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

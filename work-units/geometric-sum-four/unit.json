@@ -1,0 +1,31 @@
+{
+  "id": "geometric-sum-four",
+  "title": "Sum of powers of four",
+  "statement_informal": "4^0 + ... + 4^(n-1) = (4^n - 1)/3.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "geometric_sum_four",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Radix-4 geometric series."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

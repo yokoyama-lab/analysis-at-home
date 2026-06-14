@@ -1,0 +1,31 @@
+{
+  "id": "sum-i-plus-const",
+  "title": "Sum of (i + c) for i=1..n",
+  "statement_informal": "Sum of (i+c) over i=1..n = n(n+1)/2 + cn.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "sum_i_plus_const",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Arithmetic series shifted by a constant."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

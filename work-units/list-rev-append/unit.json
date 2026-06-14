@@ -1,0 +1,24 @@
+{
+  "id": "list-rev-append",
+  "title": "rev distributes over append (reversed)",
+  "statement_informal": "rev (l1 ++ l2) = rev l2 ++ rev l1.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_rev_append",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list processing."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

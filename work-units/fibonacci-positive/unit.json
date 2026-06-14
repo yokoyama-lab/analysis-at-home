@@ -1,0 +1,24 @@
+{
+  "id": "fibonacci-positive",
+  "title": "F(n+1) >= 1",
+  "statement_informal": "Every Fibonacci number after the 0th is positive.",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "fib_positive",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.8 — Fibonacci numbers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

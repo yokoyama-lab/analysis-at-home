@@ -1,0 +1,24 @@
+{
+  "id": "two-pow-le-factorial",
+  "title": "2^n <= (n+1)!",
+  "statement_informal": "Powers of two are bounded by the factorial.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "two_pow_le_factorial",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.5 — factorials."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

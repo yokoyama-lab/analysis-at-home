@@ -1,0 +1,24 @@
+{
+  "id": "factorial-monotone",
+  "title": "Factorial is nondecreasing",
+  "statement_informal": "n! <= (n+1)!.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "factorial_monotone",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.5 — factorials."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

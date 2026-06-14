@@ -1,0 +1,31 @@
+{
+  "id": "sum-multiples-of-three",
+  "title": "Sum of the first n multiples of 3",
+  "statement_informal": "3 + 6 + ... + 3n = 3n(n+1)/2.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "sum_multiples_of_three",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Arithmetic series with step 3."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

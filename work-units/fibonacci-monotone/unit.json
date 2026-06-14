@@ -1,0 +1,24 @@
+{
+  "id": "fibonacci-monotone",
+  "title": "Fibonacci is nondecreasing",
+  "statement_informal": "F(n) <= F(n+1).",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "fib_monotone",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.8 — Fibonacci numbers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

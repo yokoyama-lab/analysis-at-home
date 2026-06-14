@@ -1,0 +1,24 @@
+{
+  "id": "list-filter-append",
+  "title": "filter distributes over append",
+  "statement_informal": "filter p (l1 ++ l2) = filter p l1 ++ filter p l2.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_filter_append",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list processing."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

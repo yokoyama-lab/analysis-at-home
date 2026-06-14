@@ -1,0 +1,31 @@
+{
+  "id": "hexagonal-numbers",
+  "title": "Hexagonal numbers: sum of 4i-3 = n(2n-1)",
+  "statement_informal": "1 + 5 + 9 + ... + (4n-3) = n(2n-1) (the n-th hexagonal number).",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "hexagonal_numbers",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Stated without subtraction (n(2n-1) = 2n^2 - n)."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
