@@ -1,0 +1,31 @@
+{
+  "id": "geometric-sum-two",
+  "title": "Sum of powers of two: 1+2+...+2^(n-1) = 2^n - 1",
+  "statement_informal": "The sum of 2^0 + ... + 2^(n-1) equals 2^n - 1.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "geometric_sum_two",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Stated without subtraction as sumtwo n + 1 = 2^n."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — geometric series (radix-2)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

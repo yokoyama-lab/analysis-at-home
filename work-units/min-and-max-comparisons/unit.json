@@ -1,0 +1,31 @@
+{
+  "id": "min-and-max-comparisons",
+  "title": "Finding min and max by scanning uses 2n comparisons",
+  "statement_informal": "The naive simultaneous min-and-max scan uses exactly 2n comparisons.",
+  "domain": "selection",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "minmax_comparisons",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "Two comparisons (vs running min and vs running max) per element."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.3.3 — selection; the 3n/2 optimum is a harder unit."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

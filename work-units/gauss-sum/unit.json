@@ -1,0 +1,31 @@
+{
+  "id": "gauss-sum",
+  "title": "Gauss summation: 1+2+...+n = n(n+1)/2",
+  "statement_informal": "The sum 1+2+...+n equals n(n+1)/2; proved as 2*sum_upto n = n*(n+1).",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "gauss_sum",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "The arithmetic series; stated without division as 2*sum = n(n+1)."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums and the arithmetic series."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

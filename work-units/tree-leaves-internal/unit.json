@@ -1,0 +1,31 @@
+{
+  "id": "tree-leaves-internal",
+  "title": "Extended binary tree: leaves = internal + 1",
+  "statement_informal": "A binary tree with n internal nodes has exactly n+1 leaves (external nodes).",
+  "domain": "trees",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "leaves_internal",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "node"
+    ],
+    "notes": "Classic extended-binary-tree identity (number of external = internal + 1)."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3.4.5 — extended binary trees: external = internal + 1."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

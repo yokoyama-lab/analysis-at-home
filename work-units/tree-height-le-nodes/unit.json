@@ -1,0 +1,34 @@
+{
+  "id": "tree-height-le-nodes",
+  "title": "Tree height is at most the number of internal nodes",
+  "statement_informal": "The height of a binary tree is at most its number of internal nodes.",
+  "domain": "trees",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "tree_height_le_nodes",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "level"
+    ],
+    "notes": "Height bounded by node count (a degenerate path attains near-equality)."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — tree height vs size."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

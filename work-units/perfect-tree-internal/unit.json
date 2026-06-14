@@ -1,0 +1,31 @@
+{
+  "id": "perfect-tree-internal",
+  "title": "Perfect binary tree of height h has 2^h - 1 internal nodes",
+  "statement_informal": "A perfect binary tree of height h has 2^h - 1 internal nodes (S(internal) = 2^h).",
+  "domain": "trees",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "perfect_tree_internal",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "node"
+    ],
+    "notes": "Stated without subtraction as S(internal) = 2^h."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — complete binary trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

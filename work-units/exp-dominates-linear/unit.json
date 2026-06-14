@@ -1,0 +1,31 @@
+{
+  "id": "exp-dominates-linear",
+  "title": "n < 2^n",
+  "statement_informal": "For every n, n < 2^n.",
+  "domain": "asymptotics",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "exp_dominates_linear",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "bound"
+    ],
+    "notes": "Exponential strictly dominates the identity; basis for binary-length bounds."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.4 — integer functions and growth."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

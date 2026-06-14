@@ -1,0 +1,31 @@
+{
+  "id": "consecutive-product-even",
+  "title": "Product of two consecutive integers is even",
+  "statement_informal": "n*(n+1) is even for every n.",
+  "domain": "number-theory",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "consecutive_even",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "bound"
+    ],
+    "notes": "n(n+1) is even — why the triangular number n(n+1)/2 is an integer."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — exercises on sums (integrality of n(n+1)/2)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "list-map-operations",
+  "title": "Mapping over a list uses n applications",
+  "statement_informal": "Mapping f over a list of length n uses exactly n applications of f.",
+  "domain": "lists",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "map_operations",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "application"
+    ],
+    "notes": "One function application per element."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list operations."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "nicomachus-cubes",
+  "title": "Nicomachus: 1^3+...+n^3 = (1+...+n)^2",
+  "statement_informal": "The sum of the first n cubes equals the square of the sum of the first n numbers.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "nicomachus",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Sum of cubes equals the square of the sum; stated as 4*sumcube = (n(n+1))^2."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums; Nicomachus's theorem."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

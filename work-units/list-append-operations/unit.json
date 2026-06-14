@@ -1,0 +1,31 @@
+{
+  "id": "list-append-operations",
+  "title": "List append uses |l1| operations",
+  "statement_informal": "Appending l2 onto l1 uses exactly length(l1) cons operations.",
+  "domain": "lists",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "append_operations",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "cons"
+    ],
+    "notes": "One cons per element of the first list."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list operations."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

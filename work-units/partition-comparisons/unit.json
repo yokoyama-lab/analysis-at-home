@@ -1,0 +1,31 @@
+{
+  "id": "partition-comparisons",
+  "title": "Partitioning n elements uses n comparisons",
+  "statement_informal": "Partitioning a list of n elements around a pivot uses exactly n comparisons.",
+  "domain": "sorting",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "partition_comparisons",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "One pivot comparison per element (the quicksort partition step)."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.2 — quicksort partitioning."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

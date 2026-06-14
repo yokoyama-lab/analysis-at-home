@@ -26,6 +26,22 @@ conjecture-track result whose mean is (or could be) promoted to a theorem.
 | Binary tree search | Vol 3 §6.2.2 | `bst-search-comparisons` | ✅ comparisons ≤ height |
 | Summing n numbers | Vol 1/2 (basic) | `list-sum-additions` | ✅ n−1 additions |
 
+### Easy-win batch (fundamentals, 20 units)
+
+Structural cost counts and sum identities, all kernel-verified (Rocq):
+
+- **Lists** — `list-reversal-operations` (n cons), `list-append-operations` (|l₁|),
+  `list-map-operations` (n), `list-filter-tests` (n), `list-sum-additions` (n−1).
+- **Trees** (Vol 1 §2.3) — `tree-leaves-internal` (leaves = internal+1),
+  `perfect-tree-leaves` (2ʰ), `perfect-tree-internal` (2ʰ−1),
+  `tree-height-le-nodes`, `tree-mirror-operations`, `bst-search-comparisons`.
+- **Sorting/searching** (Vol 3) — `partition-comparisons` (n),
+  `sequential-search-membership` (≤ n), `min-and-max-comparisons` (2n).
+- **Sums** (Vol 1 §1.2.3) — `gauss-sum` (n(n+1)/2), `sum-of-squares`,
+  `sum-first-n-odds` (n²), `geometric-sum-two` (2ⁿ−1), `nicomachus-cubes`.
+- **Numbers** — `exp-dominates-linear` (n<2ⁿ), `consecutive-product-even`,
+  `repeated-squaring-mults` (k mults for x^(2ᵏ)).
+
 (Plus building blocks: `factorial-mults`, `iterative-fibonacci-additions`,
 `count-occurrences-comparisons`, `list-minimum/maximum-comparisons`,
 `naive-power-mults`, `ordered-insertion-comparisons`, and the summation unit

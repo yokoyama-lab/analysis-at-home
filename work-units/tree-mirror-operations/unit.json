@@ -1,0 +1,31 @@
+{
+  "id": "tree-mirror-operations",
+  "title": "Mirroring a tree visits each internal node once",
+  "statement_informal": "Mirroring a binary tree performs exactly one operation per internal node.",
+  "domain": "trees",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "mirror_operations",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "node-visit"
+    ],
+    "notes": "One swap/visit per internal node."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3.1 — tree traversal cost."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

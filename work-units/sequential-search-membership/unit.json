@@ -1,0 +1,34 @@
+{
+  "id": "sequential-search-membership",
+  "title": "Sequential search uses at most n comparisons",
+  "statement_informal": "Sequential (membership) search uses at most n comparisons, stopping at the first match.",
+  "domain": "searching",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "membership_comparisons",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "Stops at the first match; worst case scans all n."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §6.1 — sequential searching."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

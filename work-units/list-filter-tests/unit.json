@@ -1,0 +1,31 @@
+{
+  "id": "list-filter-tests",
+  "title": "Filtering a list uses n predicate tests",
+  "statement_informal": "Filtering a list of length n evaluates the predicate exactly n times.",
+  "domain": "lists",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "filter_tests",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "predicate-test"
+    ],
+    "notes": "One predicate test per element regardless of outcome."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list operations."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

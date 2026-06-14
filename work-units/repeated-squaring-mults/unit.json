@@ -1,0 +1,31 @@
+{
+  "id": "repeated-squaring-mults",
+  "title": "x^(2^k) by repeated squaring uses k multiplications",
+  "statement_informal": "Computing x^(2^k) by repeated squaring uses exactly k multiplications.",
+  "domain": "arithmetic",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "repsq_mults",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "multiplication"
+    ],
+    "notes": "One squaring per doubling of the exponent."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 2 §4.6.3 — evaluation of powers (squaring)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

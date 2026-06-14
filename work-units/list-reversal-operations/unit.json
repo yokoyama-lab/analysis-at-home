@@ -1,0 +1,31 @@
+{
+  "id": "list-reversal-operations",
+  "title": "List reversal uses n operations",
+  "statement_informal": "Reversing a list of length n uses exactly n cons operations.",
+  "domain": "lists",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "reverse_operations",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "cons"
+    ],
+    "notes": "One cons per element while reversing into an accumulator."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list processing operation counts."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
