@@ -1,0 +1,24 @@
+{
+  "id": "selection-sort-comparisons",
+  "title": "Exact comparison count of selection sort",
+  "statement_informal": "Selection sort always performs exactly n(n-1)/2 key comparisons on a list of length n, independent of the data.",
+  "domain": "sorting",
+  "claim_kind": "closed-form",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "selection_sort_comparisons_exact",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["comparison"],
+    "notes": "Each y <? x test in select counts as one; the count is an exact equality, not just a bound."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 (selection sort comparison count) — fact only, no prose copied"
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -26,6 +26,17 @@ jobs:
               cp work-units/insertion-sort-comparisons-while/targets/rocq/InsertionSortWhileComparisons.v "$d/"
               ( cd "$d" && coqc -q InsertionSortComparisons.v && coqc -q InsertionSortWhileComparisons.v )
             endGroup
+            startGroup "coqc the algorithm units"
+              d2="$(mktemp -d)"
+              for v in \
+                selection-sort-comparisons/targets/rocq/SelectionSortComparisons.v \
+                binary-counter-increments/targets/rocq/BinaryCounterIncrements.v \
+                fast-exponentiation-mults/targets/rocq/FastExponentiation.v \
+                merge-sort-comparisons/targets/rocq/MergeSortComparisons.v ; do
+                cp "work-units/$v" "$d2/"
+              done
+              ( cd "$d2" && for f in *.v; do coqc -q "$f"; done )
+            endGroup
             startGroup "certify the decomposed (leaf) proof"
               # assemble.sh resolves its own dir and compiles in a temp dir.
               bash "$ws/work-units/insertion-sort-comparisons-while/decomposition/assemble.sh"

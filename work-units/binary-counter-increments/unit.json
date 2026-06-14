@@ -1,0 +1,24 @@
+{
+  "id": "binary-counter-increments",
+  "title": "Amortized cost of binary counter increments",
+  "statement_informal": "Performing n increments on a binary counter, starting from empty, costs at most 2n bit flips (amortized O(1) per increment).",
+  "domain": "amortized",
+  "claim_kind": "complexity",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "binary_counter_increments_amortized",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["bit-flip"],
+    "notes": "Aggregate/amortized bound, proved with the potential = popcount: total flips + ones(state) = 2n."
+  },
+  "references": [
+    "Cormen et al., Introduction to Algorithms — amortized analysis of the binary counter (fact only)"
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
