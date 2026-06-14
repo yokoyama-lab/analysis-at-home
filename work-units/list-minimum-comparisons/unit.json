@@ -1,0 +1,13 @@
+{
+  "id": "list-minimum-comparisons",
+  "title": "Exact comparison count of list minimum",
+  "statement_informal": "Finding the minimum of a list of length n uses exactly n-1 comparisons.",
+  "domain": "searching",
+  "claim_kind": "closed-form",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_minimum_comparisons",
+  "cost_model": { "kind": "func-ops", "counts": ["comparison"], "notes": "One comparison per element after the first; exact n-1." },
+  "references": ["Classic; exact n-1 (mirror of list maximum)."],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "count-occurrences-comparisons",
+  "title": "Exact comparison count of counting occurrences",
+  "statement_informal": "Counting how many times x occurs in a list of length n uses exactly n comparisons.",
+  "domain": "searching",
+  "claim_kind": "closed-form",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "count_occurrences_comparisons",
+  "cost_model": { "kind": "func-ops", "counts": ["comparison"], "notes": "Every element is compared once; exact snd (countc x l) = length l." },
+  "references": ["Classic; exact n."],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

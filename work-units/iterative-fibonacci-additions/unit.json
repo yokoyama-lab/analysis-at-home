@@ -1,0 +1,13 @@
+{
+  "id": "iterative-fibonacci-additions",
+  "title": "Exact addition count of iterative Fibonacci",
+  "statement_informal": "Iterative Fibonacci (two accumulators) uses exactly n additions for n steps.",
+  "domain": "arithmetic",
+  "claim_kind": "closed-form",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "iterative_fibonacci_additions",
+  "cost_model": { "kind": "func-ops", "counts": ["addition"], "notes": "One addition (a+b) per step; exact snd (fibc a b n) = n. Contrast the exponential call count of naive recursion." },
+  "references": ["Classic; linear iterative cost."],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "factorial-mults",
+  "title": "Exact multiplication count of factorial",
+  "statement_informal": "Computing n! by repeated multiplication uses exactly n-1 multiplications.",
+  "domain": "arithmetic",
+  "claim_kind": "closed-form",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "factorial_mults",
+  "cost_model": { "kind": "func-ops", "counts": ["multiplication"], "notes": "One multiply per step from 2..n; exact snd (factc n) = n - 1." },
+  "references": ["Classic; exact n-1."],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}
