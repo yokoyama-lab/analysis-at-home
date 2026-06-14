@@ -1,0 +1,24 @@
+{
+  "id": "insertion-sort-preserves-length",
+  "title": "Insertion sort preserves length",
+  "statement_informal": "Insertion sort returns a list of the same length as its input.",
+  "domain": "sorting",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "isort_preserves_length",
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.1 — insertion sort (correctness companion)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

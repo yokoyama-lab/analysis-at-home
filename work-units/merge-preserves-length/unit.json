@@ -1,0 +1,24 @@
+{
+  "id": "merge-preserves-length",
+  "title": "Merging preserves total length",
+  "statement_informal": "Merging two lists yields a list whose length is the sum of the inputs' lengths.",
+  "domain": "sorting",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "merge_preserves_length",
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.4 — merging (correctness companion)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
