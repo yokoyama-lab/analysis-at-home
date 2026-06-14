@@ -1,0 +1,31 @@
+{
+  "id": "tree-size-decomposition",
+  "title": "Tree size = leaves + internal nodes",
+  "statement_informal": "A binary tree's size equals its leaves plus its internal nodes.",
+  "domain": "trees",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "size_leaves_internal",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "node"
+    ],
+    "notes": "Total nodes split into leaves and internal nodes."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "list-zip-operations",
+  "title": "Zipping uses at most |l1| operations",
+  "statement_informal": "Zipping two lists uses at most length(l1) pairing operations.",
+  "domain": "lists",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_zip_operations",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "pair"
+    ],
+    "notes": "One pairing per element of the first list, stopping at the shorter."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list/sequence processing operation counts."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

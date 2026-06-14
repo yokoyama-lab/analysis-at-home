@@ -1,0 +1,24 @@
+{
+  "id": "bst-insert-size",
+  "title": "BST insertion adds at most one node",
+  "statement_informal": "Inserting into a binary search tree increases the size by at most one.",
+  "domain": "trees",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "bst_insert_size",
+  "references": [
+    "Knuth, TAOCP Vol. 3 §6.2.2 — tree insertion."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "list-map-length",
+  "title": "map preserves length",
+  "statement_informal": "Mapping a function over a list preserves its length.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_map_length",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "element"
+    ],
+    "notes": "map produces one output per input."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list/sequence processing operation counts."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

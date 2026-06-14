@@ -1,0 +1,31 @@
+{
+  "id": "power-of-product",
+  "title": "Law of exponents: (a*b)^n = a^n * b^n",
+  "statement_informal": "(a*b)^n = a^n * b^n.",
+  "domain": "arithmetic",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "power_mul_base",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "multiplication"
+    ],
+    "notes": "Powers distribute over products."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.4 — powers and laws of exponents."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

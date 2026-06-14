@@ -1,0 +1,31 @@
+{
+  "id": "n-le-factorial",
+  "title": "n <= n!",
+  "statement_informal": "Every n is at most n!.",
+  "domain": "arithmetic",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "n_le_factorial",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "bound"
+    ],
+    "notes": "Factorial dominates the identity."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.5 — factorials."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

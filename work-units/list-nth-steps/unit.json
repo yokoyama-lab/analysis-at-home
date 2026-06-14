@@ -1,0 +1,34 @@
+{
+  "id": "list-nth-steps",
+  "title": "Indexing uses at most n steps",
+  "statement_informal": "Accessing the k-th element walks at most n list cells.",
+  "domain": "lists",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_nth_steps",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "step"
+    ],
+    "notes": "Walks the list to position k; bounded by length."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list/sequence processing operation counts."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "power-mul",
+  "title": "Law of exponents: a^(m*n) = (a^n)^m",
+  "statement_informal": "a^(m*n) = (a^n)^m.",
+  "domain": "arithmetic",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "power_mul",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "multiplication"
+    ],
+    "notes": "Multiplying exponents nests powers."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.4 / Vol. 2 §4.6.3 — powers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

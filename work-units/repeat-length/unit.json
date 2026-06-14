@@ -1,0 +1,24 @@
+{
+  "id": "repeat-length",
+  "title": "repeat x n has length n",
+  "statement_informal": "Replicating x exactly n times yields a list of length n.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "repeat_len",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list processing."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

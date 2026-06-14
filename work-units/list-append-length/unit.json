@@ -1,0 +1,31 @@
+{
+  "id": "list-append-length",
+  "title": "append length is additive",
+  "statement_informal": "The length of l1 ++ l2 is length l1 + length l2.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_append_length",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "element"
+    ],
+    "notes": "Concatenation lengths add."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list/sequence processing operation counts."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

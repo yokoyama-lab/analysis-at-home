@@ -1,0 +1,31 @@
+{
+  "id": "tree-leaves-ge-one",
+  "title": "Every binary tree has at least one leaf",
+  "statement_informal": "Every binary tree has at least one leaf.",
+  "domain": "trees",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "leaves_ge_one",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "node"
+    ],
+    "notes": "Leaf count is positive."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

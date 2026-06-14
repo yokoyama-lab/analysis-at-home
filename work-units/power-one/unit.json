@@ -1,0 +1,31 @@
+{
+  "id": "power-one",
+  "title": "a^1 = a",
+  "statement_informal": "a^1 = a.",
+  "domain": "arithmetic",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "power_one",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "multiplication"
+    ],
+    "notes": "First power is the base."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.4 / Vol. 2 §4.6.3 — powers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

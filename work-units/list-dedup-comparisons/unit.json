@@ -1,0 +1,31 @@
+{
+  "id": "list-dedup-comparisons",
+  "title": "Adjacent dedup uses n-1 comparisons",
+  "statement_informal": "Removing adjacent duplicates uses n-1 comparisons.",
+  "domain": "lists",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_dedup_comparisons",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "One comparison per adjacent pair."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list/sequence processing operation counts."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

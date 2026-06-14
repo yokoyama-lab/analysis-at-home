@@ -1,0 +1,31 @@
+{
+  "id": "sum-const",
+  "title": "Sum of a constant: c added n times = c*n",
+  "statement_informal": "Adding a constant c, n times, gives c*n.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "sum_const",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Repeated addition is multiplication."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

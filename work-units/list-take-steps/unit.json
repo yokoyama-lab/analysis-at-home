@@ -1,0 +1,34 @@
+{
+  "id": "list-take-steps",
+  "title": "Take uses at most n steps",
+  "statement_informal": "Taking a prefix uses at most n steps.",
+  "domain": "lists",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_take_steps",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "step"
+    ],
+    "notes": "Copies a prefix; bounded by length."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list/sequence processing operation counts."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

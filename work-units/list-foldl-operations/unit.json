@@ -1,0 +1,31 @@
+{
+  "id": "list-foldl-operations",
+  "title": "Left fold uses n applications",
+  "statement_informal": "A left fold over a list of length n uses n applications.",
+  "domain": "lists",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_foldl_operations",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "application"
+    ],
+    "notes": "One function application per element."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list/sequence processing operation counts."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

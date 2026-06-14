@@ -1,0 +1,24 @@
+{
+  "id": "map-fusion",
+  "title": "Map fusion: map g (map f l) = map (g . f) l",
+  "statement_informal": "Two successive maps compose into one.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "map_fusion",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list processing."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

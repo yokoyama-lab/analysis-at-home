@@ -1,0 +1,31 @@
+{
+  "id": "sum-i-times-succ",
+  "title": "Sum of i(i+1) = n(n+1)(n+2)/3",
+  "statement_informal": "The sum of i(i+1) for i=1..n equals n(n+1)(n+2)/3.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "sum_i_succ",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "addition"
+    ],
+    "notes": "Stated as 3*sum = n(n+1)(n+2)."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.3 — sums."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

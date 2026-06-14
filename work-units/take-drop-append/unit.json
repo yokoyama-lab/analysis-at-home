@@ -1,0 +1,24 @@
+{
+  "id": "take-drop-append",
+  "title": "take k l ++ drop k l = l",
+  "statement_informal": "Splitting a list at position k and concatenating recovers the list.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "take_drop_append",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list processing."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "id": "filter-length-le",
+  "title": "filter never lengthens a list",
+  "statement_informal": "Filtering a list yields a list no longer than the original.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "filter_length_le",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list processing."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

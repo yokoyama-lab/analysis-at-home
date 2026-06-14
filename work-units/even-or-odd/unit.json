@@ -1,0 +1,24 @@
+{
+  "id": "even-or-odd",
+  "title": "Every natural is even or odd",
+  "statement_informal": "Every natural number is either 2k or 2k+1.",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "even_or_odd",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2 — mathematical preliminaries."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

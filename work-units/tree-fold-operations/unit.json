@@ -1,0 +1,31 @@
+{
+  "id": "tree-fold-operations",
+  "title": "Folding a tree visits each node once",
+  "statement_informal": "Folding (summing) a labeled tree visits each node exactly once.",
+  "domain": "trees",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "tree_fold_operations",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "node-visit"
+    ],
+    "notes": "One visit per internal node."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

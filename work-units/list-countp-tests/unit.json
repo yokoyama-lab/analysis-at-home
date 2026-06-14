@@ -1,0 +1,31 @@
+{
+  "id": "list-countp-tests",
+  "title": "Counting matches uses n predicate tests",
+  "statement_informal": "Counting elements satisfying a predicate uses n tests.",
+  "domain": "lists",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_countp_tests",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "predicate-test"
+    ],
+    "notes": "One predicate test per element."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list/sequence processing operation counts."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

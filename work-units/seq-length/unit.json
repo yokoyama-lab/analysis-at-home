@@ -1,0 +1,24 @@
+{
+  "id": "seq-length",
+  "title": "seq s n has length n",
+  "statement_informal": "The list of n consecutive integers from s has length n.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "seq_len",
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list processing."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

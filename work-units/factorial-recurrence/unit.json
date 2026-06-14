@@ -1,0 +1,31 @@
+{
+  "id": "factorial-recurrence",
+  "title": "Factorial recurrence: (n+1)! = (n+1) * n!",
+  "statement_informal": "(S n)! = (S n) * n!.",
+  "domain": "arithmetic",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "factorial_recurrence",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "multiplication"
+    ],
+    "notes": "The defining recurrence of factorial."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.5 — factorials."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

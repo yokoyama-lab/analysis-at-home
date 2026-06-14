@@ -1,0 +1,31 @@
+{
+  "id": "perfect-tree-height",
+  "title": "Perfect tree of height h has height h",
+  "statement_informal": "The perfect binary tree pt h has height h.",
+  "domain": "trees",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "perfect_tree_height",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "level"
+    ],
+    "notes": "By construction, depth h."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "id": "list-indexof-comparisons",
+  "title": "Index-of uses at most n comparisons",
+  "statement_informal": "Finding the index of x uses at most n comparisons.",
+  "domain": "searching",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_indexof_comparisons",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "Stops at the first match; worst case scans all n."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §6.1 — sequential processing."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "id": "tree-mirror-leaves",
+  "title": "Mirroring preserves the leaf count",
+  "statement_informal": "Mirroring a binary tree preserves its number of leaves.",
+  "domain": "trees",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "mirror_leaves",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "node"
+    ],
+    "notes": "Mirroring permutes but preserves leaves."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

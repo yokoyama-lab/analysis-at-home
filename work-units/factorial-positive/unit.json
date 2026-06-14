@@ -1,0 +1,31 @@
+{
+  "id": "factorial-positive",
+  "title": "n! >= 1",
+  "statement_informal": "The factorial of any n is at least 1.",
+  "domain": "arithmetic",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "factorial_positive",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "bound"
+    ],
+    "notes": "Factorial is always positive."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.5 — factorials."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

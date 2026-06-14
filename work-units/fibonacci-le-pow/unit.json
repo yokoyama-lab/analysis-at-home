@@ -1,0 +1,31 @@
+{
+  "id": "fibonacci-le-pow",
+  "title": "Fibonacci numbers grow at most as 2^n",
+  "statement_informal": "The n-th Fibonacci number is at most 2^n.",
+  "domain": "number-theory",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "fib_le_pow",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "bound"
+    ],
+    "notes": "F(n) <= 2^n."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.8 — Fibonacci numbers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

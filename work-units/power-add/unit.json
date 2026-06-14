@@ -1,0 +1,31 @@
+{
+  "id": "power-add",
+  "title": "Law of exponents: a^(m+n) = a^m * a^n",
+  "statement_informal": "a^(m+n) = a^m * a^n.",
+  "domain": "arithmetic",
+  "claim_kind": "closed-form",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "power_add",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "multiplication"
+    ],
+    "notes": "Adding exponents multiplies powers."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.4 / Vol. 2 §4.6.3 — powers."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

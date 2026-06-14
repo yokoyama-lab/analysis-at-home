@@ -1,0 +1,31 @@
+{
+  "id": "tree-mirror-involutive",
+  "title": "Mirroring a tree twice is the identity",
+  "statement_informal": "Mirroring a binary tree twice yields the original tree.",
+  "domain": "trees",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "mirror_involutive",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "node"
+    ],
+    "notes": "mirror is its own inverse."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

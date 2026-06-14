@@ -1,0 +1,34 @@
+{
+  "id": "list-any-tests",
+  "title": "Existential check uses at most n tests",
+  "statement_informal": "Checking whether any element satisfies a predicate uses at most n tests.",
+  "domain": "lists",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_any_tests",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "predicate-test"
+    ],
+    "notes": "Stops at the first true; worst case scans all n."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.2 — list/sequence processing operation counts."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

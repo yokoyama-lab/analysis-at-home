@@ -1,0 +1,31 @@
+{
+  "id": "tree-preorder-length",
+  "title": "Preorder traversal lists every node",
+  "statement_informal": "A preorder traversal of a tree with n nodes produces a list of length n.",
+  "domain": "trees",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "preorder_length",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "node-visit"
+    ],
+    "notes": "Traversal length equals node count."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

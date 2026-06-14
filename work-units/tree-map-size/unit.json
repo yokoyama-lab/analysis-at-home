@@ -1,0 +1,31 @@
+{
+  "id": "tree-map-size",
+  "title": "Mapping over a tree preserves its size",
+  "statement_informal": "Mapping a function over a labeled tree preserves its size.",
+  "domain": "trees",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "map_tree_size",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "node"
+    ],
+    "notes": "Node-wise map keeps the structure."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §2.3 — trees."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -26,6 +26,21 @@ conjecture-track result whose mean is (or could be) promoted to a theorem.
 | Binary tree search | Vol 3 §6.2.2 | `bst-search-comparisons` | ✅ comparisons ≤ height |
 | Summing n numbers | Vol 1/2 (basic) | `list-sum-additions` | ✅ n−1 additions |
 
+### Fundamentals corpus (100-unit milestone)
+
+The repository now holds **100 verified work units**. Beyond the named TAOCP
+algorithms above, a broad base of fundamentals is kernel-verified (Rocq): list
+operation counts (product, fold, all/any, nth, take/drop, zip, dedup, index-of,
+replicate, countp) and list correctness laws (map/append/rev length, rev
+involutive, take++drop, map fusion, filter bound, append associativity); tree
+facts (perfect-tree height/leaves/internal, leaves=internal+1, size
+decomposition, height bounds, mirror involutive/leaf-preserving, preorder length,
+tree map/fold, BST insert comparisons & size growth); sum identities (Gauss,
+squares, cubes/Nicomachus, odds, evens, i(i+1), triangulars, geometric base 2/3,
+Fibonacci sum & bound, sum-const); and number/power facts (n<2ⁿ, laws of exponents
+a^(m+n), a^(m·n), (ab)ⁿ, a¹, 1ⁿ, factorial positivity/recurrence/n≤n!, even-or-odd,
+div-mod identity, mod bound, repeated squaring).
+
 ### Easy-win batch (fundamentals, 20 units)
 
 Structural cost counts and sum identities, all kernel-verified (Rocq):
