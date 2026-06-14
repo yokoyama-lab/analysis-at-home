@@ -1,0 +1,24 @@
+{
+  "id": "graph-traversal-vertex-bound",
+  "title": "Graph traversal visits at most |V| vertices (pigeonhole)",
+  "statement_informal": "A visited set of distinct vertices each below n has at most n elements; so DFS/BFS expands each vertex at most once, doing <= |V| expansions.",
+  "domain": "graphs",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "visited_vertex_bound",
+  "references": [
+    "Knuth, TAOCP graph algorithms; the O(V) term of BFS/DFS via the visited set."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

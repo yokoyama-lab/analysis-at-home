@@ -1,0 +1,32 @@
+{
+  "id": "graph-bfs-dfs-ove",
+  "title": "BFS/DFS runs in O(V+E)",
+  "statement_informal": "On an adjacency-list graph, BFS/DFS expands at most |V| vertices and scans exactly |E| adjacency entries, so its cost is bounded by |V| + |E|.",
+  "domain": "graphs",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "bfs_dfs_OVE",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "vertex-expansion",
+      "edge-scan"
+    ],
+    "notes": "V expansions (distinct visited) + E edge-scans."
+  },
+  "references": [
+    "Knuth, TAOCP graph algorithms; the canonical adjacency-list BFS/DFS bound."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
