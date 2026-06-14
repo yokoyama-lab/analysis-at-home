@@ -75,7 +75,7 @@ Lemma merge_length : forall fuel l1 l2,
   length (fst (merge fuel l1 l2)) = length l1 + length l2.
 Proof.
   induction fuel as [|f IH]; intros l1 l2.
-  - simpl. rewrite length_app. reflexivity.
+  - simpl. first [rewrite length_app | rewrite app_length]. reflexivity.
   - destruct l1 as [|x xs]; [reflexivity|].
     destruct l2 as [|y ys]; [simpl; lia|].
     simpl. destruct (x <=? y).
