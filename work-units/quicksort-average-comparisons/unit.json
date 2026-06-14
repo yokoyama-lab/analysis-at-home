@@ -22,5 +22,5 @@
     "Cormen, Leiserson, Rivest, Stein — Introduction to Algorithms, expected running time of randomized quicksort.",
     "Sedgewick & Flajolet — An Introduction to the Analysis of Algorithms."
   ],
-  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "verified" }
 }

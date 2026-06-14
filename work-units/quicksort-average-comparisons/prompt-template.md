@@ -16,4 +16,9 @@ in the rationals:
    "the closed form solves the recurrence"; a field-arithmetic tactic closes it
    given that `n+1 ≠ 0`.
 
+This unit needs **rationals + a field-arithmetic tactic**, so pull in the
+relevant library: for Lean use **Mathlib** (`Rat`/`ℚ`, `field_simps`/`ring`); for
+Agda use **agda-stdlib** `Data.Rational` (and its ring/field reasoning). The Rocq
+target uses `QArith` + `field`; the Isabelle target uses `rat` + `field_simps`.
+
 Return only the proof-assistant source, with no axioms / sorry / admit / postulate.
