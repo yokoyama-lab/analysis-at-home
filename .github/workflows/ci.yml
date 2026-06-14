@@ -17,25 +17,15 @@ jobs:
           coq_version: "8.18"
           custom_script: |
             ws="$PWD"
-            startGroup "type-check seeds"
-              # Compile in a writable temp dir: the mounted workspace is
-              # host-owned, so coqc (running as user `coq`) cannot write its
-              # .vo/.glob next to the sources. The seeds are self-contained.
-              d="$(mktemp -d)"
-              cp work-units/insertion-sort-comparisons/targets/rocq/InsertionSortComparisons.v "$d/"
-              cp work-units/insertion-sort-comparisons-while/targets/rocq/InsertionSortWhileComparisons.v "$d/"
-              ( cd "$d" && coqc -q InsertionSortComparisons.v && coqc -q InsertionSortWhileComparisons.v )
-            endGroup
-            startGroup "coqc the algorithm units"
-              d2="$(mktemp -d)"
-              for v in \
-                selection-sort-comparisons/targets/rocq/SelectionSortComparisons.v \
-                binary-counter-increments/targets/rocq/BinaryCounterIncrements.v \
-                fast-exponentiation-mults/targets/rocq/FastExponentiation.v \
-                merge-sort-comparisons/targets/rocq/MergeSortComparisons.v ; do
-                cp "work-units/$v" "$d2/"
+            startGroup "coqc every rocq target"
+              # Compile each in its own writable temp dir: the mounted workspace
+              # is host-owned (coqc runs as user `coq` and can't write .vo/.glob
+              # next to the sources), and per-file dirs avoid name collisions.
+              # Globbing picks up new units automatically.
+              for v in work-units/*/targets/rocq/*.v; do
+                dd="$(mktemp -d)"; cp "$v" "$dd/"
+                ( cd "$dd" && coqc -q "$(basename "$v")" )
               done
-              ( cd "$d2" && for f in *.v; do coqc -q "$f"; done )
             endGroup
             startGroup "certify the decomposed (leaf) proofs"
               # each assemble.sh resolves its own dir and compiles in a temp dir.

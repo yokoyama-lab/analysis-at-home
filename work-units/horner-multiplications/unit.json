@@ -1,0 +1,17 @@
+{
+  "id": "horner-multiplications",
+  "title": "Linear multiplication count of Horner's rule",
+  "statement_informal": "Evaluating a polynomial with k coefficients by Horner's rule uses exactly k-1 multiplications.",
+  "domain": "arithmetic",
+  "claim_kind": "closed-form",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "horner_mults_linear",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["multiplication"],
+    "notes": "Each Horner step c + x*v is one multiplication; the innermost coefficient costs none, so total = length - 1."
+  },
+  "references": ["Knuth, TAOCP Vol. 2, evaluation of polynomials (fact only)."],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

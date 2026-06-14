@@ -1,0 +1,17 @@
+{
+  "id": "linear-search-comparisons",
+  "title": "Worst-case comparison count of linear search",
+  "statement_informal": "Linear search over a list of length n performs at most n key comparisons.",
+  "domain": "searching",
+  "claim_kind": "complexity",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "linear_search_comparisons",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["comparison"],
+    "notes": "One x =? y test per element until a match; bounded by the list length."
+  },
+  "references": ["Classic; a worst-case linear bound."],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

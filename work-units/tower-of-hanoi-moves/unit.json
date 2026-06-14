@@ -1,0 +1,17 @@
+{
+  "id": "tower-of-hanoi-moves",
+  "title": "Exact move count of the Tower of Hanoi",
+  "statement_informal": "Solving the Tower of Hanoi for n disks takes exactly 2^n - 1 moves.",
+  "domain": "recursion",
+  "claim_kind": "closed-form",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "hanoi_moves_closed",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["move"],
+    "notes": "moves(n) = 2*moves(n-1)+1; stated division/subtraction-free as moves n + 1 = 2^n."
+  },
+  "references": ["Classic; an exact closed form (a = b, not a bound)."],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}
