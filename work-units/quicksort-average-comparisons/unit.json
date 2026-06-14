@@ -1,0 +1,26 @@
+{
+  "id": "quicksort-average-comparisons",
+  "title": "Average (expected) comparison count of randomized quicksort",
+  "statement_informal": "The average key-comparison count of randomized quicksort, the solution C of n·C(n)=(n+1)·C(n-1)+2(n-1) with C(0)=0, equals 2(n+1)·H_n − 4n where H_n is the n-th harmonic number.",
+  "domain": "sorting",
+  "claim_kind": "expected-cost",
+  "analysis": {
+    "case": "average",
+    "input_distribution": "uniformly random permutation (random pivot)"
+  },
+  "conjecture_artifact": "tools/conjecture/results/quicksort-average.json",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "quicksort_average_closed_form",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["comparison"],
+    "notes": "Expected key comparisons over a uniformly random permutation. The full-history recurrence reduces to the first-order n·C(n)=(n+1)·C(n-1)+2(n-1); its solution is 2(n+1)H_n−4n (rationals + harmonic numbers)."
+  },
+  "references": [
+    "Verify-track twin of the CAS conjecture in tools/conjecture/results/quicksort-average.json (tools/conjecture/cas_explore.py).",
+    "Cormen, Leiserson, Rivest, Stein — Introduction to Algorithms, expected running time of randomized quicksort.",
+    "Sedgewick & Flajolet — An Introduction to the Analysis of Algorithms."
+  ],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

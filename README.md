@@ -75,8 +75,9 @@ For closed-form **sums** the bridge is tighter still: computer algebra
 certificate* `F(k+1) − F(k) = a(k)` that the kernel re-checks by a one-line
 induction — see `geometric-weighted-sum` (`Σ k·2^k`). The conjecture solver is
 pure stdlib (`tools/conjecture/conjecture.py`); `tools/conjecture/cas_explore.py`
-adds an optional sympy cross-check and solves the quicksort-average recurrence
-`2(n+1)Hₙ − 4n` (a CAS conjecture, no kernel twin yet).
+adds an optional sympy cross-check and solves the quicksort-average recurrence,
+whose closed form `2(n+1)Hₙ − 4n` is itself kernel-checked in QArith by
+`quicksort-average-comparisons` (rationals + harmonic numbers).
 
 ## Status
 

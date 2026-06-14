@@ -16,5 +16,5 @@
   },
   "limit_distribution": null,
   "histogram_at_limit_n": "",
-  "note": "CAS-verified conjecture; no kernel twin yet (needs rationals / harmonic numbers in the proof assistant)."
+  "note": "CAS-verified conjecture, now also kernel-checked: the verify-track twin work-units/quicksort-average-comparisons proves C n == Cf n in QArith (rationals + harmonic numbers), axiom-free."
 }

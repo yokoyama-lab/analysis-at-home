@@ -65,8 +65,9 @@ def quicksort_average() -> dict:
         "small_values": small,
         "limit_distribution": None,
         "histogram_at_limit_n": "",
-        "note": "CAS-verified conjecture; no kernel twin yet (needs rationals / "
-                "harmonic numbers in the proof assistant).",
+        "note": "CAS-verified conjecture, now also kernel-checked: the verify-track "
+                "twin work-units/quicksort-average-comparisons proves C n == Cf n in "
+                "QArith (rationals + harmonic numbers), axiom-free.",
     }
 
 
