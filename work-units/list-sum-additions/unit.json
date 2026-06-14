@@ -1,0 +1,17 @@
+{
+  "id": "list-sum-additions",
+  "title": "Summing n numbers uses n-1 additions",
+  "statement_informal": "Adding the n numbers in a list takes exactly n-1 additions (fold the tail into the head).",
+  "domain": "arithmetic",
+  "claim_kind": "complexity",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "list_sum_additions",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["addition"],
+    "notes": "One addition per element folded into the accumulator; the head seeds it, so the count is length - 1."
+  },
+  "references": ["Knuth, TAOCP Vol. 1/2 — basic operation counts; combining n values needs n-1 binary operations."],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

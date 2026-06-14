@@ -23,6 +23,8 @@ conjecture-track result whose mean is (or could be) promoted to a theorem.
 | Sequential search | Vol 3 §6.1 | `linear-search-comparisons`, `-best-case`, `-average-comparisons` | ✅ worst n, best 1, avg (n+1)/2 |
 | Tower of Hanoi | Vol 1 §1.1 (ex.) | `tower-of-hanoi-moves` | ✅ 2ⁿ−1 moves |
 | Binary counter (amortized) | Vol 4A | `binary-counter-increments` | ✅ amortized O(1) |
+| Binary tree search | Vol 3 §6.2.2 | `bst-search-comparisons` | ✅ comparisons ≤ height |
+| Summing n numbers | Vol 1/2 (basic) | `list-sum-additions` | ✅ n−1 additions |
 
 (Plus building blocks: `factorial-mults`, `iterative-fibonacci-additions`,
 `count-occurrences-comparisons`, `list-minimum/maximum-comparisons`,
@@ -35,7 +37,7 @@ conjecture-track result whose mean is (or could be) promoted to a theorem.
 |---|---|---|
 | Lamé's theorem (tight Euclid bound) | Vol 2 §4.5.3 | worst case = consecutive Fibonacci numbers; O(log) bound |
 | Algorithm M average = Hₙ−1 | Vol 1 §1.2.10 | kernel twin of the conjecture (harmonic; we now have QArith harmonic) |
-| Binary search | Vol 3 §6.2.1 (Algorithm B) | ⌊lg n⌋+1 comparisons |
+| Balanced-tree height ⇒ O(log n) | Vol 3 §6.2.1–6.2.3 | upgrade `bst-search-comparisons` corollary to ⌊lg n⌋+1 on balanced trees |
 | Bubble sort exchanges = #inversions | Vol 3 §5.2.2 | ties to the inversions distribution (Gaussian, mean n(n−1)/4) |
 | Distribution counting sort | Vol 3 §5.2 | exact linear operation count |
 | Heapsort sift-up | Vol 3 §5.2.3 | ≤ ⌊lg n⌋ per sift |

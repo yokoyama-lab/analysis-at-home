@@ -1,0 +1,23 @@
+{
+  "id": "bst-search-comparisons",
+  "title": "Binary search tree: comparisons bounded by height",
+  "statement_informal": "Searching a binary search tree performs at most height(t) key comparisons (one per level on the search path). For a balanced tree this is O(log n) — the binary-search bound.",
+  "domain": "searching",
+  "claim_kind": "worst-case",
+  "analysis": {
+    "case": "worst"
+  },
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "bst_search_comparisons",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["comparison"],
+    "notes": "One key comparison per node on the root-to-node search path; bounded by the tree height."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §6.2.2 — binary tree searching; §6.2.1 — binary search (O(log n)).",
+    "Corollary: a balanced BST on n keys has height O(log n)."
+  ],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}
