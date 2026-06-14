@@ -70,6 +70,14 @@ limit, and `linear-search-average-comparisons` proves the mean exactly; for
 insertion sort, the inversion count is **Gaussian** in the limit with mean
 `n(n−1)/4`.
 
+For closed-form **sums** the bridge is tighter still: computer algebra
+(Gosper / Zeilberger / WZ) emits both the closed form **and** a *telescoping
+certificate* `F(k+1) − F(k) = a(k)` that the kernel re-checks by a one-line
+induction — see `geometric-weighted-sum` (`Σ k·2^k`). The conjecture solver is
+pure stdlib (`tools/conjecture/conjecture.py`); `tools/conjecture/cas_explore.py`
+adds an optional sympy cross-check and solves the quicksort-average recurrence
+`2(n+1)Hₙ − 4n` (a CAS conjecture, no kernel twin yet).
+
 ## Status
 
 🛠️ **Phase 1 — the vertical slice works locally.** The worst-case

@@ -1,4 +1,5 @@
 {
+  "kind": "distribution",
   "algorithm": "linear-search (uniform target)",
   "small_ns": [
     1,

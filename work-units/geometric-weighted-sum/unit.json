@@ -1,0 +1,21 @@
+{
+  "id": "geometric-weighted-sum",
+  "title": "Closed form of the weighted geometric sum Σ k·2^k",
+  "statement_informal": "The total depth-weighted work Σ_{k<n} k·2^k equals (n-2)·2^n + 2; stated in nat without subtraction as wsum n + 2·2^n = n·2^n + 2.",
+  "domain": "summation",
+  "claim_kind": "closed-form",
+  "conjecture_artifact": "tools/conjecture/results/closed-form-sum-k2k.json",
+  "targets": ["rocq", "lean", "agda", "isabelle"],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "geometric_weighted_sum",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": ["operation"],
+    "notes": "Σ k·2^k is the total work in a depth-weighted binary recursion: k units of work at each of the 2^k nodes on level k."
+  },
+  "references": [
+    "Verify-track twin of the Gosper antidifference certificate in tools/conjecture/results/closed-form-sum-k2k.json.",
+    "Petkovšek, Wilf, Zeilberger — A=B (Gosper/Zeilberger/WZ summation and certificates)."
+  ],
+  "status": { "rocq": "verified", "lean": "open", "agda": "open", "isabelle": "open" }
+}

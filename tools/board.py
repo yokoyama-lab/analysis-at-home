@@ -53,7 +53,7 @@ def collect() -> dict:
         uj = d / "unit.json"
         if not uj.is_dir() and uj.exists():
             unit = json.loads(uj.read_text(encoding="utf-8"))
-            art = (unit.get("analysis") or {}).get("conjecture_artifact")
+            art = unit.get("conjecture_artifact") or (unit.get("analysis") or {}).get("conjecture_artifact")
             if art:
                 twin[art] = {"unit": unit["id"], "expected_theorem": unit.get("expected_theorem", "")}
             status = unit.get("status", {})
@@ -94,12 +94,17 @@ def collect() -> dict:
         for f in sorted(CONJ.glob("*.json")):
             r = json.loads(f.read_text(encoding="utf-8"))
             rel = f"tools/conjecture/results/{f.name}"
+            ld = r.get("limit_distribution") or {}
             conjectures.append({
+                "kind": r.get("kind", "distribution"),
                 "algorithm": r.get("algorithm", f.stem),
+                "summand": r.get("summand", ""),
                 "mean_closed_form": r.get("conjectured_mean_closed_form", ""),
-                "limit": (r.get("limit_distribution") or {}).get("law", ""),
-                "ks_normal": (r.get("limit_distribution") or {}).get("ks_normal"),
-                "ks_uniform": (r.get("limit_distribution") or {}).get("ks_uniform"),
+                "certificate": r.get("certificate", ""),
+                "certificate_verified": r.get("certificate_verified"),
+                "limit": ld.get("law", ""),
+                "ks_normal": ld.get("ks_normal"),
+                "ks_uniform": ld.get("ks_uniform"),
                 "histogram": r.get("histogram_at_limit_n", ""),
                 "artifact": rel,
                 "twin": twin.get(rel),
@@ -219,16 +224,27 @@ fetch('data.json').then(r=>r.json()).then(D=>{
   cj.forEach(c=>{
     const box=E('div',{className:'job'});
     box.append(E('h3',{}, document.createTextNode(c.algorithm),
-      E('span',{className:'chip',textContent:'CONJECTURE'})));
-    box.append(E('p',{className:'note'}, document.createTextNode('E[cost(n)] ≈ '), E('b',{textContent:c.mean_closed_form})));
-    box.append(E('p',{className:'note',textContent:'limit law (standardized): '+c.limit
-      +'  (KS: normal='+c.ks_normal+', uniform='+c.ks_uniform+')'}));
+      E('span',{className:'chip',textContent:'CONJECTURE'}),
+      E('span',{className:'chip',textContent:c.kind})));
+    if(c.kind==='distribution'){
+      box.append(E('p',{className:'note'}, document.createTextNode('E[cost(n)] ≈ '), E('b',{textContent:c.mean_closed_form})));
+      box.append(E('p',{className:'note',textContent:'limit law (standardized): '+c.limit
+        +'  (KS: normal='+c.ks_normal+', uniform='+c.ks_uniform+')'}));
+    } else {
+      if(c.summand) box.append(E('p',{className:'note',textContent:c.summand}));
+      box.append(E('p',{className:'note'}, document.createTextNode('closed form: '), E('b',{textContent:c.mean_closed_form})));
+    }
+    if(c.certificate){
+      const v = c.certificate_verified===false ? ' ✗' : ' ✓';
+      box.append(E('p',{className:'note'}, document.createTextNode('certificate: '),
+        E('code',{textContent:c.certificate}), document.createTextNode(v)));
+    }
     if(c.twin){
-      box.append(E('p',{className:'note'}, document.createTextNode('verified twin: proves the mean exactly via '),
+      box.append(E('p',{className:'note'}, document.createTextNode('verified twin: kernel-checked via '),
         E('code',{textContent:c.twin.expected_theorem}),
         document.createTextNode(' (unit '+c.twin.unit+')')));
     } else {
-      box.append(E('p',{className:'note',textContent:'no verified twin yet — the mean is a candidate theorem to prove'}));
+      box.append(E('p',{className:'note',textContent:'no verified twin yet — a candidate theorem to prove'}));
     }
     if(c.histogram){
       const det=E('details',{}, E('summary',{textContent:'show distribution'}), E('pre',{textContent:c.histogram}));

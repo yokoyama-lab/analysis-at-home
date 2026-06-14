@@ -51,8 +51,20 @@ case; `correctness` for functional correctness.)
 The **conjecture track** (`tools/conjecture/conjecture.py`, pure stdlib) *computes*
 the distribution, guesses `E[cost(n)]`, and fits the limit law — none of it
 trusted. The **verify track** promotes the provable part (the exact mean) to a
-kernel-checked theorem. An `expected-cost` unit is the verified twin of a
-`distribution`/`limit-law` conjecture; link them via `analysis.conjecture_artifact`.
+kernel-checked theorem. A unit is the verified twin of a conjecture artifact when
+it links back via the top-level `conjecture_artifact` field.
+
+### The Gosper / WZ certificate bridge
+
+For closed-form **sums** the bridge is tighter than "guess then re-prove". The
+conjecture track finds the antidifference `F` with `F(k+1) − F(k) = a(k)` (a
+Gosper-style solve, exact rationals), so `Σ_{k<n} a(k) = F(n) − F(0)`. The
+identity `F(k+1) − F(k) = a(k)` is a **telescoping certificate**: a one-line fact
+the kernel re-checks by a routine induction. So computer algebra emits *both* the
+closed form and a machine-checkable certificate. See `geometric-weighted-sum`
+(`Σ k·2^k`) for a worked example, `tools/conjecture/conjecture.py` for the
+pure-stdlib solver, and `tools/conjecture/cas_explore.py` (optional, needs sympy)
+for the sympy/Gosper cross-check and the quicksort-average recurrence.
 
 ### `analysis` (required for case/distribution kinds)
 
@@ -60,10 +72,11 @@ kernel-checked theorem. An `expected-cost` unit is the verified twin of a
 |-------|------|---------|
 | `case` | enum | `worst` \| `best` \| `average` \| `distribution` \| `limit` |
 | `input_distribution` | string | what inputs are drawn from (omit for worst/best — extremal cases need no distribution) |
-| `conjecture_artifact` | string | repo-relative path to the conjecture-track result this proof is the verified twin of |
 
 A unit needs a `cost_model` for every cost-bearing `claim_kind`, and an `analysis`
-for the case/distribution kinds.
+for the case/distribution kinds. The top-level `conjecture_artifact` (a
+repo-relative path to a `tools/conjecture/results/*.json`) links any unit to the
+computed evidence it certifies — orthogonal to `claim_kind`.
 
 `status` is keyed by backend, e.g. `{ "rocq": "open", "lean": "open" }`. A unit
 is "done" when at least one backend reaches `verified`; reaching it in more is

@@ -1,0 +1,10 @@
+{
+  "kind": "closed-form-sum",
+  "algorithm": "weighted geometric sum  Σ k·2^k",
+  "summand": "Σ_{k=0}^{n-1} (1·k)·2^k",
+  "conjectured_mean_closed_form": "(-2 + 1·n)·2^n + 2",
+  "certificate": "F(k+1) − F(k) = (1·k)·2^k,  F(k) = (-2 + 1·k)·2^k",
+  "certificate_verified": true,
+  "limit_distribution": null,
+  "histogram_at_limit_n": ""
+}

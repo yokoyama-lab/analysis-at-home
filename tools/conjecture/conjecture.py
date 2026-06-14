@@ -76,14 +76,131 @@ def shift_poly(coeffs: list[Fraction], n0: int) -> list[Fraction]:
     return out
 
 
-def poly_str(coeffs: list[Fraction]) -> str:
+def poly_str(coeffs: list[Fraction], var: str = "n") -> str:
     terms = []
     for i, c in enumerate(coeffs):
         if c == 0:
             continue
-        m = "" if i == 0 else ("n" if i == 1 else f"n^{i}")
+        m = "" if i == 0 else (var if i == 1 else f"{var}^{i}")
         terms.append(f"{c}" + (("·" + m) if m else ""))
     return " + ".join(terms) if terms else "0"
+
+
+# ---------- closed-form summation (Gosper-style antidifference) ----------
+# A pure-stdlib "computer algebra" routine: given a summand a(k) of the form
+# poly(k) · r^k (r an integer; r = 1 is the plain polynomial case), it finds the
+# antidifference F with F(k+1) − F(k) = a(k) exactly (rational coefficients), so
+#   Σ_{k=0}^{n-1} a(k) = F(n) − F(0).
+# F(k+1) − F(k) = a(k) is the *telescoping certificate*: a one-line identity a
+# proof assistant can check by a routine induction. This is the conjecture-track
+# half of the WZ/Gosper bridge — it emits both the closed form AND the certificate.
+
+def _pshift1(p: list[Fraction]) -> list[Fraction]:
+    """Coefficients of p(x+1)."""
+    out = [Fraction(0)] * len(p)
+    for j, c in enumerate(p):
+        if c == 0:
+            continue
+        for i in range(j + 1):
+            out[i] += c * math.comb(j, i)
+    return out
+
+
+def _solve(cols: list[list[Fraction]], rhs: list[Fraction]) -> list[Fraction] | None:
+    """Solve the square linear system whose columns are `cols` for `rhs`
+    (exact rational Gaussian elimination). Returns the unknown vector or None."""
+    m = len(cols)
+    aug = [[cols[c][r] for c in range(m)] + [rhs[r]] for r in range(m)]
+    for c in range(m):
+        piv = next((r for r in range(c, m) if aug[r][c] != 0), None)
+        if piv is None:
+            return None
+        aug[c], aug[piv] = aug[piv], aug[c]
+        inv = aug[c][c]
+        aug[c] = [v / inv for v in aug[c]]
+        for r in range(m):
+            if r != c and aug[r][c] != 0:
+                f = aug[r][c]
+                aug[r] = [a - f * b for a, b in zip(aug[r], aug[c])]
+    return [aug[r][m] for r in range(m)]
+
+
+def antidifference(a: list[Fraction], r: int) -> tuple[list[Fraction], int] | None:
+    """Return (q, r) such that F(k) = q(k)·r^k satisfies F(k+1)−F(k) = a(k)·r^k
+    when r != 1, or F(k) = q(k) with F(k+1)−F(k) = a(k) when r == 1 (q[0] gauged
+    to 0). `a` are the polynomial coefficients of the summand's polynomial part."""
+    d = len(a) - 1
+    if r == 1:
+        # F has degree d+1; gauge F's constant term to 0, unknowns are x^1..x^{d+1}.
+        cols = []
+        for j in range(1, d + 2):
+            basis = [Fraction(0)] * (d + 2)
+            basis[j] = Fraction(1)
+            delta = [s - b for s, b in zip(_pshift1(basis), basis)]  # Δ(x^j), degree j-1
+            cols.append(delta[:d + 1])
+        sol = _solve(cols, [Fraction(x) for x in a])
+        if sol is None:
+            return None
+        return ([Fraction(0)] + sol, 1)
+    # r != 1 : q has degree d; L(q)(x) = r·q(x+1) − q(x) must equal a(x).
+    cols = []
+    for j in range(d + 1):
+        basis = [Fraction(0)] * (d + 1)
+        basis[j] = Fraction(1)
+        L = [r * s - b for s, b in zip(_pshift1(basis), basis)]
+        cols.append(L[:d + 1])
+    sol = _solve(cols, [Fraction(x) for x in a])
+    if sol is None:
+        return None
+    return (sol, r)
+
+
+def closed_form_sum(a: list[Fraction], r: int, name: str) -> dict | None:
+    """Closed form for Σ_{k=0}^{n-1} a(k)·r^k together with its telescoping
+    certificate, verified exactly on a value table."""
+    res = antidifference(a, r)
+    if res is None:
+        return None
+    q, rr = res
+    # summand a(k)·r^k as a string
+    summand = f"({poly_str(a, 'k')})·{rr}^k" if rr != 1 else f"({poly_str(a, 'k')})"
+    F = f"({poly_str(q, 'n')})·{rr}^n" if rr != 1 else f"({poly_str(q, 'n')})"
+    Fk_str = f"({poly_str(q, 'k')})·{rr}^k" if rr != 1 else f"({poly_str(q, 'k')})"
+    Fk = lambda k: _peval(q, k) * (rr ** k)
+    ak = lambda k: _peval(a, k) * (rr ** k)
+    # verify F(k+1)-F(k) = a(k) and the definite sum on a table
+    cert_ok = all(Fk(k + 1) - Fk(k) == ak(k) for k in range(0, 12))
+    sum_ok = True
+    acc = Fraction(0)
+    for nn in range(0, 12):
+        if acc != Fk(nn) - Fk(0):
+            sum_ok = False
+            break
+        acc += ak(nn)
+    f0 = Fk(0)
+    if f0 == 0:
+        definite = F
+    elif f0 < 0:
+        definite = f"{F} + {-f0}"
+    else:
+        definite = f"{F} − {f0}"
+    return {
+        "kind": "closed-form-sum",
+        "algorithm": name,
+        "summand": f"Σ_{{k=0}}^{{n-1}} {summand}",
+        "conjectured_mean_closed_form": definite,
+        "certificate": f"F(k+1) − F(k) = {summand},  F(k) = {Fk_str}",
+        "certificate_verified": cert_ok and sum_ok,
+        "limit_distribution": None,
+        "histogram_at_limit_n": "",
+    }
+
+
+def _peval(p: list[Fraction], x: int) -> Fraction:
+    acc = Fraction(0)
+    for c in reversed(p):
+        acc = acc * x + c
+    return acc
 
 
 # ---------- moments ----------
@@ -167,6 +284,7 @@ def analyse(name: str, pmf_fn, small_ns: list[int], limit_n: int) -> dict:
     # expand pmf to a sample list for the limit fit
     samples = [float(k) for k, v in big.items() for _ in range(v)]
     return {
+        "kind": "distribution",
         "algorithm": name,
         "small_ns": small_ns,
         "exact_means": [str(m) for m in means],
@@ -195,6 +313,21 @@ def main() -> None:
         print(f"  limit (standardized) ~ {r['limit_distribution']['law']} "
               f"(KS normal={r['limit_distribution']['ks_normal']}, "
               f"uniform={r['limit_distribution']['ks_uniform']})")
+        print()
+
+    # closed-form summation (Gosper-style antidifference + telescoping certificate)
+    sums = [
+        ("weighted geometric sum  Σ k·2^k",
+         [Fraction(0), Fraction(1)], 2, "closed-form-sum-k2k.json"),
+        ("triangular sum  Σ (k+1)",
+         [Fraction(1), Fraction(1)], 1, "closed-form-sum-triangular.json"),
+    ]
+    for name, a, r, out in sums:
+        s = closed_form_sum(a, r, name)
+        (RESULTS / out).write_text(json.dumps(s, ensure_ascii=False, indent=2), encoding="utf-8")
+        print(f"# {name}")
+        print(f"  {s['summand']} = {s['conjectured_mean_closed_form']}")
+        print(f"  certificate: {s['certificate']}  [verified={s['certificate_verified']}]")
         print()
 
 

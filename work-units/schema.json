@@ -58,12 +58,12 @@
         "input_distribution": {
           "type": "string",
           "description": "The distribution inputs are drawn from, e.g. \"uniform present target in {1..n}\" or \"uniformly random permutation of n elements\". Omit for worst/best (extremal cases need no distribution)."
-        },
-        "conjecture_artifact": {
-          "type": "string",
-          "description": "Path (repo-relative) to the conjecture-track result this claim is the verified twin of, e.g. tools/conjecture/results/linear-search.json."
         }
       }
+    },
+    "conjecture_artifact": {
+      "type": "string",
+      "description": "Path (repo-relative) to the conjecture-track result this unit is the verified twin of, e.g. tools/conjecture/results/linear-search.json. Orthogonal to claim_kind: a closed-form sum, an expected-cost, or a distribution's mean can each link back to its computed evidence."
     },
     "targets": {
       "type": "array",
