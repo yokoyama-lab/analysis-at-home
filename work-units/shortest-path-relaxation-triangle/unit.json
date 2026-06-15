@@ -1,0 +1,24 @@
+{
+  "id": "shortest-path-relaxation-triangle",
+  "title": "Relaxed edge satisfies the triangle inequality",
+  "statement_informal": "After relaxing edge (u,v,w), dist[v] <= dist[u] + w holds.",
+  "domain": "graphs",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "relaxation_triangle",
+  "references": [
+    "Knuth/CLRS — shortest paths; Bellman-Ford & Dijkstra edge relaxation."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

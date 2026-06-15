@@ -1,0 +1,31 @@
+{
+  "id": "bellman-ford-cost",
+  "title": "Bellman-Ford does V*E relaxations",
+  "statement_informal": "Bellman-Ford performs (V-1) rounds of E edge relaxations, i.e. O(V*E) work.",
+  "domain": "graphs",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "bellman_ford_relaxations",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "relaxation"
+    ],
+    "notes": "(V-1) rounds x E edges = O(V*E)."
+  },
+  "references": [
+    "Knuth/CLRS — shortest paths; Bellman-Ford & Dijkstra edge relaxation."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

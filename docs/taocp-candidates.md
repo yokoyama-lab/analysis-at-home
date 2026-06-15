@@ -84,7 +84,7 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 - ✅ `union-find-rank-bound` — union-by-rank tree has >= 2^r nodes (=> O(log n) find).
 - ✅ `dfs-soundness` (visited => reachable), `union-find-find-root` (find reaches a root).
 - ✅ `dfs-completeness` (drains => visits all reachable), `union-find-path-compression` (one-step find after compression).
-- ⏸ Union-Find full O(m·alpha(n)) amortized via the potential method (a major standalone formalization), Dijkstra/Bellman-Ford/Kruskal/Prim, KMP/Boyer-Moore/Rabin-Karp, optimal BST.
+- ⏸ Union-Find full O(m·alpha(n)) amortized via the potential method (a major standalone formalization), Dijkstra/Bellman-Ford greedy/round correctness (relaxation invariant ✅ via `shortest-path-relaxation-monotone/-triangle`, `bellman-ford-cost`), Kruskal/Prim, KMP/Boyer-Moore/Rabin-Karp, optimal BST.
 
 Divide-and-conquer recurrences are now covered by `mergesort-recurrence` (n log n), `karatsuba-multiplications` (n^lg3), `divide-and-conquer-linear` (O(n)), and `median-of-medians-linear` — the master-theorem regimes as verified recurrence bounds.
 

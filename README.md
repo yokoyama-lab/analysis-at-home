@@ -7,6 +7,10 @@ No trust required.
 
 > Folding@home for proofs.
 
+**🌐 Live board: <https://yokoyama-lab.github.io/analysis-at-home/>** — the
+verification matrix, open jobs to claim, and the conjecture track (computed cost
+distributions & limits).
+
 ---
 
 ## What this is
