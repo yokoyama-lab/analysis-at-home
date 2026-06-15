@@ -277,4 +277,28 @@ Example Tot_4 : Tot 4 = 116.  Proof. vm_compute. reflexivity. Qed.
 Example Tot_5 : Tot 5 = 888.  Proof. vm_compute. reflexivity. Qed.
 Example Tot_6 : Tot 6 = 7416. Proof. vm_compute. reflexivity. Qed.
 
+(* ---- Stage 2, Part B (combinatorial count), checked computationally for small n ----
+   A value-pair {a,b} at interval distance d = b-a+1 is "compared" iff, among the d
+   values in [a,b], the first to appear in the permutation is a or b. Over all n!
+   permutations each of the d interval-values is equally likely to come first, so a
+   fixed pair is compared in exactly 2*n!/d of them. Hence
+     Tot n = Sum_{a<b} 2*n!/(b-a+1) = 2*n! * Sum_{d=2}^{n} (n+1-d)/d
+   and QuicksortPairSum.v proves 2 * Sum_{d=2}^{n}(n+1-d)/d = 2(n+1)H_n - 4n.
+   The general count (= 2*n!/d) is the one remaining lemma (Part B); here it and the
+   regrouping Tot = Sum_{pairs} count are verified for small n by vm_compute. *)
+Definition num_compared (a b n : nat) : nat :=
+  length (filter (fun s => comparedb a b s) (perms (seq 0 n))).
+
+Example cnt_4_d2 : num_compared 0 1 4 = 24.  Proof. vm_compute. reflexivity. Qed.  (* 2*4!/2 *)
+Example cnt_4_d3 : num_compared 0 2 4 = 16.  Proof. vm_compute. reflexivity. Qed.  (* 2*4!/3 *)
+Example cnt_4_d4 : num_compared 0 3 4 = 12.  Proof. vm_compute. reflexivity. Qed.  (* 2*4!/4 *)
+Example cnt_5_d2 : num_compared 0 1 5 = 120. Proof. vm_compute. reflexivity. Qed.  (* 2*5!/2 *)
+Example cnt_5_d5 : num_compared 0 4 5 = 48.  Proof. vm_compute. reflexivity. Qed.  (* 2*5!/5 *)
+
+Definition Totpairs (n : nat) : nat :=
+  list_sum (map (fun ab => num_compared (fst ab) (snd ab) n) (upairs (seq 0 n))).
+Example Totpairs_4 : Totpairs 4 = Tot 4. Proof. vm_compute. reflexivity. Qed.
+Example Totpairs_5 : Totpairs 5 = Tot 5. Proof. vm_compute. reflexivity. Qed.
+Example Totpairs_6 : Totpairs 6 = Tot 6. Proof. vm_compute. reflexivity. Qed.
+
 Print Assumptions cmp_eq_pairsum.

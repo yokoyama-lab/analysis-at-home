@@ -48,9 +48,24 @@ thing a referee attacks. [`targets/rocq/Quicksort.v`](targets/rocq/Quicksort.v)
   **program level**, proved by structural case analysis on the pivot — no
   probability monad, no enumeration of the `n!` inputs.
 
-**Remaining (Stage 2):** the analytic step from the pair decomposition to the
-closed form — a fixed value-pair at interval-distance `d` is compared in exactly
-`n!·2/d` permutations, so `E[C] = Σ_{d=2}^{n}(n−d+1)·2/d = 2(n+1)H_n − 4n`.
+**Stage 2 — from the pair decomposition to the closed form.** Grouping pairs by
+interval distance `d = j−i+1` (there are `n+1−d` value-pairs at distance `d`):
+`E[C] = Σ_{i<j} 2/(j−i+1) = 2·Σ_{d=2}^{n}(n+1−d)/d = 2(n+1)H_n − 4n`.
+
+- **Part A (done, axiom-free)** —
+  [`targets/rocq/QuicksortPairSum.v`](targets/rocq/QuicksortPairSum.v):
+  `quicksort_pairsum_closed : 1≤n → 2·Σ_{d=2}^{n}(n+1−d)/d == 2(n+1)H_n − 4n`,
+  in QArith. The arithmetic backbone of the linearity-of-expectation derivation.
+- **Part B (computationally verified for small n; one general lemma remaining)** —
+  the count that a fixed value-pair at distance `d` is compared in exactly `2·n!/d`
+  of the `n!` permutations (because, among the `d` interval-values, each is equally
+  likely to appear first). `Quicksort.v` defines `num_compared` and checks
+  `num_compared = 2·n!/d` and the regrouping `Totpairs n = Tot n` by `vm_compute`
+  for n ≤ 6. The *general* count is the single remaining step; it is exactly the
+  "first element of a subset of a uniform permutation is uniform" lemma that
+  measure-theoretic developments (e.g. Eberl's Giry-monad analysis) get for free
+  but which is a genuine combinatorial bijection over the explicit permutation
+  model used here.
 
 ## Cost model
 `func-ops`, `counts = ["comparison"]`. Reference Rocq proofs (axiom-free): the
