@@ -1,0 +1,38 @@
+{
+  "id": "collisions-expected-hashing",
+  "title": "Expected number of hash collisions = (n-1)/2 (n keys, n slots)",
+  "statement_informal": "Throwing n keys into n slots uniformly (load 1), the expected number of colliding pairs is (n-1)/2. Proved without enumerating the n^n assignments: appending a key adds count_eq v c collisions, and summing over the n slots gives |c| (each key matched once), so Tot_coll(S m) = n*Tot_coll m + m*n^m, hence 2*n*Tot_coll n k + k*n^k = k*k*n^k, and at k=n the mean is (n-1)/2.",
+  "domain": "searching",
+  "claim_kind": "expected-cost",
+  "conjecture_artifact": "tools/conjecture/results/hashing-collisions.json",
+  "oracle": {
+    "p": "n-1",
+    "q": "2",
+    "artifact": "tools/conjecture/results/hashing-collisions.json"
+  },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "collisions_expected",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "collision"
+    ],
+    "notes": "coll counts colliding pairs. E = Tot_coll/(n^n). The pairwise expectation collapses (linearity over the last coordinate) to the running multiplicity: 2*n*Tot_coll n k + k*n^k = k*k*n^k, division-free; at k=n gives 2*Tot_coll n n = (n-1)*n^n, i.e. mean (n-1)/2."
+  },
+  "references": [
+    "Birthday/occupancy analysis: E[#collisions] = C(n,2)/m for n keys into m slots; load 1 gives (n-1)/2.",
+    "Verified twin of conjecture artifact tools/conjecture/results/hashing-collisions.json (enumerated E[collisions] = (n-1)/2)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
