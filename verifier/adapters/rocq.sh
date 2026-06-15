@@ -24,12 +24,31 @@ else verdict false "neither coqc nor rocq is installed"; exit 2; fi
 
 work="$(mktemp -d)"
 trap 'rm -rf "$work"' EXIT
+sandbox="$(dirname "$0")/../sandbox.sh"
+
+# Make the reusable framework library (framework/*.v) available so a submission
+# may `Require Import` it (coqc resolves .vo from the compile cwd by default).
+# Additive and backward-compatible: self-contained units ignore it. Each framework
+# file is itself kernel-compiled here (from source, not a trusted .vo), so a unit
+# that builds on it is still checked end-to-end. Best-effort: a unit that needs a
+# framework module that fails to build will simply fail to compile below.
+fwdir="$(cd "$(dirname "$0")/../.." && pwd)/framework"
+if [ -d "$fwdir" ]; then
+  for v in "$fwdir"/*.v; do
+    [ -e "$v" ] || continue
+    cp "$v" "$work/"
+  done
+  for v in "$work"/*.v; do
+    [ -e "$v" ] || continue
+    AAH_SANDBOX_RW="$work" bash "$sandbox" "${COMPILE[@]}" "$(basename "$v")" >/dev/null 2>&1 || true
+  done
+fi
+
 cp "$submission" "$work/Submission.v"
 # Ask the kernel to report what the theorem actually depends on.
 printf '\nPrint Assumptions %s.\n' "$theorem" >> "$work/Submission.v"
 
 # Run the kernel sandboxed (no network, read-only FS except $work, rlimits).
-sandbox="$(dirname "$0")/../sandbox.sh"
 if AAH_SANDBOX_RW="$work" bash "$sandbox" "${COMPILE[@]}" Submission.v >"$work/out" 2>&1; then
   if grep -q "Closed under the global context" "$work/out"; then
     verdict true "kernel-checked: ${theorem} is closed under the global context"
