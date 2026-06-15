@@ -27,6 +27,12 @@ jobs:
                 ( cd "$dd" && coqc -q "$(basename "$v")" )
               done
             endGroup
+            startGroup "coqc the framework library"
+              for v in framework/*.v; do
+                dd="$(mktemp -d)"; cp "$v" "$dd/"
+                ( cd "$dd" && coqc -q "$(basename "$v")" )
+              done
+            endGroup
             startGroup "certify the decomposed (leaf) proofs"
               # each assemble.sh resolves its own dir and compiles in a temp dir.
               for a in "$ws"/work-units/*/decomposition/assemble.sh; do
