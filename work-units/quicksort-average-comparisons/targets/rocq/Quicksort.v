@@ -284,8 +284,11 @@ Example Tot_6 : Tot 6 = 7416. Proof. vm_compute. reflexivity. Qed.
    fixed pair is compared in exactly 2*n!/d of them. Hence
      Tot n = Sum_{a<b} 2*n!/(b-a+1) = 2*n! * Sum_{d=2}^{n} (n+1-d)/d
    and QuicksortPairSum.v proves 2 * Sum_{d=2}^{n}(n+1-d)/d = 2(n+1)H_n - 4n.
-   The general count (= 2*n!/d) is the one remaining lemma (Part B); here it and the
-   regrouping Tot = Sum_{pairs} count are verified for small n by vm_compute. *)
+   The general count IS NOW PROVED (axiom-free) in framework/Permutations.v as
+     compared_count : a < b -> b < n -> (b - a + 1) * num_compared a b n = 2 * fact n
+   (the "first element of a subset of a uniform permutation is uniform" fact, via an
+   explicit transposition bijection on perms). The vm_compute checks below remain as
+   independent sanity for small n. *)
 Definition num_compared (a b n : nat) : nat :=
   length (filter (fun s => comparedb a b s) (perms (seq 0 n))).
 

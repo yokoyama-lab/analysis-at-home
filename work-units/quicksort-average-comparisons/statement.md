@@ -56,16 +56,21 @@ interval distance `d = j−i+1` (there are `n+1−d` value-pairs at distance `d`
   [`targets/rocq/QuicksortPairSum.v`](targets/rocq/QuicksortPairSum.v):
   `quicksort_pairsum_closed : 1≤n → 2·Σ_{d=2}^{n}(n+1−d)/d == 2(n+1)H_n − 4n`,
   in QArith. The arithmetic backbone of the linearity-of-expectation derivation.
-- **Part B (computationally verified for small n; one general lemma remaining)** —
-  the count that a fixed value-pair at distance `d` is compared in exactly `2·n!/d`
-  of the `n!` permutations (because, among the `d` interval-values, each is equally
-  likely to appear first). `Quicksort.v` defines `num_compared` and checks
-  `num_compared = 2·n!/d` and the regrouping `Totpairs n = Tot n` by `vm_compute`
-  for n ≤ 6. The *general* count is the single remaining step; it is exactly the
-  "first element of a subset of a uniform permutation is uniform" lemma that
-  measure-theoretic developments (e.g. Eberl's Giry-monad analysis) get for free
-  but which is a genuine combinatorial bijection over the explicit permutation
-  model used here.
+- **Part B (done, axiom-free)** —
+  [`framework/Permutations.v`](../../framework/Permutations.v):
+  `compared_count : a < b → b < n → (b−a+1)·num_compared a b n = 2·n!`
+  (division-free `d·count = 2·n!`). A fixed value-pair at interval distance `d` is
+  compared in exactly `2·n!/d` of the `n!` permutations. This is the "first element
+  of a subset of a uniform permutation is uniform" fact — free in a measure-theoretic
+  setting (Eberl's Giry monad), proved here as an **explicit transposition bijection**
+  over the permutation model: the reusable infrastructure `perms_correct`
+  (`In p (perms L) ↔ Permutation L p`), `length_perms` (`= n!`), `NoDup_perms`, and
+  the general `count_first_value`. `Quicksort.v`'s `vm_compute` checks remain as
+  independent small-n sanity.
+
+**With Parts A and B both proved, the chain is complete and kernel-checked end to
+end:** instrumented program `cmp` → `cmp_eq_pairsum` (pairs) → `compared_count`
+(`2·n!/d` per pair) → `quicksort_pairsum_closed` (`Σ` = closed form) → `2(n+1)H_n − 4n`.
 
 ## Cost model
 `func-ops`, `counts = ["comparison"]`. Reference Rocq proofs (axiom-free): the
