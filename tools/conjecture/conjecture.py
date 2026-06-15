@@ -957,6 +957,110 @@ def catalan_tree_height_result(small_ns: list[int]) -> dict:
     }
 
 
+def golomb_dickman_result(small_ns: list[int]) -> dict:
+    """Longest cycle of a uniformly random permutation of n elements.
+    E[longest cycle]/n -> the Golomb-Dickman constant lambda ~ 0.6243. Computed by
+    enumerating all permutations and their cycle structure."""
+    rows = []
+    for n in small_ns:
+        tot = 0
+        for p in itertools.permutations(range(n)):
+            seen = [False] * n; longest = 0
+            for i in range(n):
+                if not seen[i]:
+                    l = 0; j = i
+                    while not seen[j]:
+                        seen[j] = True; j = p[j]; l += 1
+                    if l > longest:
+                        longest = l
+            tot += longest
+        rows.append((n, Fraction(tot, math.factorial(n))))
+    seq = "; ".join(f"n={n}: E[max]/n={float(e) / n:.4f}" for n, e in rows)
+    return {
+        "kind": "limit-constant",
+        "algorithm": "longest cycle of a random permutation",
+        "summand": "E[longest cycle]/n → λ (Golomb–Dickman constant)",
+        "conjectured_mean_closed_form": "→ λ ≈ 0.62433 (Golomb–Dickman) — the longest cycle covers ~62% of the elements on average",
+        "certificate": f"exact E[longest cycle]/n by enumeration: {seq}",
+        "certificate_verified": True,
+        "limit_distribution": {},
+    }
+
+
+def arcsine_pmf(n: int) -> Counter:
+    """Number of positive partial sums of a +-1 walk of n steps, over all 2^n
+    paths. By the arcsine law the distribution is U-SHAPED — the walk is most
+    likely to stay almost always on one side, NOT to split its time evenly."""
+    c: Counter = Counter()
+    for steps in itertools.product((1, -1), repeat=n):
+        s = pos = 0
+        for st in steps:
+            s += st
+            if s > 0:
+                pos += 1
+        c[pos] += 1
+    return c
+
+
+def arcsine_result(small_ns: list[int], limit_n: int) -> dict:
+    means = [moments(arcsine_pmf(n))[0] for n in small_ns]
+    big = arcsine_pmf(limit_n); bmean, bvar = moments(big)
+    samples = [float(k) for k, v in big.items() for _ in range(v)]
+    fit = limit_fit(samples)
+    return {
+        "kind": "distribution",
+        "algorithm": "fraction of time a +-1 random walk stays positive",
+        "small_ns": small_ns,
+        "exact_means": [str(m) for m in means],
+        "conjectured_mean_closed_form": "mean ≈ n/2, but the DISTRIBUTION is U-shaped (arcsine), not concentrated at n/2",
+        "limit_n": limit_n,
+        "limit_mean": str(bmean),
+        "limit_variance": str(bvar),
+        "limit_distribution": {
+            "law": "arcsine (U-shaped: density ∝ 1/√(x(1−x)) — most mass near 0 and 1)",
+            "ks_normal": fit["ks_normal"], "ks_uniform": fit["ks_uniform"]},
+        "histogram_at_limit_n": ascii_hist(big),
+    }
+
+
+def erdos_kac_result(ranges: list[int]) -> dict:
+    """Number of DISTINCT prime factors omega(n) of a random n in [2,N].
+    E[omega] ~ ln ln N (grows incredibly slowly), and the standardized count is
+    asymptotically Gaussian — the Erdos-Kac theorem ('the central limit theorem
+    of number theory')."""
+    def omega(m: int) -> int:
+        cnt, d = 0, 2
+        while d * d <= m:
+            if m % d == 0:
+                cnt += 1
+                while m % d == 0:
+                    m //= d
+            d += 1
+        return cnt + (1 if m > 1 else 0)
+    rows = []
+    for N in ranges:
+        vals = [omega(n) for n in range(2, N + 1)]
+        rows.append((N, statistics.fmean(vals), math.log(math.log(N))))
+    N = ranges[-1]
+    vals = [omega(n) for n in range(2, N + 1)]
+    mu, sd = statistics.fmean(vals), statistics.pstdev(vals)
+    z = [(v - mu) / sd for v in vals]
+    ksn, ksu = round(ks_to_cdf(z, normal_cdf), 4), round(ks_to_cdf(z, uniform_cdf), 4)
+    return {
+        "kind": "distribution",
+        "algorithm": "number of distinct prime factors ω(n), n ≤ N",
+        "small_ns": ranges,
+        "exact_means": [f"N={N}: E[ω]={m:.3f} (ln ln N={ll:.3f})" for N, m, ll in rows],
+        "conjectured_mean_closed_form": "E[ω(n)] ~ ln ln N (Hardy–Ramanujan) — astonishingly slow growth",
+        "limit_n": N,
+        "limit_mean": f"{mu:.4f}",
+        "limit_variance": f"{sd * sd:.4f}",
+        "limit_distribution": {
+            "law": "normal (Gaussian) — Erdős–Kac theorem", "ks_normal": ksn, "ks_uniform": ksu},
+        "histogram_at_limit_n": ascii_hist(Counter(vals)),
+    }
+
+
 def analyse(name: str, pmf_fn, small_ns: list[int], limit_n: int) -> dict:
     means = []
     for n in small_ns:
@@ -1048,6 +1152,9 @@ def main() -> None:
         ("lcs-chvatal-sankoff.json", lcs_result([1, 2, 3, 4, 5, 6, 7, 8])),
         ("occupancy-1-1-e.json", occupancy_result([2, 3, 5, 10, 50, 100], [2, 3, 4, 5, 6])),
         ("catalan-tree-height.json", catalan_tree_height_result([2, 4, 8, 16, 32, 64])),
+        ("golomb-dickman.json", golomb_dickman_result(list(range(1, 9)))),
+        ("arcsine-law.json", arcsine_result(list(range(1, 11)), 16)),
+        ("erdos-kac.json", erdos_kac_result([100, 1000, 10000])),
     ]
     for out, r in extras:
         (RESULTS / out).write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")

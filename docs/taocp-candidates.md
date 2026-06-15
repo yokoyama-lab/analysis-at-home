@@ -134,6 +134,16 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 - 🔬 `occupancy-1-1-e` — non-empty bins among n balls in n bins `→ (1−1/e)·n ≈ 0.632 n` (so `~1/e` stay empty); closed form `= n!`-style enumeration.
 - 🔬 `catalan-tree-height` — uniform random binary tree height `~ 2√(πn)` = **Θ(√n)**, in stark contrast to a random BST's `Θ(log n)`.
 
+### Sorting/sqrt correctness + famous-laws batch
+*Verified (Rocq, axiom-free):*
+- ✅ `insertion-sort-correct` — full functional correctness: output is `Sorted` **and** a `Permutation` of the input.
+- ✅ `integer-sqrt` — `isqrt n` satisfies `r² ≤ n < (r+1)²` (floor of √n; the scan invariant + boundary).
+
+*Computed (conjecture track) — famous constants/laws:*
+- 🔬 `golomb-dickman` — longest cycle of a random permutation `E/n → λ ≈ 0.6243` (**Golomb–Dickman**): the longest cycle covers ~62% of elements on average.
+- 🔬 `arcsine-law` — fraction of time a ±1 walk stays positive is **U-shaped (arcsine)**, NOT concentrated at ½ — a walk is most likely to stay one-sided.
+- 🔬 `erdos-kac` — number of distinct prime factors `ω(n) ~ ln ln N` with a **Gaussian** limit (**Erdős–Kac**, "the CLT of number theory").
+
 ### Graphs & strings (§7.4 etc.)
 - ✅ `warshall-operations` (V³), `dp-table-fill` (LCS/edit/matrix-chain n·m), `prefix-match-comparisons` (naive-match core).
 - ✅ `graph-edge-count` — adjacency entries = #edges (the E in O(V+E); graph domain opened).

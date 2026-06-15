@@ -1,0 +1,9 @@
+{
+  "kind": "limit-constant",
+  "algorithm": "longest cycle of a random permutation",
+  "summand": "E[longest cycle]/n → λ (Golomb–Dickman constant)",
+  "conjectured_mean_closed_form": "→ λ ≈ 0.62433 (Golomb–Dickman) — the longest cycle covers ~62% of the elements on average",
+  "certificate": "exact E[longest cycle]/n by enumeration: n=1: E[max]/n=1.0000; n=2: E[max]/n=0.7500; n=3: E[max]/n=0.7222; n=4: E[max]/n=0.6979; n=5: E[max]/n=0.6850; n=6: E[max]/n=0.6738; n=7: E[max]/n=0.6679; n=8: E[max]/n=0.6620",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

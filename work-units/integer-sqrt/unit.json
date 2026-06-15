@@ -1,0 +1,32 @@
+{
+  "id": "integer-sqrt",
+  "title": "Integer square root: isqrt n satisfies r^2 <= n < (r+1)^2",
+  "statement_informal": "The integer square root isqrt n is the unique r with r^2 <= n < (r+1)^2. isqrt_aux scans the candidate upward while (r+1)^2 <= n; with fuel S n it reaches the boundary. isqrt_correct: isqrt n * isqrt n <= n /\\ n < S (isqrt n) * S (isqrt n).",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "isqrt_correct",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "multiplication",
+      "comparison"
+    ],
+    "notes": "Upward scan; the lower bound r^2<=n is an invariant (only step to S r when (S r)^2<=n), the upper bound n<(S r)^2 holds when the scan stops by the condition (reached with fuel S n)."
+  },
+  "references": [
+    "Integer square root (floor of the real square root); a building block for primality/factoring (e.g. trial division up to isqrt n)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

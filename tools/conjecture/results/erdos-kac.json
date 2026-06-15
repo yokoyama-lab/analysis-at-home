@@ -1,0 +1,24 @@
+{
+  "kind": "distribution",
+  "algorithm": "number of distinct prime factors ω(n), n ≤ N",
+  "small_ns": [
+    100,
+    1000,
+    10000
+  ],
+  "exact_means": [
+    "N=100: E[ω]=1.727 (ln ln N=1.527)",
+    "N=1000: E[ω]=2.128 (ln ln N=1.933)",
+    "N=10000: E[ω]=2.430 (ln ln N=2.220)"
+  ],
+  "conjectured_mean_closed_form": "E[ω(n)] ~ ln ln N (Hardy–Ramanujan) — astonishingly slow growth",
+  "limit_n": 10000,
+  "limit_mean": "2.4302",
+  "limit_variance": "0.6998",
+  "limit_distribution": {
+    "law": "normal (Gaussian) — Erdős–Kac theorem",
+    "ks_normal": 0.2342,
+    "ks_uniform": 0.2235
+  },
+  "histogram_at_limit_n": "  1 | ████████████████ 1280\n  2 | ██████████████████████████████████████████████████ 4097\n  3 | █████████████████████████████████████████████ 3695\n  4 | ███████████ 894\n  5 |  33"
+}

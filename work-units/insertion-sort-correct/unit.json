@@ -1,0 +1,31 @@
+{
+  "id": "insertion-sort-correct",
+  "title": "Insertion sort is correct: output is sorted and a permutation of the input",
+  "statement_informal": "Insertion sort produces a sorted list that is a permutation of the input (no element lost, duplicated, or invented). Correctness companion to insertion-sort-comparisons (the n(n-1)/2 cost). isort_correct: Sorted (isort l) /\\ Permutation (isort l) l.",
+  "domain": "sorting",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "isort_correct",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "isort (x::t) = insert x (isort t). insert_sorted (case-split on the head comparison) gives sortedness; insert_perm (perm_skip + perm_swap) gives the permutation."
+  },
+  "references": [
+    "Insertion sort (TAOCP Vol. 3 §5.2.1). Full functional correctness (sorted + permutation); the comparison count is work-units/insertion-sort-comparisons."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
