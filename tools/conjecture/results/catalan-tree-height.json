@@ -1,0 +1,9 @@
+{
+  "kind": "limit-constant",
+  "algorithm": "uniform random binary tree height (Catalan-weighted, n nodes)",
+  "summand": "E[height] ~ 2·√(π·n)  (Θ(√n), vs a random BST's Θ(log n))",
+  "conjectured_mean_closed_form": "~ 2·√(π·n) — a uniform random tree is √n-tall, NOT log-tall like a BST",
+  "certificate": "exact expected height over all Catalan(n) shapes: n=2: E[h]=2.000 (2√(πn)=5.013); n=4: E[h]=3.571 (2√(πn)=7.090); n=8: E[h]=6.031 (2√(πn)=10.027); n=16: E[h]=9.749 (2√(πn)=14.180); n=32: E[h]=15.213 (2√(πn)=20.053); n=64: E[h]=23.129 (2√(πn)=28.359)",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

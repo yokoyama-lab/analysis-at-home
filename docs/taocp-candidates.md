@@ -124,6 +124,16 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 - 🔬 `random-walk-max` — maximum of a ±1 walk `~ √(2n/π)`, **half-normal** `|N|` limit.
 - 🔬 `random-mapping-rho` — rho-length (tail+cycle) of a random function `~ √(πn/2)` — the steps Floyd's tortoise-and-hare needs on a random map (ties to `floyd-cycle-detection`).
 
+### Classic-correctness + mysterious-constants batch
+*Verified (Rocq, axiom-free):*
+- ✅ `horner-correct` — Horner's rule `= Σ aᵢxⁱ` (correctness twin of `horner-multiplications`).
+- ✅ `binary-search-correct` — **sound and complete** on a monotone array: found ⇔ `∃ i, a i = key` (completeness uses monotonicity).
+
+*Computed (conjecture track):*
+- 🔬 `lcs-chvatal-sankoff` — E[LCS]/n of two random binary strings `→ γ ≈ 0.812`, the **Chvátal–Sankoff constant** whose exact value is an open problem.
+- 🔬 `occupancy-1-1-e` — non-empty bins among n balls in n bins `→ (1−1/e)·n ≈ 0.632 n` (so `~1/e` stay empty); closed form `= n!`-style enumeration.
+- 🔬 `catalan-tree-height` — uniform random binary tree height `~ 2√(πn)` = **Θ(√n)**, in stark contrast to a random BST's `Θ(log n)`.
+
 ### Graphs & strings (§7.4 etc.)
 - ✅ `warshall-operations` (V³), `dp-table-fill` (LCS/edit/matrix-chain n·m), `prefix-match-comparisons` (naive-match core).
 - ✅ `graph-edge-count` — adjacency entries = #edges (the E in O(V+E); graph domain opened).

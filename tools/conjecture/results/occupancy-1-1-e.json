@@ -1,0 +1,9 @@
+{
+  "kind": "limit-constant",
+  "algorithm": "occupancy: number of non-empty bins (n balls, n bins)",
+  "summand": "E[occupied] = n·(1−(1−1/n)^n) → n·(1−1/e)",
+  "conjectured_mean_closed_form": "→ (1−1/e)·n ≈ 0.6321·n  (so ~1/e of bins stay empty)",
+  "certificate": "closed form = enumeration for n ∈ [2, 3, 4, 5, 6]; n=2: E[occupied]/n=0.7500; n=3: E[occupied]/n=0.7037; n=5: E[occupied]/n=0.6723; n=10: E[occupied]/n=0.6513; n=50: E[occupied]/n=0.6358; n=100: E[occupied]/n=0.6340",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

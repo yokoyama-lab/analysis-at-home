@@ -1,0 +1,31 @@
+{
+  "id": "binary-search-correct",
+  "title": "Binary search is sound and complete on a sorted array",
+  "statement_informal": "Binary search over a monotone non-decreasing array a on index window [lo,hi) reports the key present iff some index in the window holds it. Soundness needs nothing; completeness uses monotonicity to keep the key in the recursed half. bsearch_correct: monotone a -> hi-lo<=fuel -> (bsearch ... = true <-> exists i, lo<=i<hi /\\ a i = key).",
+  "domain": "sorting",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "bsearch_correct",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "Halves the window each step (~lg(hi-lo) comparisons). Soundness: a true verdict exhibits a matching index. Completeness: monotonicity forces a present key into the half searched (a mid < key => index > mid, etc)."
+  },
+  "references": [
+    "Binary search (TAOCP Vol. 3 §6.2.1). Correctness (soundness + completeness) over a monotone array; the comparison count is work-units/binary-search-comparisons."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "kind": "limit-constant",
+  "algorithm": "longest common subsequence of two random binary strings",
+  "summand": "E[LCS]/n → γ (Chvátal–Sankoff constant)",
+  "conjectured_mean_closed_form": "→ γ ≈ 0.812 (binary alphabet) — exact value is an open problem",
+  "certificate": "exact E[LCS]/n by enumeration of all string pairs: n=1: E[LCS]/n=0.5000; n=2: E[LCS]/n=0.5625; n=3: E[LCS]/n=0.6042; n=4: E[LCS]/n=0.6309; n=5: E[LCS]/n=0.6492; n=6: E[LCS]/n=0.6633; n=7: E[LCS]/n=0.6745; n=8: E[LCS]/n=0.6836",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

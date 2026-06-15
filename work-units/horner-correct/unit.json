@@ -1,0 +1,32 @@
+{
+  "id": "horner-correct",
+  "title": "Horner's rule evaluates the polynomial correctly",
+  "statement_informal": "Horner's rule horner [a0;...;ak] x = a0 + x*(a1 + x*(...)) computes the polynomial sum Σ a_i x^i with n multiplications. Correctness twin of horner-multiplications (which counts the n multiplications): horner cs x = poly cs x.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "horner_correct",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "multiplication",
+      "addition"
+    ],
+    "notes": "Nested form: n mults, n adds. Correctness via powsum cs x i = x^i * horner cs x (induction on cs, Nat.pow_succ_r' + ring)."
+  },
+  "references": [
+    "Horner's rule (TAOCP Vol. 2 §4.6.4). Correctness twin of work-units/horner-multiplications."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

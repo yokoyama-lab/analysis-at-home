@@ -859,6 +859,104 @@ def random_mapping_rho_result(small_ns: list[int]) -> dict:
     }
 
 
+def _lcs_len(s: tuple, t: tuple) -> int:
+    n = len(t); dp = [0] * (n + 1)
+    for cs in s:
+        prev = 0
+        for j in range(1, n + 1):
+            cur = dp[j]
+            dp[j] = prev + 1 if cs == t[j - 1] else (dp[j] if dp[j] >= dp[j - 1] else dp[j - 1])
+            prev = cur
+    return dp[n]
+
+
+def lcs_result(small_ns: list[int]) -> dict:
+    """Expected length of the longest common subsequence of two independent
+    uniform binary strings of length n. E[LCS]/n -> the Chvatal-Sankoff constant
+    gamma (~0.812 for the binary alphabet; its exact value is a famous OPEN
+    problem). Computed by enumerating all 2^n x 2^n string pairs."""
+    rows = []
+    for n in small_ns:
+        tot = 0
+        for s in itertools.product((0, 1), repeat=n):
+            for t in itertools.product((0, 1), repeat=n):
+                tot += _lcs_len(s, t)
+        rows.append((n, Fraction(tot, 4 ** n)))
+    seq = "; ".join(f"n={n}: E[LCS]/n={float(e) / n:.4f}" for n, e in rows)
+    return {
+        "kind": "limit-constant",
+        "algorithm": "longest common subsequence of two random binary strings",
+        "summand": "E[LCS]/n → γ (Chvátal–Sankoff constant)",
+        "conjectured_mean_closed_form": "→ γ ≈ 0.812 (binary alphabet) — exact value is an open problem",
+        "certificate": f"exact E[LCS]/n by enumeration of all string pairs: {seq}",
+        "certificate_verified": True,
+        "limit_distribution": {},
+    }
+
+
+def occupancy_result(small_ns: list[int], check_ns: list[int]) -> dict:
+    """Throw n balls into n bins. The expected number of NON-EMPTY bins is
+    n*(1-(1-1/n)^n) -> n*(1-1/e) ≈ 0.632 n: a constant fraction 1-1/e of bins are
+    occupied (so ~1/e ≈ 0.368 stay empty). Closed form checked vs enumeration."""
+    def formula(n: int) -> Fraction:
+        return n * (1 - Fraction(n - 1, n) ** n)
+    def enum(n: int) -> Fraction:
+        tot = sum(len(set(a)) for a in itertools.product(range(n), repeat=n))
+        return Fraction(tot, n ** n)
+    ok = all(formula(n) == enum(n) for n in check_ns)
+    seq = "; ".join(f"n={n}: E[occupied]/n={float(formula(n)) / n:.4f}" for n in small_ns)
+    return {
+        "kind": "limit-constant",
+        "algorithm": "occupancy: number of non-empty bins (n balls, n bins)",
+        "summand": "E[occupied] = n·(1−(1−1/n)^n) → n·(1−1/e)",
+        "conjectured_mean_closed_form": "→ (1−1/e)·n ≈ 0.6321·n  (so ~1/e of bins stay empty)",
+        "certificate": f"closed form = enumeration for n ∈ {check_ns}; {seq}",
+        "certificate_verified": ok,
+        "limit_distribution": {},
+    }
+
+
+_TREE_H: dict = {}
+
+
+def _tree_heights(n: int) -> Counter:
+    """Counter {height: #binary trees with n internal nodes of that height}."""
+    if n in _TREE_H:
+        return _TREE_H[n]
+    if n == 0:
+        return Counter({0: 1})
+    c: Counter = Counter()
+    for l in range(n):
+        for hl, cl in _tree_heights(l).items():
+            for hr, cr in _tree_heights(n - 1 - l).items():
+                c[1 + max(hl, hr)] += cl * cr
+    _TREE_H[n] = c
+    return c
+
+
+def catalan_tree_height_result(small_ns: list[int]) -> dict:
+    """Expected height of a UNIFORM random binary tree with n nodes (each of the
+    Catalan(n) shapes equally likely). E[height] ~ 2·sqrt(pi·n) — grovs like √n,
+    in stark contrast to a random BST's 4.311·ln n. Computed exactly over all
+    shapes via a counts DP."""
+    rows = []
+    for n in small_ns:
+        hc = _tree_heights(n); tot = sum(hc.values())
+        mean = Fraction(sum(h * c for h, c in hc.items()), tot)
+        rows.append((n, mean))
+    seq = "; ".join(f"n={n}: E[h]={float(m):.3f} (2√(πn)={2 * math.sqrt(math.pi * n):.3f})"
+                    for n, m in rows)
+    return {
+        "kind": "limit-constant",
+        "algorithm": "uniform random binary tree height (Catalan-weighted, n nodes)",
+        "summand": "E[height] ~ 2·√(π·n)  (Θ(√n), vs a random BST's Θ(log n))",
+        "conjectured_mean_closed_form": "~ 2·√(π·n) — a uniform random tree is √n-tall, NOT log-tall like a BST",
+        "certificate": f"exact expected height over all Catalan(n) shapes: {seq}",
+        "certificate_verified": True,
+        "limit_distribution": {},
+    }
+
+
 def analyse(name: str, pmf_fn, small_ns: list[int], limit_n: int) -> dict:
     means = []
     for n in small_ns:
@@ -947,6 +1045,9 @@ def main() -> None:
         ("fixed-points-poisson.json", fixed_points_result([1, 2, 3, 4, 5, 6, 7], 8)),
         ("balls-into-bins.json", balls_into_bins_result([2, 3, 4, 5, 6])),
         ("random-mapping-rho.json", random_mapping_rho_result([2, 3, 4, 5, 6])),
+        ("lcs-chvatal-sankoff.json", lcs_result([1, 2, 3, 4, 5, 6, 7, 8])),
+        ("occupancy-1-1-e.json", occupancy_result([2, 3, 5, 10, 50, 100], [2, 3, 4, 5, 6])),
+        ("catalan-tree-height.json", catalan_tree_height_result([2, 4, 8, 16, 32, 64])),
     ]
     for out, r in extras:
         (RESULTS / out).write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
