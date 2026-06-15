@@ -1,0 +1,31 @@
+{
+  "id": "exp-by-squaring-correct",
+  "title": "Exponentiation by squaring = b^e (correctness twin of the cost unit)",
+  "statement_informal": "Exponentiation by squaring computes b^e with ~lg e multiplications: fastpow b e = (b^(e/2))^2 * b^(e mod 2). This is the correctness twin of fast-exponentiation-mults (which counts the multiplications). Theorem: fastpow fuel b e = b^e for e <= fuel.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "fastpow_correct",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "multiplication"
+    ],
+    "notes": "Square the half-power, multiply in b^(e mod 2); ~lg e mults. Correctness via b^(q+q+r) = b^e where e = 2q+r (Nat.div_mod_eq, Nat.pow_add_r)."
+  },
+  "references": [
+    "Right-to-left / square-and-multiply exponentiation (TAOCP Vol. 2 §4.6.3). Correctness twin of work-units/fast-exponentiation-mults."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "id": "russian-peasant-mult",
+  "title": "Russian peasant multiplication = a*b (doubling/halving/add only)",
+  "statement_informal": "Russian peasant (Egyptian) multiplication computes a*b using only doubling, halving and addition — no multiplication primitive: peasant a b = (a mod 2)*b + peasant (a/2) (2*b). Correctness: peasant fuel a b = a*b for a <= fuel.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "peasant_correct",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "add",
+      "double",
+      "halve"
+    ],
+    "notes": "Halve a, double b, add b on odd a; ~lg a additions. Correctness via a = 2*(a/2)+a mod 2 (Nat.div_mod_eq) and nia."
+  },
+  "references": [
+    "Ancient Egyptian / Russian peasant multiplication — multiply via repeated doubling and halving, no multiplication table."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

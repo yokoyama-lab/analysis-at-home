@@ -1,0 +1,9 @@
+{
+  "kind": "limit-constant",
+  "algorithm": "balls into bins: maximum load (n balls, n bins)",
+  "summand": "E[max load] → Θ(ln n / ln ln n) with high probability",
+  "conjectured_mean_closed_form": "grows unboundedly but very slowly — ~ ln n / ln ln n",
+  "certificate": "exact expected max load by enumeration: n=2: E[max load]=1.500; n=3: E[max load]=1.889; n=4: E[max load]=2.125; n=5: E[max load]=2.286; n=6: E[max load]=2.408",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

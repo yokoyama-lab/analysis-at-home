@@ -1,0 +1,32 @@
+{
+  "id": "subtractive-gcd",
+  "title": "Subtractive GCD (Euclid's original, no division) = Nat.gcd",
+  "statement_informal": "Euclid's original algorithm used repeated subtraction, no division or remainder: gcd(a,b) = gcd(a-b,b) for a >= b (and symmetrically). subgcd implements exactly that with a fuel bound a+b. Correctness: subgcd fuel a b = Nat.gcd a b for a+b <= fuel. Contrast euclid-gcd, which uses mod.",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "subgcd_correct",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "subtraction",
+      "comparison"
+    ],
+    "notes": "Each step subtracts the smaller from the larger; a+b strictly decreases, so a+b steps suffice. Correctness via Nat.gcd_sub_diag_r and Nat.gcd_comm."
+  },
+  "references": [
+    "Euclid's original subtraction-based algorithm (Elements VII). Subtraction-only contrast to work-units/euclid-gcd (which uses mod)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

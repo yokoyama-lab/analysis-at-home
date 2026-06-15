@@ -101,6 +101,19 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 - 🔬 `lis-tracy-widom` — longest increasing subsequence `~ 2√n`, **Tracy-Widom** (random-matrix) limit.
 - 🔬 `random-bst-height` — expected **height** `~ 4.311 ln n`, more than double the depth constant `2`.
 
+### Classic-correctness + permutation-statistics batch
+*Verified (Rocq, axiom-free):*
+- ✅ `subtractive-gcd` — Euclid's original subtraction-only GCD (no division/mod) `= Nat.gcd` (via `Nat.gcd_sub_diag_r`).
+- ✅ `russian-peasant-mult` — multiply by doubling/halving/adding only, `= a*b`.
+- ✅ `run-length-encoding` — lossless: `decode (encode l) = l`.
+- ✅ `exp-by-squaring-correct` — square-and-multiply `= b^e` (correctness twin of `fast-exponentiation-mults`).
+
+*Computed (conjecture track):*
+- 🔬 `permutation-cycles` — number of cycles of a random permutation, `E = H_n`, Gaussian limit.
+- 🔬 `fixed-points-poisson` — number of fixed points `→ Poisson(1)` (`P(k)=e⁻¹/k!`); `P(0)=!n/n! → 1/e` (derangements). A new **Poisson** limit.
+- 🔬 `longest-run-heads` — longest run of heads in n flips `~ log₂ n`.
+- 🔬 `balls-into-bins` — expected max load of n balls in n bins `~ ln n / ln ln n` (slow but unbounded).
+
 ### Graphs & strings (§7.4 etc.)
 - ✅ `warshall-operations` (V³), `dp-table-fill` (LCS/edit/matrix-chain n·m), `prefix-match-comparisons` (naive-match core).
 - ✅ `graph-edge-count` — adjacency entries = #edges (the E in O(V+E); graph domain opened).

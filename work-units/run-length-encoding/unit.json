@@ -1,0 +1,31 @@
+{
+  "id": "run-length-encoding",
+  "title": "Run-length encoding is lossless: decode ∘ encode = id",
+  "statement_informal": "RLE collapses maximal runs of equal elements into (value,count) pairs; decoding expands them with repeat. The round-trip law decode (encode l) = l is the correctness statement every lossless compressor must satisfy.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "rle_roundtrip",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "compare"
+    ],
+    "notes": "encode is one pass merging adjacent equal elements; decode expands via repeat. Round-trip proved by induction on the list, casing on the head of encode xs."
+  },
+  "references": [
+    "Run-length encoding — a classic lossless compression primitive; correctness = decode ∘ encode = id."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

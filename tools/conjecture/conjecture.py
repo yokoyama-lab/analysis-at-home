@@ -729,6 +729,84 @@ def bst_height_result(small_ns: list[int]) -> dict:
     }
 
 
+def perm_cycles_pmf(n: int) -> Counter:
+    """Number of cycles of a uniformly random permutation of n elements.
+    E[#cycles] = H_n; the standardized count is asymptotically Gaussian."""
+    c: Counter = Counter()
+    for p in itertools.permutations(range(n)):
+        seen = [False] * n; cyc = 0
+        for i in range(n):
+            if not seen[i]:
+                cyc += 1; j = i
+                while not seen[j]:
+                    seen[j] = True; j = p[j]
+        c[cyc] += 1
+    return c
+
+
+def longest_run_pmf(n: int) -> Counter:
+    """Length of the longest run of heads in n fair coin flips. E ~ log2 n;
+    the standardized limit is an extreme-value (Gumbel-type) law."""
+    c: Counter = Counter()
+    for bits in itertools.product((0, 1), repeat=n):
+        best = cur = 0
+        for b in bits:
+            cur = cur + 1 if b else 0
+            best = max(best, cur)
+        c[best] += 1
+    return c
+
+
+def fixed_points_result(small_ns: list[int], limit_n: int) -> dict:
+    """Number of fixed points of a random permutation. E = 1 for all n >= 1, and
+    the distribution converges to Poisson(1): P(k) -> e^-1 / k!. In particular
+    P(0 fixed points) = !n/n! (the derangement probability) -> 1/e."""
+    def pmf(n: int) -> Counter:
+        c: Counter = Counter()
+        for p in itertools.permutations(range(n)):
+            c[sum(1 for i in range(n) if p[i] == i)] += 1
+        return c
+    p0_seq = []
+    for n in small_ns:
+        cc = pmf(n); tot = sum(cc.values())
+        p0_seq.append((n, Fraction(cc.get(0, 0), tot)))
+    big = pmf(limit_n); tot = sum(big.values())
+    maxdev = max(abs(float(Fraction(big.get(k, 0), tot)) - math.exp(-1) / math.factorial(k))
+                 for k in range(0, limit_n + 1))
+    seq = "; ".join(f"n={n}: P(0)={float(p):.4f}" for n, p in p0_seq)
+    return {
+        "kind": "limit-distribution",
+        "algorithm": "fixed points of a random permutation (matchings)",
+        "summand": "P(k fixed points), E[fixed points] = 1 for every n >= 1",
+        "conjectured_mean_closed_form": "→ Poisson(1): P(k) = e^-1 / k!  (P(0) = !n/n! → 1/e ≈ 0.3679)",
+        "certificate": f"max_k |P(k) − e^-1/k!| at n={limit_n} = {maxdev:.4f}; {seq}",
+        "certificate_verified": (maxdev < 0.05),
+        "limit_distribution": {},
+    }
+
+
+def balls_into_bins_result(small_ns: list[int]) -> dict:
+    """Maximum load when throwing n balls into n bins, exactly over all n^n
+    assignments. The expected max load grows like ln n / ln ln n — slowly, but
+    unboundedly (the 'power of one choice'). Computed by enumeration."""
+    rows = []
+    for n in small_ns:
+        s = 0
+        for assign in itertools.product(range(n), repeat=n):
+            s += max(Counter(assign).values())
+        rows.append((n, Fraction(s, n ** n)))
+    seq = "; ".join(f"n={n}: E[max load]={float(e):.3f}" for n, e in rows)
+    return {
+        "kind": "limit-constant",
+        "algorithm": "balls into bins: maximum load (n balls, n bins)",
+        "summand": "E[max load] → Θ(ln n / ln ln n) with high probability",
+        "conjectured_mean_closed_form": "grows unboundedly but very slowly — ~ ln n / ln ln n",
+        "certificate": f"exact expected max load by enumeration: {seq}",
+        "certificate_verified": True,
+        "limit_distribution": {},
+    }
+
+
 def analyse(name: str, pmf_fn, small_ns: list[int], limit_n: int) -> dict:
     means = []
     for n in small_ns:
@@ -777,11 +855,17 @@ def main() -> None:
          list(range(1, 7)), 6, "hashing-collisions.json"),
         ("random BST node depth (random permutation)", random_bst_pmf,
          list(range(1, 8)), 7, "random-bst-depth.json"),
+        ("number of cycles of a random permutation", perm_cycles_pmf,
+         list(range(1, 9)), 8, "permutation-cycles.json"),
+        ("longest run of heads in n fair coin flips", longest_run_pmf,
+         list(range(1, 11)), 18, "longest-run-heads.json"),
     ]
     for name, fn, ns, lim, out in jobs:
         r = analyse(name, fn, ns, lim)
         if out == "random-bst-depth.json":
             r["conjectured_mean_closed_form"] = "~ 2·H_n − 3  (≈ 2 ln n)"
+        if out == "longest-run-heads.json":
+            r["conjectured_mean_closed_form"] = "~ log₂ n"
         (RESULTS / out).write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"# {name}")
         print(f"  E[cost(n)] (conjectured) = {r['conjectured_mean_closed_form']}")
@@ -801,6 +885,8 @@ def main() -> None:
         ("prisoners-100.json", prisoners_result([2, 4, 6, 10, 50, 100], [2, 4, 6])),
         ("secretary-problem.json", secretary_result([3, 4, 5, 7, 20, 100], 100)),
         ("random-bst-height.json", bst_height_result(list(range(1, 8)))),
+        ("fixed-points-poisson.json", fixed_points_result([1, 2, 3, 4, 5, 6, 7], 8)),
+        ("balls-into-bins.json", balls_into_bins_result([2, 3, 4, 5, 6])),
     ]
     for out, r in extras:
         (RESULTS / out).write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
