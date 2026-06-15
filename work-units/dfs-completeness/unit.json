@@ -1,0 +1,24 @@
+{
+  "id": "dfs-completeness",
+  "title": "DFS is complete: it visits every reachable vertex",
+  "statement_informal": "If the DFS worklist drains (the leftover stack is empty, i.e. enough fuel), then every vertex reachable from the initial frontier is visited.",
+  "domain": "graphs",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "dfs_complete",
+  "references": [
+    "Knuth, TAOCP graph algorithms; depth-first search completeness."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

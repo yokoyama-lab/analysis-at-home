@@ -1,0 +1,31 @@
+{
+  "id": "union-find-path-compression",
+  "title": "Union-Find: path compression gives one-step find",
+  "statement_informal": "After path compression points x directly to its root r, find reaches r in a single step -- the mechanism behind path compression's speedup. (The full inverse-Ackermann amortized bound is a major separate formalization.)",
+  "domain": "data-structures",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "path_compression_one_step",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "pointer-follow"
+    ],
+    "notes": "After compression, find is one step; full O(alpha(n)) amortized is a separate research effort."
+  },
+  "references": [
+    "Tarjan (1975) — efficiency of a good but not linear set union algorithm (inverse Ackermann)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
