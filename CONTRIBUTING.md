@@ -31,9 +31,16 @@ trusted — the kernel decides.
 - **Never paste credentials or API keys anywhere** in this project. Submissions
   are proof source only.
 - A submission must prove the **same statement** as the seed — don't weaken the
-  theorem or change the fixed cost-model definitions (`insert`/`isort`/…).
+  theorem or change the fixed cost-model definitions (`insert`/`isort`/…). This
+  is enforced for changed targets by a **signature-lock**
+  (`tools/signature_lock.sh`): if the target already exists on the base branch,
+  CI requires the statement of the named theorem to be identical (only the proof
+  may change). A brand-new backend port has no prior statement to lock against,
+  so it is kernel-checked and flagged for human review.
 - No `Admitted`, `admit`, `Axiom`, `Parameter`, `sorry`, or
-  `--allow-unsolved-metas`. Smuggled axioms are rejected.
+  `--allow-unsolved-metas`. Smuggled axioms are rejected. CI kernel-checks every
+  changed proof target across **all four backends** (rocq/lean/agda/isabelle);
+  the lean/agda/isabelle toolchains install only when the PR touches that backend.
 - It's fine if a claim turns out **not** provable in some backend — say so in
   the PR. "Couldn't be done in backend X" is useful signal, not a failure.
 

@@ -43,9 +43,19 @@ for f in "${files[@]}"; do
   echo "::group::verify ${f}  (${bk} : ${thm})"
   out="$(bash "$root/verifier/verify.sh" "$bk" "$root/$f" "$thm" 2>&1)"
   echo "$out"
+  # signature-equivalence: if this target already exists on the base branch, the
+  # submission must prove the IDENTICAL statement (only the proof may change).
+  sigfail=0
+  if bf="$(git -C "$root" show "${base}:${f}" 2>/dev/null)" && [ -n "$bf" ]; then
+    tmpb="$(mktemp)"; printf '%s' "$bf" > "$tmpb"
+    bash "$root/tools/signature_lock.sh" "$bk" "$thm" "$tmpb" "$root/$f" || sigfail=1
+    rm -f "$tmpb"
+  else
+    bash "$root/tools/signature_lock.sh" "$bk" "$thm" /nonexistent "$root/$f" || true
+  fi
   echo "::endgroup::"
   checked=$((checked + 1))
-  if printf '%s' "$out" | grep -q '"accepted": true'; then
+  if printf '%s' "$out" | grep -q '"accepted": true' && [ "$sigfail" -eq 0 ]; then
     echo "PASS  $f"
   else
     echo "FAIL  $f"

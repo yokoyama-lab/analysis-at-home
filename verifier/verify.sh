@@ -27,8 +27,11 @@ reject()  { verdict false "$1"; exit 1; }
 adapter="$(dirname "$0")/adapters/${backend}.sh"
 [ -f "$adapter" ] || reject "no adapter for backend: ${backend}"
 
-# TODO (Phase 1): also verify the submission proves the SAME statement as the
-# unit's seed (signature-equivalence), e.g. by `Check (<thm> : <expected_type>)`.
+# Signature-equivalence (that the submission proves the SAME statement, not just
+# a same-named weaker one) is enforced one level up, in tools/verify_changed.sh
+# via tools/signature_lock.sh: when a target already exists on the base branch,
+# the submitted statement of <theorem-name> must match it (only the proof may
+# change). New targets are kernel-checked here and flagged for human review.
 
 # Delegate to the backend adapter; it owns the kernel invocation + verdict.
 exec bash "$adapter" "$submission" "$theorem"
