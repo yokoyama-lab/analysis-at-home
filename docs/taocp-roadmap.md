@@ -26,6 +26,8 @@ conjecture-track result whose mean is (or could be) promoted to a theorem.
 | Russian peasant mult | folklore | `russian-peasant-mult` | ✅ doubling/halving/add = a·b |
 | Run-length encoding | classic | `run-length-encoding` | ✅ decode ∘ encode = id |
 | Exp. by squaring (correct) | Vol 2 §4.6.3 | `exp-by-squaring-correct` | ✅ square-and-multiply = bᵉ |
+| Binary representation | positional numerals | `binary-rep-roundtrip` | ✅ from_bits ∘ to_bits = id |
+| Fast-doubling Fibonacci | Dijkstra | `fib-fast-doubling` | ✅ O(log n) = fib (doubling identities) |
 | Finding the maximum (Algorithm M) | Vol 1 §1.2.10 | `algorithm-m-maxima` | ✅ worst-case updates ≤ n; 🔬 avg = Hₙ |
 | Horner's rule | Vol 2 §4.6.4 | `horner-multiplications` | ✅ n multiplications |
 | Right-to-left binary exponentiation | Vol 2 §4.6.3 | `fast-exponentiation-mults` | ✅ ≤ 2⌊lg e⌋ mults |

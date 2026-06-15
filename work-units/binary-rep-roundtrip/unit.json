@@ -1,0 +1,32 @@
+{
+  "id": "binary-rep-roundtrip",
+  "title": "Binary representation is faithful: from_bits ∘ to_bits = id",
+  "statement_informal": "Writing a natural number in base 2 (least-significant bit first) and reading it back recovers it. to_bits n = (n mod 2) :: to_bits (n/2); from_bits is Horner in base 2. Theorem: from_bits (to_bits fuel n) = n for n <= fuel.",
+  "domain": "arithmetic",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "bits_roundtrip",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "div",
+      "mod"
+    ],
+    "notes": "to_bits peels one bit per step (n mod 2, n/2); from_bits is base-2 Horner. Round-trip via n = 2*(n/2)+n mod 2 (Nat.div_mod_eq)."
+  },
+  "references": [
+    "Positional (base-2) numeral system — the encode/decode round-trip is the faithfulness of binary representation."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

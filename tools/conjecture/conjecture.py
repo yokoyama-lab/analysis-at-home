@@ -807,6 +807,58 @@ def balls_into_bins_result(small_ns: list[int]) -> dict:
     }
 
 
+def eulerian_ascents_pmf(n: int) -> Counter:
+    """Number of ascents (positions with perm[i] < perm[i+1]) of a random
+    permutation — the Eulerian distribution. E = (n-1)/2; Gaussian in the limit."""
+    c: Counter = Counter()
+    for p in itertools.permutations(range(n)):
+        c[sum(1 for i in range(n - 1) if p[i] < p[i + 1])] += 1
+    return c
+
+
+def random_walk_max_pmf(n: int) -> Counter:
+    """Maximum of a simple +-1 random walk of n steps, over all 2^n sign
+    sequences. E ~ sqrt(2n/pi); the standardized limit is the half-normal |N|."""
+    c: Counter = Counter()
+    for steps in itertools.product((1, -1), repeat=n):
+        s = mx = 0
+        for st in steps:
+            s += st
+            if s > mx:
+                mx = s
+        c[mx] += 1
+    return c
+
+
+def random_mapping_rho_result(small_ns: list[int]) -> dict:
+    """Random mapping f: [n]->[n]. Starting from a random point and iterating f,
+    the orbit x, f(x), f(f(x)), ... first repeats after rho = tail + cycle steps.
+    E[rho] ~ sqrt(pi*n/2) — this is how many steps Floyd's tortoise-and-hare
+    (work-units/floyd-cycle-detection) needs on a random function. Computed by
+    enumerating all n^n functions and all n starts."""
+    rows = []
+    for n in small_ns:
+        tot = 0
+        for f in itertools.product(range(n), repeat=n):
+            for start in range(n):
+                seen = set(); x = start; steps = 0
+                while x not in seen:
+                    seen.add(x); x = f[x]; steps += 1
+                tot += steps
+        rows.append((n, Fraction(tot, n ** n * n)))
+    seq = "; ".join(f"n={n}: E[rho]={float(e):.3f} (√(πn/2)={math.sqrt(math.pi*n/2):.3f})"
+                    for n, e in rows)
+    return {
+        "kind": "limit-constant",
+        "algorithm": "random mapping: rho-length (tail+cycle from a random start)",
+        "summand": "E[rho] = E[tail + cycle] → sqrt(pi*n/2) ≈ 1.2533·√n",
+        "conjectured_mean_closed_form": "~ √(π·n/2) — the # of steps Floyd's tortoise-and-hare needs on a random function",
+        "certificate": f"exact expected rho by enumeration: {seq}",
+        "certificate_verified": True,
+        "limit_distribution": {},
+    }
+
+
 def analyse(name: str, pmf_fn, small_ns: list[int], limit_n: int) -> dict:
     means = []
     for n in small_ns:
@@ -859,6 +911,10 @@ def main() -> None:
          list(range(1, 9)), 8, "permutation-cycles.json"),
         ("longest run of heads in n fair coin flips", longest_run_pmf,
          list(range(1, 11)), 18, "longest-run-heads.json"),
+        ("number of ascents of a random permutation (Eulerian)", eulerian_ascents_pmf,
+         list(range(1, 9)), 8, "eulerian-ascents.json"),
+        ("maximum of a simple +-1 random walk of n steps", random_walk_max_pmf,
+         list(range(1, 11)), 16, "random-walk-max.json"),
     ]
     for name, fn, ns, lim, out in jobs:
         r = analyse(name, fn, ns, lim)
@@ -866,6 +922,9 @@ def main() -> None:
             r["conjectured_mean_closed_form"] = "~ 2·H_n − 3  (≈ 2 ln n)"
         if out == "longest-run-heads.json":
             r["conjectured_mean_closed_form"] = "~ log₂ n"
+        if out == "random-walk-max.json":
+            r["conjectured_mean_closed_form"] = "~ √(2n/π)"
+            r["limit_distribution"]["law"] = "half-normal |N(0,1)| (reflected Gaussian)"
         (RESULTS / out).write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"# {name}")
         print(f"  E[cost(n)] (conjectured) = {r['conjectured_mean_closed_form']}")
@@ -887,6 +946,7 @@ def main() -> None:
         ("random-bst-height.json", bst_height_result(list(range(1, 8)))),
         ("fixed-points-poisson.json", fixed_points_result([1, 2, 3, 4, 5, 6, 7], 8)),
         ("balls-into-bins.json", balls_into_bins_result([2, 3, 4, 5, 6])),
+        ("random-mapping-rho.json", random_mapping_rho_result([2, 3, 4, 5, 6])),
     ]
     for out, r in extras:
         (RESULTS / out).write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")

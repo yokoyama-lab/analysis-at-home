@@ -1,0 +1,32 @@
+{
+  "id": "fib-fast-doubling",
+  "title": "Fast-doubling Fibonacci in O(log n) = fib",
+  "statement_informal": "The fast-doubling method computes Fibonacci numbers in O(log n) operations (vs O(n) naive) by recursing on the bits of n via fib(2k)=fib k*(2 fib(k+1)-fib k) and fib(2k+1)=fib k^2+fib(k+1)^2. fastpair n returns (fib n, fib(n+1)); correctness: fastpair fuel n = (fib n, fib (S n)) for n <= fuel.",
+  "domain": "number-theory",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "fast_fib",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "multiplication",
+      "addition"
+    ],
+    "notes": "Recurses on n/2 (~lg n levels), O(1) multiplications per level. Doubling identities derived from the addition formula fib(m+n+1)=fib(m+1)fib(n+1)+fib m fib n (two-step induction)."
+  },
+  "references": [
+    "Fast-doubling Fibonacci (Dijkstra; the matrix-power / doubling identities). O(log n) vs the O(n) naive recurrence."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "kind": "limit-constant",
+  "algorithm": "random mapping: rho-length (tail+cycle from a random start)",
+  "summand": "E[rho] = E[tail + cycle] → sqrt(pi*n/2) ≈ 1.2533·√n",
+  "conjectured_mean_closed_form": "~ √(π·n/2) — the # of steps Floyd's tortoise-and-hare needs on a random function",
+  "certificate": "exact expected rho by enumeration: n=2: E[rho]=1.500 (√(πn/2)=1.772); n=3: E[rho]=1.889 (√(πn/2)=2.171); n=4: E[rho]=2.219 (√(πn/2)=2.507); n=5: E[rho]=2.510 (√(πn/2)=2.802); n=6: E[rho]=2.775 (√(πn/2)=3.070)",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

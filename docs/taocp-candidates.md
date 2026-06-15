@@ -114,6 +114,16 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 - 🔬 `longest-run-heads` — longest run of heads in n flips `~ log₂ n`.
 - 🔬 `balls-into-bins` — expected max load of n balls in n bins `~ ln n / ln ln n` (slow but unbounded).
 
+### Faithful-encodings + random-process batch
+*Verified (Rocq, axiom-free):*
+- ✅ `binary-rep-roundtrip` — base-2 representation is faithful: `from_bits (to_bits n) = n`.
+- ✅ `fib-fast-doubling` — Fibonacci in **O(log n)** via the doubling identities (`fib(2k)`, `fib(2k+1)`), proved `= fib` through the addition formula.
+
+*Computed (conjecture track):*
+- 🔬 `eulerian-ascents` — number of ascents of a random permutation, `E = (n−1)/2`, Gaussian.
+- 🔬 `random-walk-max` — maximum of a ±1 walk `~ √(2n/π)`, **half-normal** `|N|` limit.
+- 🔬 `random-mapping-rho` — rho-length (tail+cycle) of a random function `~ √(πn/2)` — the steps Floyd's tortoise-and-hare needs on a random map (ties to `floyd-cycle-detection`).
+
 ### Graphs & strings (§7.4 etc.)
 - ✅ `warshall-operations` (V³), `dp-table-fill` (LCS/edit/matrix-chain n·m), `prefix-match-comparisons` (naive-match core).
 - ✅ `graph-edge-count` — adjacency entries = #edges (the E in O(V+E); graph domain opened).

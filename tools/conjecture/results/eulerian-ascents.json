@@ -1,0 +1,34 @@
+{
+  "kind": "distribution",
+  "algorithm": "number of ascents of a random permutation (Eulerian)",
+  "small_ns": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "exact_means": [
+    "0",
+    "1/2",
+    "1",
+    "3/2",
+    "2",
+    "5/2",
+    "3",
+    "7/2"
+  ],
+  "conjectured_mean_closed_form": "-1/2 + 1/2·n",
+  "limit_n": 8,
+  "limit_mean": "7/2",
+  "limit_variance": "3/4",
+  "limit_distribution": {
+    "law": "normal (Gaussian)",
+    "ks_normal": 0.2181,
+    "ks_uniform": 0.2207
+  },
+  "histogram_at_limit_n": "  0 |  1\n  1 | █ 247\n  2 | ██████████████ 4293\n  3 | ██████████████████████████████████████████████████ 15619\n  4 | ██████████████████████████████████████████████████ 15619\n  5 | ██████████████ 4293\n  6 | █ 247\n  7 |  1"
+}
