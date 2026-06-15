@@ -260,6 +260,30 @@ master-theorem regimes), graph algorithms (BFS/DFS <code>O(V+E)</code>, shortest
 relaxation), data structures (AVL, union-by-rank), number theory, and many
 summation identities — all kernel-verified.</p>
 
+<h2>Research highlight: verified <i>average-case</i> cost</h2>
+<p class="note">Worst-case complexity has been mechanized before; <b>average-case</b>
+(expected) cost is comparatively unformalized. Our angle is a <b>small reused Rocq
+library</b> plus a <b>computation oracle</b> that checks the cost <i>statement</i>
+before it is proved.</p>
+<div class="steps">
+  <div class="step"><b>A reused library.</b> <code>framework/Permutations.v</code>
+    (axiom-free) proves the permutation core (<code>perms_correct</code>,
+    <code>length_perms = n!</code>, <code>NoDup_perms</code>) and one general counting
+    lemma <code>count_first_value</code>. <b>Two results reuse it:</b> quicksort and
+    records.</div>
+  <div class="step"><b>Quicksort, end to end.</b> The average
+    <code>2(n+1)Hₙ − 4n</code> is kernel-checked from an <i>instrumented</i> comparison
+    counter — <code>cmp</code> → <code>cmp_eq_pairsum</code> → <code>compared_count</code>
+    (<code>2·n!/d</code> per pair) → the closed form — not just a recurrence.</div>
+  <div class="step"><b>Kept honest by an oracle.</b> A wrong cost <i>statement</i>
+    survives a kernel proof; <code>tools/fault_corpus.py</code> shows the deterministic
+    enumeration oracle catches <b>12/12</b> plausible-but-wrong closed forms (random
+    testing can miss the near-misses).</div>
+</div>
+<div class="callout">A unit may <code>Require Import</code> the framework: the verifier
+precompiles it <b>from source</b>, so it is still kernel-checked end to end while
+contributors build <i>on</i> the library instead of re-deriving it.</div>
+
 <h2>Two tracks: compute, then prove</h2>
 <p class="note">The <b>conjecture track</b> (pure-Python computer algebra + exhaustive
 enumeration) <i>computes</i> the cost distribution and its limiting law — fast, but

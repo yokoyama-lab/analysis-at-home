@@ -58,6 +58,40 @@ permanently, and provably.
 - 🌐 **Bring your own LLM.** We coordinate the work and re-verify the results.
   Your unused capacity stops going to waste.
 
+## Verified average-case cost — a reusable library, kept honest by an oracle
+
+Worst-case complexity has been mechanized before (CFML time credits, Guéneau's
+big-O, McCarthy's running-time monad); **average-case** (expected) cost is
+comparatively unformalized, and what exists (Eberl's Isabelle/AFP work) is largely
+bespoke per algorithm. Our angle is a **small, reused Rocq library** for expected
+cost, plus a **computation oracle** that checks the *statement* before anyone
+proves it.
+
+- **A shared average-case library.** `framework/Permutations.v` (axiom-free) proves
+  the permutation-enumeration core — `perms_correct`, `length_perms` (`= n!`),
+  `NoDup_perms` — and the general counting lemma `count_first_value` (the first
+  element of a subset of a uniform permutation is uniform, via an explicit
+  transposition bijection). **Two different results reuse the same lemma:**
+  quicksort's `compared_count` and records' `records_program_expected`.
+- **Quicksort, end to end, from a real program.** The average comparison count
+  `2(n+1)Hₙ − 4n` is kernel-checked (axiom-free) from an *instrumented* head-pivot
+  counter — not just a recurrence: `cmp` → `cmp_eq_pairsum` (a comparison is a
+  compared *pair*) → `compared_count` (a pair at interval distance `d` is compared
+  in `2·n!/d` permutations) → `quicksort_pairsum_closed` (the sum **is** the closed
+  form). See `work-units/quicksort-average-comparisons/`.
+- **A deterministic computation oracle for faithfulness.** A wrong or weakened
+  cost *statement* survives a kernel proof (the theorem of that name is still
+  true). `tools/oracle_check.py` checks each formal mean `p/q` against the
+  *exactly enumerated* `E[cost]` for small `n`, and `tools/fault_corpus.py`
+  evaluates it: **12/12 plausible-but-wrong closed forms are caught** (e.g. the
+  `Hₙ − 1` maxima-updates trap), faithful rewrites pass, and the one
+  enumeration-window blind spot is reported, not hidden. Exact enumeration, not
+  random sampling — see [`docs/oracle-evaluation.md`](docs/oracle-evaluation.md).
+
+A unit may `Require Import` the framework: the verifier precompiles `framework/*.v`
+(from source, still kernel-checked end to end), so contributors build *on* the
+library instead of re-deriving it.
+
 ## The two-track pipeline
 
 | Track | Tooling | Output |
@@ -99,8 +133,10 @@ persistence — see [`docs/roadmap.md`](docs/roadmap.md).
 ## Layout
 
 ```
-docs/         design notes, work-unit format, roadmap
+docs/         design notes, work-unit format, roadmap, research plan + oracle eval
+framework/    reusable average-case library (Permutations.v: count_first_value, …)
 work-units/   the open problems + per-backend statements (seed: insertion sort)
+tools/        conjecture solver, oracle_check.py, fault_corpus.py, board, verify
 verifier/     pluggable kernel adapters (Rocq / Lean / Agda / Isabelle) — the trust anchor
 coordinator/  dispatch work units, accept submissions, record verified status
 web/          minimal "paste prompt → paste proof back" MVP, no auth
