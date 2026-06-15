@@ -59,7 +59,7 @@ Theorem linear_search_avg :
   forall n, mean_eq (map (fun k => lc k (seq 1 n)) (seq 1 n)) (n + 1) 2.
 Proof.
   intro n. unfold mean_eq.
-  rewrite length_map, length_seq.
+  rewrite map_length, seq_length.
   assert (Hmap : map (fun k => lc k (seq 1 n)) (seq 1 n) = seq 1 n).
   { transitivity (map (fun k => k) (seq 1 n)).
     - apply map_ext_in. intros k Hk. apply in_seq in Hk.
