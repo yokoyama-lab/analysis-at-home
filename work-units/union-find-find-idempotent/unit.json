@@ -1,0 +1,24 @@
+{
+  "id": "union-find-find-idempotent",
+  "title": "Union-Find: find returns a stable representative",
+  "statement_informal": "Under the invariant parent[i] <= i, find is idempotent: find (find x) = find x, so two elements are in the same set iff they share a find representative.",
+  "domain": "data-structures",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "find_idempotent",
+  "references": [
+    "Tarjan; Knuth TAOCP — disjoint-set union; find as a canonical representative."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
