@@ -1,0 +1,9 @@
+{
+  "kind": "limit-constant",
+  "algorithm": "blocks of a uniformly random set partition of [n]",
+  "summand": "E[#blocks] ~ n / ln n  (Bell-number-weighted)",
+  "conjectured_mean_closed_form": "~ n / ln n",
+  "certificate": "exact expected #blocks over all Bell(n) partitions: n=2: E[blocks]=1.500 (n/ln n=2.885); n=3: E[blocks]=2.000 (n/ln n=2.731); n=4: E[blocks]=2.467 (n/ln n=2.885); n=5: E[blocks]=2.904 (n/ln n=3.107); n=6: E[blocks]=3.320 (n/ln n=3.349); n=7: E[blocks]=3.721 (n/ln n=3.597); n=8: E[blocks]=4.108 (n/ln n=3.847); n=9: E[blocks]=4.484 (n/ln n=4.096)",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

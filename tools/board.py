@@ -147,7 +147,7 @@ def collect() -> dict:
     # kernel-checked twin yet — a candidate theorem someone can prove and link
     # back via `conjecture_artifact`.
     def _exact(m: str) -> bool:
-        return bool(m) and not any(s in m for s in ("~", "non-polynomial", "skew", "→"))
+        return bool(m) and not any(s in m for s in ("~", "≈", "non-polynomial", "skew", "→", "shaped"))
     twin_jobs = [
         {"algorithm": c["algorithm"], "mean": c["mean_closed_form"],
          "limit": c["limit"], "artifact": c["artifact"]}

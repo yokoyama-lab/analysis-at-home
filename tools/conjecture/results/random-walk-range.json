@@ -1,0 +1,9 @@
+{
+  "kind": "limit-constant",
+  "algorithm": "distinct sites visited by a simple random walk (n steps)",
+  "summand": "E[range] ~ √(8n/π) ≈ 1.596·√n  (Θ(√n) of the line is explored)",
+  "conjectured_mean_closed_form": "~ √(8n/π) — a random walk visits only ~√n distinct sites in n steps",
+  "certificate": "exact expected range by enumeration of all 2^n paths: n=1: E[range]=2.000 (√(8n/π)=1.596); n=2: E[range]=2.500 (√(8n/π)=2.257); n=3: E[range]=3.000 (√(8n/π)=2.764); n=4: E[range]=3.375 (√(8n/π)=3.192); n=5: E[range]=3.750 (√(8n/π)=3.568); n=6: E[range]=4.062 (√(8n/π)=3.909); n=7: E[range]=4.375 (√(8n/π)=4.222); n=8: E[range]=4.648 (√(8n/π)=4.514); n=9: E[range]=4.922 (√(8n/π)=4.787); n=10: E[range]=5.168 (√(8n/π)=5.046); n=11: E[range]=5.414 (√(8n/π)=5.293); n=12: E[range]=5.640 (√(8n/π)=5.528); n=13: E[range]=5.865 (√(8n/π)=5.754); n=14: E[range]=6.075 (√(8n/π)=5.971); n=15: E[range]=6.284 (√(8n/π)=6.180); n=16: E[range]=6.481 (√(8n/π)=6.383)",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

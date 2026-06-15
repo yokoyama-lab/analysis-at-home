@@ -32,6 +32,8 @@ conjecture-track result whose mean is (or could be) promoted to a theorem.
 | Binary search (correct) | Vol 3 §6.2.1 | `binary-search-correct` | ✅ sound + complete on a sorted array |
 | Insertion sort (correct) | Vol 3 §5.2.1 | `insertion-sort-correct` | ✅ sorted ∧ permutation of input |
 | Integer square root | — | `integer-sqrt` | ✅ r² ≤ n < (r+1)² |
+| Merge two sorted runs | Vol 3 §5.2.4 | `merge-sorted-correct` | ✅ sorted ∧ permutation of l₁++l₂ |
+| XOR swap | folklore | `xor-swap` | ✅ swap with no temporary |
 | Finding the maximum (Algorithm M) | Vol 1 §1.2.10 | `algorithm-m-maxima` | ✅ worst-case updates ≤ n; 🔬 avg = Hₙ |
 | Horner's rule | Vol 2 §4.6.4 | `horner-multiplications` | ✅ n multiplications |
 | Right-to-left binary exponentiation | Vol 2 §4.6.3 | `fast-exponentiation-mults` | ✅ ≤ 2⌊lg e⌋ mults |

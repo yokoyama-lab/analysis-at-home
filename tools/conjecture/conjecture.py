@@ -1061,6 +1061,97 @@ def erdos_kac_result(ranges: list[int]) -> dict:
     }
 
 
+def random_bst_leaves_pmf(n: int) -> Counter:
+    """Number of leaves of a random BST (built from a random permutation of
+    1..n). For n >= 2, E[leaves] = (n+1)/3 exactly — a clean rational mean that
+    the verify track can promote to a theorem."""
+    c: Counter = Counter()
+    for p in itertools.permutations(range(1, n + 1)):
+        left = {}; right = {}; root = None
+        for k in p:
+            if root is None:
+                root = k; continue
+            cur = root
+            while True:
+                if k < cur:
+                    if cur in left:
+                        cur = left[cur]
+                    else:
+                        left[cur] = k; break
+                else:
+                    if cur in right:
+                        cur = right[cur]
+                    else:
+                        right[cur] = k; break
+        c[sum(1 for k in p if k not in left and k not in right)] += 1
+    return c
+
+
+def random_walk_range_result(small_ns: list[int]) -> dict:
+    """Number of DISTINCT integer sites visited by a simple +-1 walk of n steps
+    (its range, max - min + 1 including the origin). E[range] ~ sqrt(8n/pi)
+    ~ 1.596*sqrt(n). Computed over all 2^n paths."""
+    rows = []
+    for n in small_ns:
+        tot = 0
+        for steps in itertools.product((1, -1), repeat=n):
+            s = lo = hi = 0
+            for st in steps:
+                s += st
+                if s < lo:
+                    lo = s
+                if s > hi:
+                    hi = s
+            tot += hi - lo + 1
+        rows.append((n, Fraction(tot, 2 ** n)))
+    seq = "; ".join(f"n={n}: E[range]={float(e):.3f} (√(8n/π)={math.sqrt(8 * n / math.pi):.3f})"
+                    for n, e in rows)
+    return {
+        "kind": "limit-constant",
+        "algorithm": "distinct sites visited by a simple random walk (n steps)",
+        "summand": "E[range] ~ √(8n/π) ≈ 1.596·√n  (Θ(√n) of the line is explored)",
+        "conjectured_mean_closed_form": "~ √(8n/π) — a random walk visits only ~√n distinct sites in n steps",
+        "certificate": f"exact expected range by enumeration of all 2^n paths: {seq}",
+        "certificate_verified": True,
+        "limit_distribution": {},
+    }
+
+
+def set_partition_blocks_result(small_ns: list[int]) -> dict:
+    """Expected number of blocks of a uniformly random set partition of [n]
+    (each of the Bell(n) partitions equally likely). E[#blocks] ~ n / ln n.
+    Computed by enumerating restricted-growth strings."""
+    def rgs(n: int):
+        a = [0] * n
+        def rec(i: int, mx: int):
+            if i == n:
+                yield tuple(a); return
+            for v in range(mx + 2):
+                a[i] = v
+                yield from rec(i + 1, mx if mx >= v else v)
+        if n == 0:
+            yield ()
+        else:
+            yield from rec(1, 0)
+    rows = []
+    for n in small_ns:
+        tot = cnt = 0
+        for s in rgs(n):
+            tot += max(s) + 1; cnt += 1
+        rows.append((n, Fraction(tot, cnt)))
+    seq = "; ".join(f"n={n}: E[blocks]={float(e):.3f} (n/ln n={n / math.log(n):.3f})"
+                    for n, e in rows)
+    return {
+        "kind": "limit-constant",
+        "algorithm": "blocks of a uniformly random set partition of [n]",
+        "summand": "E[#blocks] ~ n / ln n  (Bell-number-weighted)",
+        "conjectured_mean_closed_form": "~ n / ln n",
+        "certificate": f"exact expected #blocks over all Bell(n) partitions: {seq}",
+        "certificate_verified": True,
+        "limit_distribution": {},
+    }
+
+
 def analyse(name: str, pmf_fn, small_ns: list[int], limit_n: int) -> dict:
     means = []
     for n in small_ns:
@@ -1117,6 +1208,8 @@ def main() -> None:
          list(range(1, 9)), 8, "eulerian-ascents.json"),
         ("maximum of a simple +-1 random walk of n steps", random_walk_max_pmf,
          list(range(1, 11)), 16, "random-walk-max.json"),
+        ("number of leaves of a random BST", random_bst_leaves_pmf,
+         list(range(2, 9)), 8, "random-bst-leaves.json"),
     ]
     for name, fn, ns, lim, out in jobs:
         r = analyse(name, fn, ns, lim)
@@ -1155,6 +1248,8 @@ def main() -> None:
         ("golomb-dickman.json", golomb_dickman_result(list(range(1, 9)))),
         ("arcsine-law.json", arcsine_result(list(range(1, 11)), 16)),
         ("erdos-kac.json", erdos_kac_result([100, 1000, 10000])),
+        ("random-walk-range.json", random_walk_range_result(list(range(1, 17)))),
+        ("set-partition-blocks.json", set_partition_blocks_result(list(range(2, 10)))),
     ]
     for out, r in extras:
         (RESULTS / out).write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")

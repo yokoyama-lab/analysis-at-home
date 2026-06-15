@@ -144,6 +144,16 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 - 🔬 `arcsine-law` — fraction of time a ±1 walk stays positive is **U-shaped (arcsine)**, NOT concentrated at ½ — a walk is most likely to stay one-sided.
 - 🔬 `erdos-kac` — number of distinct prime factors `ω(n) ~ ln ln N` with a **Gaussian** limit (**Erdős–Kac**, "the CLT of number theory").
 
+### Swap/merge correctness + walk/partition statistics batch
+*Verified (Rocq, axiom-free):*
+- ✅ `xor-swap` — exchange two values with **no temporary** (`a^=b; b^=a; a^=b`), from XOR's group structure.
+- ✅ `merge-sorted-correct` — merging two sorted lists is `Sorted` **and** a `Permutation` of `l₁++l₂` (the heart of merge sort).
+
+*Computed (conjecture track):*
+- 🔬 `random-bst-leaves` — leaves of a random BST, `E = (n+1)/3` **exactly** (a clean rational mean — now a kernel-twin job).
+- 🔬 `random-walk-range` — distinct sites a ±1 walk visits in n steps `~ √(8n/π)` ≈ `1.596√n` (only `Θ(√n)` of the line).
+- 🔬 `set-partition-blocks` — blocks of a uniform random set partition of `[n]` `~ n/ln n` (Bell-weighted).
+
 ### Graphs & strings (§7.4 etc.)
 - ✅ `warshall-operations` (V³), `dp-table-fill` (LCS/edit/matrix-chain n·m), `prefix-match-comparisons` (naive-match core).
 - ✅ `graph-edge-count` — adjacency entries = #edges (the E in O(V+E); graph domain opened).

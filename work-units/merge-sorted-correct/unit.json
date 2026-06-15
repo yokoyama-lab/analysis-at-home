@@ -1,0 +1,31 @@
+{
+  "id": "merge-sorted-correct",
+  "title": "Merging two sorted lists is correct (sorted + permutation)",
+  "statement_informal": "Merging two sorted lists yields a sorted list that is a permutation of their concatenation — the heart of merge sort. merge is fuel-bounded (total length decreases). merge_correct: Sorted l1 -> Sorted l2 -> length l1 + length l2 <= fuel -> Sorted (merge fuel l1 l2) /\\ Permutation (merge fuel l1 l2) (l1 ++ l2).",
+  "domain": "sorting",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "merge_correct",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "Each step compares the two heads and emits the smaller; <= |l1|+|l2| comparisons. Sortedness carries a lower bound (le_hd) through the recursion; permutation uses perm_skip + Permutation_middle."
+  },
+  "references": [
+    "Merge of two sorted runs (TAOCP Vol. 3 §5.2.4) — the core of merge sort. Full correctness: sorted + permutation. Cost is work-units/merge-comparisons."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

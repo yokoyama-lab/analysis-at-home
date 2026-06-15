@@ -1,0 +1,31 @@
+{
+  "id": "xor-swap",
+  "title": "XOR swap: exchange two values with no temporary",
+  "statement_informal": "The three-XOR trick (a^=b; b^=a; a^=b) swaps two values with no temporary variable. xorswap a b = (b, a), proved purely from XOR being commutative, associative and self-cancelling (x XOR x = 0).",
+  "domain": "bitwise",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "xorswap_correct",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "xor"
+    ],
+    "notes": "Three XORs, no temporary. Correctness from Nat.lxor_comm / Nat.lxor_assoc / Nat.lxor_nilpotent / Nat.lxor_0_l."
+  },
+  "references": [
+    "The classic in-place XOR swap; correctness rests on the group structure of bitwise XOR."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
