@@ -29,6 +29,10 @@ NEWFILE = {  # where a new submission of each backend lands
 }
 
 
+BACKEND_NAME = {"lean": "Lean 4", "agda": "Agda", "isabelle": "Isabelle/HOL",
+                "rocq": "Rocq (Coq)"}
+
+
 def read_prompt(unit_dir: pathlib.Path, unit: dict) -> str:
     p = unit_dir / unit.get("prompt_template", "prompt-template.md")
     if not p.exists():
@@ -36,6 +40,34 @@ def read_prompt(unit_dir: pathlib.Path, unit: dict) -> str:
     txt = p.read_text(encoding="utf-8")
     txt = re.sub(r"<!--.*?-->", "", txt, flags=re.S)  # drop the HTML comment
     return txt.strip()
+
+
+def rocq_source(unit_dir: pathlib.Path) -> str:
+    """The verified Rocq proof for a unit (the thing a port should mirror)."""
+    rd = unit_dir / "targets" / "rocq"
+    if not rd.is_dir():
+        return ""
+    vs = sorted(rd.glob("*.v"))
+    return vs[0].read_text(encoding="utf-8").strip() if vs else ""
+
+
+def build_job_prompt(unit_dir: pathlib.Path, unit: dict, backend: str) -> str:
+    """A self-contained, copy-paste-runnable prompt: the concrete target backend
+    is substituted in (no <BACKEND = ...> placeholder to hand-edit), and the
+    verified Rocq proof is inlined so the LLM has the exact source to port."""
+    name = BACKEND_NAME.get(backend, backend)
+    txt = read_prompt(unit_dir, unit)
+    txt = re.sub(r"<BACKEND[^>]*>", name, txt)  # fill the placeholder concretely
+    parts = [txt] if txt else [
+        f"Port the verified Rocq proof below into {name}, proving the same "
+        f"theorem `{unit.get('expected_theorem','')}`. Return only the "
+        f"proof-assistant source, with no axioms / sorry / admit / postulate."]
+    src = rocq_source(unit_dir) if backend != "rocq" else ""
+    if src:
+        parts.append("Here is the verified Rocq source to translate "
+                     f"(reproduce the same statements and proofs in {name}):\n\n"
+                     "```coq\n" + src + "\n```")
+    return "\n\n".join(parts).strip()
 
 
 def pr_url(unit_id: str, backend: str) -> str:
@@ -67,7 +99,7 @@ def collect() -> dict:
                         "unit": unit["id"], "title": unit["title"], "backend": b,
                         "claim_kind": unit.get("claim_kind", ""),
                         "expected_theorem": unit.get("expected_theorem", ""),
-                        "prompt": read_prompt(d, unit),
+                        "prompt": build_job_prompt(d, unit, b),
                         "pr_url": pr_url(unit["id"], b),
                     })
             dec = d / "decomposition" / "leaves.json"
