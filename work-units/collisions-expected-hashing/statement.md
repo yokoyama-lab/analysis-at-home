@@ -20,6 +20,24 @@ The assignment space is the product `{1..n}^k`. Appending the k-th key (uniform 
 `(n-1)/2`. Linearity over the last coordinate again — here the pairwise sum
 collapses to the running multiplicity.
 
+## Framework reuse (product-space library)
+
+`Coll.v` is self-contained. The companion
+[`targets/rocq/CollProgram.v`](targets/rocq/CollProgram.v) (axiom-free) proves the
+SAME result by **reusing** the shared product-space library
+[`framework/Products.v`](../../framework/Products.v) (`Require Import Products`):
+the assignment generator `prods`, `length_prods` (`= n^k`), and the
+**marginalization primitive** `sum_count_eq_length` — summing a slot-multiplicity
+over all `n` slots collapses to `|c|`, exactly what turns the pairwise collision
+sum into the running-multiplicity recurrence `Tot_coll(S m) = n·Tot_coll m + m·n^m`.
+Only the collision-specific counter `coll` and the assembly stay in the unit.
+
+This is the **product-space analogue** of records reusing `framework/Permutations.v`
+(`count_first_value`): the framework now carries both a permutation library and a
+product library for average-case cost.
+
 ## Cost model
-`func-ops`. Reference Rocq proof (`collisions_expected`, axiom-free):
-[`targets/rocq/Coll.v`](targets/rocq/Coll.v).
+`func-ops`. Reference Rocq proofs (axiom-free): the self-contained
+`collisions_expected` in [`targets/rocq/Coll.v`](targets/rocq/Coll.v); the
+framework-reusing `collisions_expected_reuse` in
+[`targets/rocq/CollProgram.v`](targets/rocq/CollProgram.v).
