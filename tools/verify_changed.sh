@@ -38,6 +38,12 @@ for f in "${files[@]}"; do
   uj="$root/work-units/$unit/unit.json"
   [ -f "$uj" ] || { echo "SKIP  $f  (no unit.json)"; continue; }
   thm="$(grep -o '"expected_theorem"[[:space:]]*:[[:space:]]*"[^"]*"' "$uj" | head -1 | sed 's/.*: *"//; s/".*//')"
+  # A unit may carry several proof files (one canonical result + supporting ones).
+  # Check each file against ITS OWN headline theorem: the name in the file's final
+  # `Print Assumptions <name>.` line, if any. Files without such a line fall back
+  # to the unit's expected_theorem (backward-compatible: single-file units unchanged).
+  filethm="$(grep -oE 'Print Assumptions[[:space:]]+[A-Za-z_][A-Za-z0-9_]*' "$root/$f" 2>/dev/null | tail -1 | awk '{print $3}')"
+  [ -n "$filethm" ] && thm="$filethm"
   [ -n "$thm" ] || { echo "SKIP  $f  (unit has no expected_theorem)"; continue; }
 
   echo "::group::verify ${f}  (${bk} : ${thm})"
