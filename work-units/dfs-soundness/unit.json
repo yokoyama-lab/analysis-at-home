@@ -1,0 +1,24 @@
+{
+  "id": "dfs-soundness",
+  "title": "DFS is sound: every visited vertex is reachable",
+  "statement_informal": "Every vertex a depth-first search visits is reachable from the initial frontier (via the reflexive-transitive edge relation).",
+  "domain": "graphs",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "dfs_sound",
+  "references": [
+    "Knuth, TAOCP graph algorithms; depth-first search correctness."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

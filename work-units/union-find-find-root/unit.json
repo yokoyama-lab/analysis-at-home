@@ -1,0 +1,24 @@
+{
+  "id": "union-find-find-root",
+  "title": "Union-Find: find terminates at a root",
+  "statement_informal": "Under the invariant that parent[i] <= i, find (with fuel >= x) returns a root (a fixed point p[r]=r).",
+  "domain": "data-structures",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "find_reaches_root",
+  "references": [
+    "Tarjan; Knuth TAOCP — disjoint-set union; find correctness."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

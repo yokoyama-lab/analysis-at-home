@@ -82,7 +82,8 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 - ✅ `graph-bfs-dfs-ove` + `graph-traversal-vertex-bound` — BFS/DFS cost bound O(V+E) (visited<=|V| via pigeonhole, edges via graph-edge-count); full stateful worklist algorithm still open.
 - ✅ `toposort-vertex-bound` — Kahn emits each vertex once (<= |V|).
 - ✅ `union-find-rank-bound` — union-by-rank tree has >= 2^r nodes (=> O(log n) find).
-- ⏸ Union-Find full inverse-Ackermann (path compression amortized), Dijkstra/Bellman-Ford/Kruskal/Prim, KMP/Boyer-Moore/Rabin-Karp, optimal BST.
+- ✅ `dfs-soundness` (visited => reachable), `union-find-find-root` (find reaches a root).
+- ⏸ Union-Find full inverse-Ackermann (path compression amortized), DFS completeness, Dijkstra/Bellman-Ford/Kruskal/Prim, KMP/Boyer-Moore/Rabin-Karp, optimal BST.
 
 Divide-and-conquer recurrences are now covered by `mergesort-recurrence` (n log n), `karatsuba-multiplications` (n^lg3), `divide-and-conquer-linear` (O(n)), and `median-of-medians-linear` — the master-theorem regimes as verified recurrence bounds.
 
