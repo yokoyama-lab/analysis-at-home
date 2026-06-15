@@ -548,6 +548,187 @@ def fisher_yates_result(n: int) -> dict:
     }
 
 
+def _skewness(pmf: Counter) -> float:
+    tot = sum(pmf.values())
+    mu = sum(k * v for k, v in pmf.items()) / tot
+    m2 = sum(v * (k - mu) ** 2 for k, v in pmf.items()) / tot
+    m3 = sum(v * (k - mu) ** 3 for k, v in pmf.items()) / tot
+    return m3 / m2 ** 1.5 if m2 > 0 else 0.0
+
+
+def quicksort_pmf(n: int) -> Counter:
+    """Number of comparisons of quicksort (first-element pivot) over all n!
+    permutations. Unlike most additive costs, the STANDARDIZED limit is NOT
+    Gaussian — it is the Quicksort fixed-point law (positive skewness ~0.85)."""
+    def qs(arr: list[int]) -> int:
+        if len(arr) <= 1:
+            return 0
+        p, rest = arr[0], arr[1:]
+        return len(rest) + qs([x for x in rest if x < p]) + qs([x for x in rest if x > p])
+    c: Counter = Counter()
+    for perm in itertools.permutations(range(n)):
+        c[qs(list(perm))] += 1
+    return c
+
+
+def quicksort_nongaussian_result(small_ns: list[int], limit_n: int) -> dict:
+    skews = [round(_skewness(quicksort_pmf(n)), 4) for n in small_ns]
+    big = quicksort_pmf(limit_n)
+    bmean, bvar = moments(big)
+    samples = [float(k) for k, v in big.items() for _ in range(v)]
+    fit = limit_fit(samples)
+    return {
+        "kind": "distribution",
+        "algorithm": "quicksort comparisons — the standardized limit is NOT Gaussian",
+        "small_ns": small_ns,
+        "exact_means": [f"skew(n={n})={s}" for n, s in zip(small_ns, skews)],
+        "conjectured_mean_closed_form": "E = 2(n+1)Hₙ − 4n; standardized skewness → ~0.85 (Gaussian = 0)",
+        "limit_n": limit_n,
+        "limit_mean": str(bmean),
+        "limit_variance": str(bvar),
+        "limit_distribution": {
+            "law": f"non-Gaussian (Quicksort fixed-point law; skewness {skews[-1]} stays > 0)",
+            "ks_normal": fit["ks_normal"], "ks_uniform": fit["ks_uniform"]},
+        "histogram_at_limit_n": ascii_hist(big),
+    }
+
+
+def lis_pmf(n: int) -> Counter:
+    """Length of the longest increasing subsequence of a random permutation
+    (patience sorting). E[LIS] ~ 2*sqrt(n); the standardized limit is the
+    Tracy-Widom law from random matrix theory (left-skewed, non-Gaussian)."""
+    import bisect
+    c: Counter = Counter()
+    for perm in itertools.permutations(range(n)):
+        tails: list[int] = []
+        for x in perm:
+            i = bisect.bisect_left(tails, x)
+            if i == len(tails):
+                tails.append(x)
+            else:
+                tails[i] = x
+        c[len(tails)] += 1
+    return c
+
+
+def lis_result(small_ns: list[int], limit_n: int) -> dict:
+    means = [moments(lis_pmf(n))[0] for n in small_ns]
+    ratios = [f"E[LIS]/√{n}={float(m) / math.sqrt(n):.3f}" for n, m in zip(small_ns, means)]
+    big = lis_pmf(limit_n)
+    bmean, bvar = moments(big)
+    samples = [float(k) for k, v in big.items() for _ in range(v)]
+    fit = limit_fit(samples)
+    return {
+        "kind": "distribution",
+        "algorithm": "longest increasing subsequence (random permutation)",
+        "small_ns": small_ns,
+        "exact_means": ratios,
+        "conjectured_mean_closed_form": "E[LIS] ~ 2·√n (Vershik-Kerov / Logan-Shepp)",
+        "limit_n": limit_n,
+        "limit_mean": str(bmean),
+        "limit_variance": str(bvar),
+        "limit_distribution": {
+            "law": f"Tracy-Widom (random-matrix law, skewness {round(_skewness(big), 3)}; non-Gaussian)",
+            "ks_normal": fit["ks_normal"], "ks_uniform": fit["ks_uniform"]},
+        "histogram_at_limit_n": ascii_hist(big),
+    }
+
+
+def prisoners_result(small_ns: list[int], check_ns: list[int]) -> dict:
+    """The 100 prisoners problem. The pointer-following strategy succeeds iff the
+    random permutation has no cycle longer than n/2, with probability
+    1 - (H_n - H_{n/2}) -> 1 - ln 2 ~ 0.3069 — astronomically better than the
+    ~2^-n of independent guessing. Closed form checked against enumeration."""
+    def closed(n: int) -> Fraction:
+        return 1 - (harmonic(n) - harmonic(n // 2))
+    def enum(n: int) -> Fraction:
+        good = 0
+        for p in itertools.permutations(range(n)):
+            seen = [False] * n; ok = True
+            for i in range(n):
+                if not seen[i]:
+                    l, j = 0, i
+                    while not seen[j]:
+                        seen[j] = True; j = p[j]; l += 1
+                    if l > n // 2:
+                        ok = False
+            good += ok
+        return Fraction(good, math.factorial(n))
+    ok = all(closed(n) == enum(n) for n in check_ns)
+    seq = "; ".join(f"n={n}: {float(closed(n)):.4f}" for n in small_ns)
+    return {
+        "kind": "limit-probability",
+        "algorithm": "100 prisoners problem (pointer-following strategy)",
+        "summand": "P(success) = P(longest cycle ≤ n/2) = 1 − (H_n − H_{n/2})",
+        "conjectured_mean_closed_form": "→ 1 − ln 2 ≈ 0.30685  (vs ≈ 2^−n for independent guessing)",
+        "certificate": f"closed form = enumeration for n ∈ {check_ns}; sequence {seq}",
+        "certificate_verified": ok,
+        "limit_distribution": {},
+    }
+
+
+def secretary_result(small_ns: list[int], n_big: int) -> dict:
+    """The secretary problem (optimal stopping). Reject the first r candidates,
+    then take the first one better than all of them: P(pick the best) is maximized
+    at r ~ n/e and tends to 1/e ~ 0.3679. Closed form checked vs enumeration."""
+    def prob(n: int, r: int) -> Fraction:
+        if r == 0:
+            return Fraction(1, n)
+        return Fraction(r, n) * sum(Fraction(1, i - 1) for i in range(r + 1, n + 1))
+    def best(n: int):
+        r = max(range(n), key=lambda r: prob(n, r))
+        return r, prob(n, r)
+    def enum_best(n: int) -> Fraction:
+        # exhaustive: probability the threshold-r* rule picks the global best
+        r = best(n)[0]
+        good = 0
+        for p in itertools.permutations(range(n)):
+            seen_best = max(p[:r]) if r > 0 else -1
+            chosen = next((x for x in p[r:] if x > seen_best), p[-1])
+            good += (chosen == n - 1)
+        return Fraction(good, math.factorial(n))
+    ok = all(best(n)[1] == enum_best(n) for n in small_ns if n <= 7)
+    seq = "; ".join(f"n={n}: r*={best(n)[0]}, P={float(best(n)[1]):.4f}" for n in small_ns)
+    rb, pb = best(n_big)
+    return {
+        "kind": "limit-probability",
+        "algorithm": "secretary problem (optimal stopping, '37% rule')",
+        "summand": "P(pick best | reject first r) = (r/n)·Σ_{i=r+1}^{n} 1/(i−1)",
+        "conjectured_mean_closed_form": f"max_r → 1/e ≈ 0.36788 at r ≈ n/e  (n={n_big}: r*={rb}, P={float(pb):.4f})",
+        "certificate": f"optimal P = enumeration for n ≤ 7; sequence {seq}",
+        "certificate_verified": ok,
+        "limit_distribution": {},
+    }
+
+
+def bst_height_result(small_ns: list[int]) -> dict:
+    """Random BST: the EXPECTED HEIGHT grows like 4.311·ln n — more than DOUBLE
+    the expected node depth (~2·ln n). The height constant c solves
+    c·ln(2e/c) = 1. Surprising: the tree is far taller than it is, on average,
+    deep. Computed by enumerating permutations."""
+    rows = []
+    monotone = True
+    for n in small_ns:
+        th = td = 0
+        for p in itertools.permutations(range(1, n + 1)):
+            ds = random_bst_depths(p)
+            th += max(ds); td += Fraction(sum(ds), len(ds))
+        nf = math.factorial(n)
+        eh = Fraction(th, nf); ed = td / nf
+        rows.append((n, float(eh), float(ed)))
+        monotone = monotone and (eh >= ed)
+    seq = "; ".join(f"n={n}: E[height]={h:.3f}, E[depth]={d:.3f}" for n, h, d in rows)
+    return {
+        "kind": "limit-constant",
+        "algorithm": "random BST height vs depth (random permutation)",
+        "summand": "E[height]/ln n → 4.311 (c: c·ln(2e/c)=1)  vs  E[depth]/ln n → 2",
+        "conjectured_mean_closed_form": "the height constant 4.311 is more than 2× the depth constant 2 — a random BST is far taller than deep",
+        "certificate": f"E[height] ≥ E[depth] for all tested n: {monotone}; {seq}",
+        "certificate_verified": monotone,
+        "limit_distribution": {},
+    }
+
+
 def analyse(name: str, pmf_fn, small_ns: list[int], limit_n: int) -> dict:
     means = []
     for n in small_ns:
@@ -615,6 +796,11 @@ def main() -> None:
         ("birthday-problem.json", birthday_result(list(range(1, 9)), 80)),
         ("reservoir-sampling.json", reservoir_result(7, 3)),
         ("fisher-yates-uniformity.json", fisher_yates_result(5)),
+        ("quicksort-nongaussian.json", quicksort_nongaussian_result(list(range(2, 9)), 8)),
+        ("lis-tracy-widom.json", lis_result(list(range(2, 10)), 9)),
+        ("prisoners-100.json", prisoners_result([2, 4, 6, 10, 50, 100], [2, 4, 6])),
+        ("secretary-problem.json", secretary_result([3, 4, 5, 7, 20, 100], 100)),
+        ("random-bst-height.json", bst_height_result(list(range(1, 8)))),
     ]
     for out, r in extras:
         (RESULTS / out).write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")

@@ -289,11 +289,16 @@ fetch('data.json').then(r=>r.json()).then(D=>{
       E('span',{className:'chip',textContent:c.kind})));
     if(c.kind==='distribution'){
       box.append(E('p',{className:'note'}, document.createTextNode('E[cost(n)] ≈ '), E('b',{textContent:c.mean_closed_form})));
-      const bestKey='ks_'+(c.limit||'').split(' ')[0].toLowerCase();
+      const word=(c.limit||'').split(/[ (]/)[0];
+      const bestKey='ks_'+word.toLowerCase();
       const bestKs=(c.ks||{})[bestKey];
+      const ksp=[];
+      if(bestKs!=null && bestKey!=='ks_normal' && bestKey!=='ks_uniform') ksp.push(word+'='+bestKs);
+      if(c.ks_normal!=null) ksp.push('normal='+c.ks_normal);
+      if(c.ks_uniform!=null) ksp.push('uniform='+c.ks_uniform);
       box.append(E('p',{className:'note'}, document.createTextNode('limit law (standardized): '),
         E('b',{textContent:c.limit}),
-        document.createTextNode(bestKs!=null?'  (KS '+bestKs+'; normal='+c.ks_normal+', uniform='+c.ks_uniform+')':'')));
+        document.createTextNode(ksp.length?'  (KS '+ksp.join(', ')+')':'')));
     } else {
       if(c.summand) box.append(E('p',{className:'note',textContent:c.summand}));
       box.append(E('p',{className:'note'}, document.createTextNode('closed form: '), E('b',{textContent:c.mean_closed_form})));

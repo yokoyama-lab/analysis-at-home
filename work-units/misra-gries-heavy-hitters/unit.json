@@ -1,0 +1,34 @@
+{
+  "id": "misra-gries-heavy-hitters",
+  "title": "Misra-Gries: heavy hitters (> n/k) with k-1 counters",
+  "statement_informal": "The Misra-Gries summary generalizes Boyer-Moore: with only k-1 counters it finds every element occurring more than n/k times in one streaming pass (k=2 is majority). On each element: increment if stored, else store if room, else decrement all counts (drop zeros). Guarantee: any m with k*cnt(m) > length keeps a positive counter.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "misra_gries",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "compare",
+      "increment",
+      "decrement"
+    ],
+    "notes": "One fold_left over the stream with a dictionary of <= k-1 (item,count) pairs. The generalized cancellation invariant: cnt x prefix <= getc x dict + D and total dict + k*D = length prefix (D = #decrement steps), so k*D <= length and a > n/k element survives."
+  },
+  "references": [
+    "J. Misra and D. Gries, 'Finding repeated elements' (Science of Computer Programming, 1982).",
+    "Generalizes work-units/boyer-moore-majority (the k=2 case); a building block of streaming heavy-hitters sketches."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

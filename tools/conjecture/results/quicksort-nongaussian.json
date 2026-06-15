@@ -1,0 +1,32 @@
+{
+  "kind": "distribution",
+  "algorithm": "quicksort comparisons — the standardized limit is NOT Gaussian",
+  "small_ns": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "exact_means": [
+    "skew(n=2)=0.0",
+    "skew(n=3)=-0.7071",
+    "skew(n=4)=0.333",
+    "skew(n=5)=0.6923",
+    "skew(n=6)=0.8592",
+    "skew(n=7)=0.9483",
+    "skew(n=8)=0.9999"
+  ],
+  "conjectured_mean_closed_form": "E = 2(n+1)Hₙ − 4n; standardized skewness → ~0.85 (Gaussian = 0)",
+  "limit_n": 8,
+  "limit_mean": "2369/140",
+  "limit_variance": "160599/19600",
+  "limit_distribution": {
+    "law": "non-Gaussian (Quicksort fixed-point law; skewness 0.9999 stays > 0)",
+    "ks_normal": 0.2012,
+    "ks_uniform": 0.1679
+  },
+  "histogram_at_limit_n": " 13 | ██████████ 1680\n 14 | █████████████████████████████████████████████ 7280\n 15 | █████████████████████████████████████ 6048\n 16 | ██████████████████████████████████████████████████ 8176\n 17 | █████████ 1392\n 18 | ███████████████████████████████████ 5664\n 19 | ██████████████████ 2976\n 20 | ███████████████ 2400\n 21 | ███████ 1120\n 22 | ███████████ 1760\n 23 | ███ 544\n 24 | ████ 640\n 25 | ██ 256\n 26 | █ 192\n 27 |  64\n 28 | █ 128"
+}

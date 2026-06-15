@@ -18,6 +18,10 @@ conjecture-track result whose mean is (or could be) promoted to a theorem.
 | Build-heap (Floyd) | Vol 3 §5.2.3 | `build-heap-linear` | ✅ Σ heights ≤ n ⇒ O(n) |
 | Dynamic array (table doubling) | CLRS §17.4 | `dynamic-array-amortized` | ✅ n pushes ≤ 3n (amortized O(1)) |
 | Boyer-Moore majority (MJRTY) | — | `boyer-moore-majority` | ✅ strict majority found, O(1) space |
+| Misra-Gries heavy hitters | SCP 1982 | `misra-gries-heavy-hitters` | ✅ every > n/k element kept with k-1 counters |
+| XOR single-number | folklore | `xor-single-number` | ✅ lone element via one XOR fold, O(1) space |
+| Floyd cycle detection | Vol 2 §3.1 | `floyd-cycle-detection` | ✅ tortoise & hare meet, O(1) memory |
+| Kadane max subarray | Prog. Pearls | `kadane-max-subarray` | ✅ max subarray sum in O(n) |
 | Finding the maximum (Algorithm M) | Vol 1 §1.2.10 | `algorithm-m-maxima` | ✅ worst-case updates ≤ n; 🔬 avg = Hₙ |
 | Horner's rule | Vol 2 §4.6.4 | `horner-multiplications` | ✅ n multiplications |
 | Right-to-left binary exponentiation | Vol 2 §4.6.3 | `fast-exponentiation-mults` | ✅ ≤ 2⌊lg e⌋ mults |

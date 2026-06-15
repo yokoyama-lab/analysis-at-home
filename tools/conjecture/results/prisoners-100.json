@@ -1,0 +1,9 @@
+{
+  "kind": "limit-probability",
+  "algorithm": "100 prisoners problem (pointer-following strategy)",
+  "summand": "P(success) = P(longest cycle ≤ n/2) = 1 − (H_n − H_{n/2})",
+  "conjectured_mean_closed_form": "→ 1 − ln 2 ≈ 0.30685  (vs ≈ 2^−n for independent guessing)",
+  "certificate": "closed form = enumeration for n ∈ [2, 4, 6]; sequence n=2: 0.5000; n=4: 0.4167; n=6: 0.3833; n=10: 0.3544; n=50: 0.3168; n=100: 0.3118",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

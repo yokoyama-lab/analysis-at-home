@@ -1,0 +1,9 @@
+{
+  "kind": "limit-constant",
+  "algorithm": "random BST height vs depth (random permutation)",
+  "summand": "E[height]/ln n → 4.311 (c: c·ln(2e/c)=1)  vs  E[depth]/ln n → 2",
+  "conjectured_mean_closed_form": "the height constant 4.311 is more than 2× the depth constant 2 — a random BST is far taller than deep",
+  "certificate": "E[height] ≥ E[depth] for all tested n: True; n=1: E[height]=0.000, E[depth]=0.000; n=2: E[height]=1.000, E[depth]=0.500; n=3: E[height]=1.667, E[depth]=0.889; n=4: E[height]=2.333, E[depth]=1.208; n=5: E[height]=2.800, E[depth]=1.480; n=6: E[height]=3.267, E[depth]=1.717; n=7: E[height]=3.670, E[depth]=1.927",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

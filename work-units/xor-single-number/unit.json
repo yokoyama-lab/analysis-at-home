@@ -1,0 +1,32 @@
+{
+  "id": "xor-single-number",
+  "title": "XOR single-number: find the lone element in O(1) space",
+  "statement_informal": "In a list where one value appears once and every other value appears in pairs, a single left-to-right XOR fold recovers the lone value, in O(1) extra space. Relies on XOR being commutative/associative (order-independent, proved as Permutation-invariance) and self-cancelling (x XOR x = 0).",
+  "domain": "bitwise",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "single_number",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "xor"
+    ],
+    "notes": "xorsum = fold_right Nat.lxor 0. One pass, O(1) space. Correctness via xorsum_perm (Permutation invariance from lxor comm/assoc) and xorsum_dup (l++l cancels to 0)."
+  },
+  "references": [
+    "Folklore bit-trick / common interview problem ('Single Number'): XOR all elements; pairs cancel, the unique one remains.",
+    "The XOR analogue of the Boyer-Moore one-pass O(1)-space idea (work-units/boyer-moore-majority)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

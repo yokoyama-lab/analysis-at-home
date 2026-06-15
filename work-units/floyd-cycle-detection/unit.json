@@ -1,0 +1,32 @@
+{
+  "id": "floyd-cycle-detection",
+  "title": "Floyd's tortoise-and-hare: cycle detection in O(1) memory",
+  "statement_informal": "Floyd detects a cycle in the orbit x, f(x), f(f(x)), ... with two pointers (one twice as fast) and O(1) memory. Whenever the orbit repeats a value (guaranteed by pigeonhole for finite reachable sets), there is a step m>=1 at which tortoise (m steps) and hare (2m steps) coincide. No visited set is stored.",
+  "domain": "graphs",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "floyd_meeting",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "apply"
+    ],
+    "notes": "Two pointers, O(1) space. From a collision iter f i x = iter f j x (i<j), the orbit is periodic with period j-i from index i; choosing m = (i+1)(j-i) (a multiple of the period, >= i) gives iter f m x = iter f (2m) x."
+  },
+  "references": [
+    "R. W. Floyd, cycle-finding ('tortoise and hare'); Knuth TAOCP Vol. 2 §3.1 ex. 6 discusses the same periodicity (mu, lambda).",
+    "A collision is guaranteed by pigeonhole whenever the reachable set is finite."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

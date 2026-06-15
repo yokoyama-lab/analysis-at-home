@@ -1,0 +1,33 @@
+{
+  "id": "kadane-max-subarray",
+  "title": "Kadane's algorithm: maximum subarray sum in O(n)",
+  "statement_informal": "Kadane computes the maximum contiguous-subarray sum in one linear pass, although there are Theta(n^2) subarrays. Running variables cur (max prefix sum ending here, >=0) and best (max over all subarrays so far). Correctness: best l is an upper bound on every contiguous subarray's sum AND equals some subarray's sum — i.e. exactly the maximum.",
+  "domain": "arrays",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "kadane_correct",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "add",
+      "max"
+    ],
+    "notes": "One pass: cur (x::r) = max 0 (x + cur r), best (x::r) = max (cur (x::r)) (best r); O(1) work per element. Spec over Z: window i k l = firstn k (skipn i l); best is the max of Zsum over all windows."
+  },
+  "references": [
+    "J. Bentley, Programming Pearls — the maximum-subarray problem; Kadane's linear scan.",
+    "A linear-time dynamic program for a problem with quadratically many subarrays."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

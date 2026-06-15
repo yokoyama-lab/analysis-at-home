@@ -1,0 +1,34 @@
+{
+  "kind": "distribution",
+  "algorithm": "longest increasing subsequence (random permutation)",
+  "small_ns": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9
+  ],
+  "exact_means": [
+    "E[LIS]/√2=1.061",
+    "E[LIS]/√3=1.155",
+    "E[LIS]/√4=1.208",
+    "E[LIS]/√5=1.248",
+    "E[LIS]/√6=1.282",
+    "E[LIS]/√7=1.310",
+    "E[LIS]/√8=1.333",
+    "E[LIS]/√9=1.353"
+  ],
+  "conjectured_mean_closed_form": "E[LIS] ~ 2·√n (Vershik-Kerov / Logan-Shepp)",
+  "limit_n": 9,
+  "limit_mean": "163673/40320",
+  "limit_variance": "1215095951/1625702400",
+  "limit_distribution": {
+    "law": "Tracy-Widom (random-matrix law, skewness 0.354; non-Gaussian)",
+    "ks_normal": 0.2488,
+    "ks_uniform": 0.2413
+  },
+  "histogram_at_limit_n": "  1 |  1\n  2 | █ 4861\n  3 | ███████████████████████████ 89497\n  4 | ██████████████████████████████████████████████████ 167449\n  5 | █████████████████████████ 83029\n  6 | █████ 16465\n  7 |  1513\n  8 |  64\n  9 |  1"
+}

@@ -87,6 +87,20 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 ### Amortized / data structures
 - ✅ `binary-counter-increments` (amortized O(1)); `dynamic-array-amortized` — table doubling, n pushes cost `<= 3n` (potential method, Phi = 2·size − capacity).
 
+### Surprising-result batch (counter-intuitive cost/correctness)
+*Verified (Rocq, axiom-free):*
+- ✅ `xor-single-number` — the lone element among pairs via one XOR fold, **O(1) space** (Permutation-invariance + self-cancellation).
+- ✅ `floyd-cycle-detection` — tortoise & hare **meet** with **O(1) memory** (periodicity from any orbit collision).
+- ✅ `kadane-max-subarray` — maximum subarray sum in **O(n)** though there are Θ(n²) subarrays (best is an upper bound on every window and is attained).
+- ✅ `misra-gries-heavy-hitters` — every element above `n/k` is kept with only **k-1 counters** (generalized Boyer-Moore cancellation).
+
+*Computed (conjecture track) — surprising constants / non-Gaussian limit laws:*
+- 🔬 `prisoners-100` — pointer-following survival `→ 1 − ln 2 ≈ 0.307` (vs `~2⁻ⁿ` random); closed form `= n!`-enumeration for small n.
+- 🔬 `secretary-problem` — the 37% rule: optimal stop at `r ≈ n/e`, success `→ 1/e ≈ 0.368`.
+- 🔬 `quicksort-nongaussian` — Quicksort's standardized comparison count does **not** converge to a Gaussian (skewness stays > 0).
+- 🔬 `lis-tracy-widom` — longest increasing subsequence `~ 2√n`, **Tracy-Widom** (random-matrix) limit.
+- 🔬 `random-bst-height` — expected **height** `~ 4.311 ln n`, more than double the depth constant `2`.
+
 ### Graphs & strings (§7.4 etc.)
 - ✅ `warshall-operations` (V³), `dp-table-fill` (LCS/edit/matrix-chain n·m), `prefix-match-comparisons` (naive-match core).
 - ✅ `graph-edge-count` — adjacency entries = #edges (the E in O(V+E); graph domain opened).
