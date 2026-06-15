@@ -1,0 +1,9 @@
+{
+  "kind": "limit-constant",
+  "algorithm": "returns to the origin of a simple random walk (2n steps)",
+  "summand": "E[#returns] = Σ_{k=1}^n C(2k,k)/4^k ~ 2·√(n/π)",
+  "conjectured_mean_closed_form": "~ 2·√(n/π) — the walk revisits 0 about √n times (recurrent: infinitely often as n→∞)",
+  "certificate": "exact expected #returns by enumeration of all 2^(2n) paths: n=1: E[returns]=0.500 (2√(n/π)=1.128); n=2: E[returns]=0.875 (2√(n/π)=1.596); n=3: E[returns]=1.188 (2√(n/π)=1.954); n=4: E[returns]=1.461 (2√(n/π)=2.257); n=5: E[returns]=1.707 (2√(n/π)=2.523); n=6: E[returns]=1.933 (2√(n/π)=2.764); n=7: E[returns]=2.142 (2√(n/π)=2.985); n=8: E[returns]=2.338 (2√(n/π)=3.192)",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

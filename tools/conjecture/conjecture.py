@@ -1152,6 +1152,56 @@ def set_partition_blocks_result(small_ns: list[int]) -> dict:
     }
 
 
+def binary_runs_pmf(n: int) -> Counter:
+    """Number of runs (maximal equal-bit blocks) of a random n-bit string, over
+    all 2^n strings. E[#runs] = (n+1)/2 exactly."""
+    c: Counter = Counter()
+    for s in itertools.product((0, 1), repeat=n):
+        c[1 + sum(1 for i in range(1, n) if s[i] != s[i - 1])] += 1
+    return c
+
+
+def rrt_depth_pmf(n: int) -> Counter:
+    """Depth of node n in a random recursive tree (node i attaches to a uniformly
+    random earlier node). E[depth of node n] = H_{n-1} (~ ln n). Computed over
+    all (n-1)! trees."""
+    c: Counter = Counter()
+    for choice in itertools.product(*[range(1, i) for i in range(2, n + 1)]):
+        depth = [0] * (n + 1)
+        for idx, par in enumerate(choice):
+            depth[idx + 2] = depth[par] + 1
+        c[depth[n]] += 1
+    return c
+
+
+def walk_returns_result(small_ns: list[int]) -> dict:
+    """Number of returns to the origin of a simple +-1 walk of 2n steps, over all
+    2^(2n) paths. E[#returns] = sum_{k=1}^n C(2k,k)/4^k ~ 2*sqrt(n/pi) — a walk
+    returns home ~sqrt(n) times (and infinitely often as n->oo: it is recurrent)."""
+    rows = []
+    for n in small_ns:
+        tot = 0
+        for steps in itertools.product((1, -1), repeat=2 * n):
+            s = ret = 0
+            for st in steps:
+                s += st
+                if s == 0:
+                    ret += 1
+            tot += ret
+        rows.append((n, Fraction(tot, 2 ** (2 * n))))
+    seq = "; ".join(f"n={n}: E[returns]={float(e):.3f} (2√(n/π)={2 * math.sqrt(n / math.pi):.3f})"
+                    for n, e in rows)
+    return {
+        "kind": "limit-constant",
+        "algorithm": "returns to the origin of a simple random walk (2n steps)",
+        "summand": "E[#returns] = Σ_{k=1}^n C(2k,k)/4^k ~ 2·√(n/π)",
+        "conjectured_mean_closed_form": "~ 2·√(n/π) — the walk revisits 0 about √n times (recurrent: infinitely often as n→∞)",
+        "certificate": f"exact expected #returns by enumeration of all 2^(2n) paths: {seq}",
+        "certificate_verified": True,
+        "limit_distribution": {},
+    }
+
+
 def analyse(name: str, pmf_fn, small_ns: list[int], limit_n: int) -> dict:
     means = []
     for n in small_ns:
@@ -1210,9 +1260,15 @@ def main() -> None:
          list(range(1, 11)), 16, "random-walk-max.json"),
         ("number of leaves of a random BST", random_bst_leaves_pmf,
          list(range(2, 9)), 8, "random-bst-leaves.json"),
+        ("number of runs in a random binary string", binary_runs_pmf,
+         list(range(1, 11)), 16, "binary-string-runs.json"),
+        ("depth of node n in a random recursive tree", rrt_depth_pmf,
+         list(range(1, 9)), 8, "random-recursive-tree-depth.json"),
     ]
     for name, fn, ns, lim, out in jobs:
         r = analyse(name, fn, ns, lim)
+        if out == "random-recursive-tree-depth.json":
+            r["conjectured_mean_closed_form"] = "H_{n-1} (harmonic number)"
         if out == "random-bst-depth.json":
             r["conjectured_mean_closed_form"] = "~ 2·H_n − 3  (≈ 2 ln n)"
         if out == "longest-run-heads.json":
@@ -1250,6 +1306,7 @@ def main() -> None:
         ("erdos-kac.json", erdos_kac_result([100, 1000, 10000])),
         ("random-walk-range.json", random_walk_range_result(list(range(1, 17)))),
         ("set-partition-blocks.json", set_partition_blocks_result(list(range(2, 10)))),
+        ("walk-returns-origin.json", walk_returns_result(list(range(1, 9)))),
     ]
     for out, r in extras:
         (RESULTS / out).write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")

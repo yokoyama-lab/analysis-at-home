@@ -154,6 +154,16 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 - 🔬 `random-walk-range` — distinct sites a ±1 walk visits in n steps `~ √(8n/π)` ≈ `1.596√n` (only `Θ(√n)` of the line).
 - 🔬 `set-partition-blocks` — blocks of a uniform random set partition of `[n]` `~ n/ln n` (Bell-weighted).
 
+### Reversal/increment correctness + runs/walk/recursive-tree batch
+*Verified (Rocq, axiom-free):*
+- ✅ `rev-append-correct` — the linear tail-recursive reversal `fast_rev = rev` (`rapp l acc = rev l ++ acc`).
+- ✅ `binary-increment-correct` — ripple-carry `inc` adds one: `from_bits (inc l) = S (from_bits l)` (correctness companion to `binary-counter-increments`).
+
+*Computed (conjecture track):*
+- 🔬 `binary-string-runs` — runs in a random n-bit string, `E = (n+1)/2` **exactly** (twin job).
+- 🔬 `random-recursive-tree-depth` — depth of node n, `E = H_{n−1}` (≈ ln n) **exactly** (twin job).
+- 🔬 `walk-returns-origin` — returns to 0 of a 2n-step ±1 walk `~ 2√(n/π)` (recurrent: infinitely often as n→∞).
+
 ### Graphs & strings (§7.4 etc.)
 - ✅ `warshall-operations` (V³), `dp-table-fill` (LCS/edit/matrix-chain n·m), `prefix-match-comparisons` (naive-match core).
 - ✅ `graph-edge-count` — adjacency entries = #edges (the E in O(V+E); graph domain opened).

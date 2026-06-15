@@ -1,0 +1,31 @@
+{
+  "id": "rev-append-correct",
+  "title": "Tail-recursive list reversal (accumulator) is correct",
+  "statement_informal": "The O(n) list reversal via an accumulator is correct: rapp l acc = rev l ++ acc, hence fast_rev l = rapp l [] = rev l. (The naive rev is quadratic through ++; this is the linear tail-recursive one.)",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "fast_rev_correct",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "cons"
+    ],
+    "notes": "rapp does one cons per element (linear, tail-recursive). Correctness via rapp l acc = rev l ++ acc (induction + app_assoc), then app_nil_r."
+  },
+  "references": [
+    "The accumulator (tail-recursive) list reversal — linear, vs the naive O(n^2) rev built from append."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

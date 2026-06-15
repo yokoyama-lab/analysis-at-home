@@ -1,0 +1,31 @@
+{
+  "id": "binary-increment-correct",
+  "title": "Binary counter increment adds exactly one",
+  "statement_informal": "Incrementing a little-endian binary counter adds one. inc ripples the carry: a 0 bit flips to 1 and stops; a 1 bit flips to 0 and carries on. Reading the bits back (Horner base 2): from_bits (inc l) = S (from_bits l). Correctness companion to binary-counter-increments (its amortized O(1) cost).",
+  "domain": "bitwise",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "inc_correct",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "bit-flip"
+    ],
+    "notes": "inc flips bits until the first 0 (ripple carry). Correctness from_bits (inc l) = S (from_bits l) by induction (case on the low bit), closed by lia."
+  },
+  "references": [
+    "Binary counter increment (TAOCP Vol. 4A). Correctness (value + 1); amortized cost is work-units/binary-counter-increments."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
