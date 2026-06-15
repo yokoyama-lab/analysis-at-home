@@ -75,6 +75,7 @@ def collect() -> dict:
                 decomps[unit["id"]] = json.loads(dec.read_text(encoding="utf-8"))
             units.append({
                 "id": unit["id"], "title": unit["title"],
+                "domain": unit.get("domain", ""),
                 "claim_kind": unit.get("claim_kind", ""),
                 "expected_theorem": unit.get("expected_theorem", ""),
                 "cost_model": unit.get("cost_model", {}),
@@ -109,118 +110,177 @@ def collect() -> dict:
                 "artifact": rel,
                 "twin": twin.get(rel),
             })
+    # aggregate breakdowns for the at-a-glance summary
+    from collections import Counter
+    domains = Counter(u["domain"] for u in units if u["domain"])
+    kinds = Counter(u["claim_kind"] for u in units if u["claim_kind"])
+    # a unit is "rocq-verified" if its rocq target is verified (the anchor backend)
+    rocq_verified = sum(1 for u in units if u["status"].get("rocq") == "verified")
     return {
         "repo": OWNER_REPO, "backends": BACKENDS, "units": units,
         "open_jobs": open_jobs, "decompositions": decomps, "leaf_jobs": leaf_jobs,
         "conjectures": conjectures,
+        "domains": sorted(domains.items(), key=lambda kv: -kv[1]),
+        "claim_kinds": sorted(kinds.items(), key=lambda kv: -kv[1]),
         "stats": {"targets": total, "verified": verified, "open": total - verified,
-                  "leaves": len(leaf_jobs)},
+                  "leaves": len(leaf_jobs), "units": len(units),
+                  "rocq_verified": rocq_verified},
     }
 
 
 PAGE = """<!doctype html>
 <html lang="en"><head><meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>analysis@home — contribute a proof</title>
+<title>analysis@home — machine-checked algorithm analysis</title>
+<meta name="description" content="A crowdsourced corpus of kernel-verified theorems about algorithm correctness AND cost. Bring your own LLM, prove an open job, the proof assistant re-checks every line. Verified, not trusted."/>
 <style>
-:root{color-scheme:light dark}
+:root{color-scheme:light dark; --accent:#3fa34d; --line:#8884}
 *{box-sizing:border-box}
-body{font:16px/1.6 system-ui,sans-serif;max-width:920px;margin:2rem auto;padding:0 1rem}
-h1{margin:.2rem 0}.tag{color:#888;margin:.2rem 0 1rem}
-.bar{height:10px;background:#0002;border-radius:5px;overflow:hidden;margin:.4rem 0}
-.bar>i{display:block;height:100%;background:#4caf50}
-table{border-collapse:collapse;width:100%;margin:.5rem 0}
-th,td{border:1px solid #8883;padding:.3rem .5rem;text-align:center}
+body{font:16px/1.6 system-ui,sans-serif;max-width:960px;margin:0 auto;padding:1.5rem 1rem 4rem}
+a{color:#2a7ae2}
+h1{margin:.2rem 0;font-size:2rem}
+h2{margin:2rem 0 .4rem;border-bottom:1px solid var(--line);padding-bottom:.25rem}
+.tag{font-size:1.15rem;color:#777;margin:.1rem 0 .8rem}
+.lead{font-size:1.03rem;max-width:66ch}
+.cta{display:inline-block;margin:.4rem .4rem .2rem 0;padding:.55rem .95rem;border-radius:8px;font-weight:600;text-decoration:none}
+.cta.primary{background:var(--accent);color:#fff}
+.cta.ghost{border:1px solid var(--line);color:inherit}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:.6rem;margin:1.1rem 0 .4rem}
+.card{border:1px solid var(--line);border-radius:10px;padding:.7rem .5rem;text-align:center}
+.card b{display:block;font-size:1.8rem;line-height:1.1;color:var(--accent)}
+.card span{font-size:.78rem;color:#888}
+.bar{height:9px;background:#0002;border-radius:5px;overflow:hidden;margin:.5rem 0}
+.bar>i{display:block;height:100%;background:var(--accent)}
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.6rem;margin:.6rem 0}
+.step{border:1px solid var(--line);border-radius:10px;padding:.7rem .8rem}
+.step b{color:var(--accent)}
+.callout{border-left:3px solid var(--accent);padding:.3rem .9rem;margin:.7rem 0;background:rgba(63,163,77,.08);border-radius:0 6px 6px 0}
+.chips{margin:.3rem 0 .6rem}
+.chip2{display:inline-block;margin:.15rem;padding:.2rem .6rem;border:1px solid var(--line);border-radius:14px;font-size:.86em}
+.chip2 b{color:var(--accent)}
+table{border-collapse:collapse;width:100%;margin:.5rem 0;font-size:.92em}
+th,td{border:1px solid var(--line);padding:.25rem .5rem;text-align:center}
 th:first-child,td:first-child{text-align:left}
-.ok{color:#4caf50;font-weight:700}.open{color:#e09b00}
-.job{border:1px solid #8884;border-radius:8px;padding:.6rem .8rem;margin:.5rem 0}
-.job h3{margin:.1rem 0}.chip{display:inline-block;font-size:.8em;padding:.05rem .4rem;border:1px solid #8886;border-radius:6px;margin-left:.3rem}
-button,a.btn{font:inherit;padding:.35rem .7rem;border:1px solid #8886;border-radius:6px;background:none;cursor:pointer;text-decoration:none;color:inherit}
+.ok{color:var(--accent);font-weight:700}.open{color:#e09b00}
+.job{border:1px solid var(--line);border-radius:8px;padding:.6rem .8rem;margin:.5rem 0}
+.job h3{margin:.1rem 0;font-size:1rem}
+.chip{display:inline-block;font-size:.78em;padding:.05rem .4rem;border:1px solid var(--line);border-radius:6px;margin-left:.3rem;color:#888}
+button,a.btn{font:inherit;padding:.35rem .7rem;border:1px solid var(--line);border-radius:6px;background:none;cursor:pointer;text-decoration:none;color:inherit}
 pre{background:#0001;padding:.6rem;border-radius:6px;overflow:auto;white-space:pre-wrap;max-height:340px;font-size:.85em}
-details{margin:.3rem 0}.note{font-size:.85em;color:#888}
-.leaf{display:inline-block;margin:.12rem;padding:.15rem .45rem;border:1px solid #8884;border-radius:6px;font-size:.85em}
-.leaf.good{border-color:#4caf50;color:#4caf50}
+details{margin:.5rem 0;border:1px solid var(--line);border-radius:8px;padding:.35rem .7rem}
+details>summary{cursor:pointer;font-weight:600}
+.note{font-size:.88em;color:#888}
+.leaf{display:inline-block;margin:.12rem;padding:.15rem .45rem;border:1px solid var(--line);border-radius:6px;font-size:.85em}
+.leaf.good{border-color:var(--accent);color:var(--accent)}
+#mfilter{font:inherit;padding:.35rem .55rem;border:1px solid var(--line);border-radius:6px;width:100%;max-width:340px;margin:.3rem 0}
 </style></head><body>
+
 <h1>analysis@home</h1>
-<p class="tag"><b>Spare AI, turned into proven math.</b> Pick an open job, prove
-it with your own LLM, open a PR — the kernel re-checks every line. <i>Verified,
-not trusted.</i></p>
+<p class="tag"><b>Spare AI, turned into proven math.</b></p>
+<p class="lead">A crowdsourced corpus of <b>machine-checked theorems about algorithms</b> —
+not just that they're correct, but <b>how fast they run</b>: worst-, best- and
+average-case cost, even the limiting distribution. Every proof is re-checked line
+by line by a proof-assistant <b>kernel</b> (Rocq/Coq, Lean, Agda, Isabelle). Bring
+your own LLM, prove an open job, open a PR — CI runs the kernel.
+<b>Verified, not trusted.</b></p>
+<p>
+  <a class="cta primary" href="#contribute">Contribute a proof →</a>
+  <a class="cta ghost" id="cta-repo" href="#">GitHub repo</a>
+</p>
 
-<h2>Progress</h2>
-<p><b id="pv">0</b>/<b id="pt">0</b> backend targets kernel-verified
-(<span id="po">0</span> open).</p>
+<div class="cards" id="cards"></div>
 <div class="bar"><i id="pbar" style="width:0%"></i></div>
+<p class="note"><span id="pv">0</span>/<span id="pt">0</span> backend targets
+kernel-verified across <span id="pb">4</span> proof assistants.</p>
 
-<h2>Verification matrix</h2>
-<div id="matrix"></div>
+<h2>How it works (30 seconds)</h2>
+<div class="steps">
+  <div class="step"><b>1 · Pick a job.</b> An open theorem about an algorithm's cost
+    or correctness, with a ready-to-paste prompt.</div>
+  <div class="step"><b>2 · Prove it.</b> Paste the prompt into your own LLM
+    (Claude, …); take the proof it returns.</div>
+  <div class="step"><b>3 · Kernel checks.</b> Open a PR. CI runs the proof assistant;
+    if every line holds it's merged and you're credited.</div>
+</div>
+<div class="callout">The server never runs an LLM and never sees your credentials.
+The <b>kernel</b> does the believing — so anyone (or anything) can contribute and
+nobody has to be trusted.</div>
 
-<h2>Conjecture track — computed, <i>not</i> trusted</h2>
-<p class="note">Two tracks. The <b>conjecture track</b> (pure-Python computer
-algebra + exhaustive enumeration) <i>computes</i> the cost distribution, guesses a
-closed form for the expected cost <code>E[cost(n)]</code>, and fits the limiting
-law of the standardized cost. None of it is trusted. The <b>verify track</b>
-promotes the provable part — the exact mean — to a kernel-checked theorem. The
-limit law stays a conjecture (an open challenge). Worst-, best- and average-case
-all live in the matrix above.</p>
-<div id="conjectures"></div>
+<h2>What's proven so far</h2>
+<p class="note">By cost claim:</p>
+<div class="chips" id="kinds"></div>
+<p class="note">By area:</p>
+<div class="chips" id="domains"></div>
+<p class="note">Spanning sorting &amp; searching, divide-and-conquer recurrences (the
+master-theorem regimes), graph algorithms (BFS/DFS <code>O(V+E)</code>, shortest-path
+relaxation), data structures (AVL, union-by-rank), number theory, and many
+summation identities — all kernel-verified.</p>
 
-<h2>Open jobs — pick one</h2>
-<p class="note">Each is a port of a proven theorem to another proof assistant.
-Copy the prompt into your own LLM (Claude, …), then <b>Create a PR</b> with the
-result. Locally you can self-check first:
-<code>verifier/verify.sh &lt;backend&gt; &lt;file&gt; &lt;theorem&gt;</code>.</p>
+<h2>Two tracks: compute, then prove</h2>
+<p class="note">The <b>conjecture track</b> (pure-Python computer algebra + exhaustive
+enumeration) <i>computes</i> the cost distribution and its limiting law — fast, but
+<b>not trusted</b>. The <b>verify track</b> promotes the provable part (the exact
+mean) to a kernel-checked theorem. <span id="twoex"></span></p>
+<details><summary>Computed distributions &amp; limit laws (not trusted)</summary>
+  <div id="conjectures"></div>
+</details>
+
+<h2 id="contribute">Pick an open job</h2>
+<p class="note">Each is a port of a kernel-verified theorem to another proof
+assistant. Copy the prompt into your LLM, then <b>Create a PR</b>. Showing the
+first 30 of <span id="ojc">0</span> open jobs.</p>
 <div id="jobs"></div>
 
-<h2>Bite-sized leaves — good first</h2>
-<p class="note">Hard theorems are split into small, independently kernel-checked
-<b>leaves</b> (★ = difficulty, green = ★1–2). A great first contribution is to
-port one of these small lemmas to another backend. <b id="lc">0</b> leaves in all.</p>
-<div id="leaves"></div>
+<h2>Full verification matrix</h2>
+<input id="mfilter" placeholder="filter units…  (e.g. quicksort, graph, fibonacci)"/>
+<details><summary>Show all <span id="uc">0</span> units &times; 4 backends</summary>
+  <div id="matrix"></div>
+</details>
 
-<h2>How decomposition works</h2>
-<p class="note">Many small proofs assemble into the whole — these examples show
-the leaf structure per theorem.</p>
-<div id="decomp"></div>
+<details><summary>Bite-sized leaves (good first contributions) — <span id="lc">0</span></summary>
+  <p class="note">Hard theorems are split into small, independently kernel-checked
+  <b>leaves</b> (★ = difficulty, green = ★1–2).</p>
+  <div id="leaves"></div>
+  <div id="decomp"></div>
+</details>
 
-<h2>Contribute in 5 minutes</h2>
-<ol>
-<li>Pick an open job above and copy its prompt.</li>
-<li>Paste it into your own LLM; take the proof it returns.</li>
-<li>Click <b>Create a PR</b>, paste the proof, propose the change. CI runs the
-kernel; if it holds, a maintainer merges it and you're credited.</li>
-</ol>
-<p class="note">Credentials never leave your machine. Your contribution is
-licensed Apache-2.0 (code) / CC-BY-4.0 (proofs).
-Repo: <a id="repolink" href="#">GitHub</a>.</p>
+<p class="note" style="margin-top:2rem">Contributions licensed Apache-2.0 (code) /
+CC-BY-4.0 (proofs). Repo: <a id="repolink" href="#">github.com/<span id="reponame"></span></a>.</p>
 
 <script>
 const E=(t,p={},...k)=>{const e=document.createElement(t);Object.assign(e,p);for(const c of k)e.append(c);return e};
 fetch('data.json').then(r=>r.json()).then(D=>{
   const repo='https://github.com/'+D.repo;
-  document.getElementById('repolink').href=repo;
+  for(const id of ['cta-repo','repolink']) document.getElementById(id).href=repo;
+  reponame.textContent=D.repo;
   const s=D.stats;
-  pv.textContent=s.verified;pt.textContent=s.targets;po.textContent=s.open;
+  pv.textContent=s.verified; pt.textContent=s.targets; pb.textContent=D.backends.length;
   pbar.style.width=(s.targets?100*s.verified/s.targets:0)+'%';
 
-  // matrix
-  const tbl=E('table');
-  const head=E('tr',{}, E('th',{textContent:'unit'}));
-  D.backends.forEach(b=>head.append(E('th',{textContent:b})));
-  tbl.append(head);
-  D.units.forEach(u=>{
-    const tr=E('tr',{}, E('td',{}, E('span',{textContent:u.title})));
-    D.backends.forEach(b=>{
-      const has=u.targets.includes(b);
-      const v=u.status[b]==='verified';
-      tr.append(E('td',{className:v?'ok':(has?'open':''),textContent:v?'✓':(has?'open':'—')}));
-    });
-    tbl.append(tr);
-  });
-  matrix.append(tbl);
+  // at-a-glance stat cards
+  const pct=s.targets?Math.round(100*s.verified/s.targets):0;
+  [[s.units,'verified units'],[s.rocq_verified,'Rocq-checked'],[pct+'%','targets verified'],
+   [s.open,'open jobs'],[(D.domains||[]).length,'areas']
+  ].forEach(([n,l])=>document.getElementById('cards').append(
+    E('div',{className:'card'}, E('b',{textContent:String(n)}), E('span',{textContent:l}))));
+
+  // coverage chips
+  const KL={'worst-case':'worst case','best-case':'best case','expected-cost':'average (proven)',
+    'complexity':'complexity','closed-form':'closed form','correctness':'correctness',
+    'distribution':'distribution','limit-law':'limit law'};
+  (D.claim_kinds||[]).forEach(([k,n])=>kinds.append(
+    E('span',{className:'chip2'}, E('b',{textContent:n+' '}), document.createTextNode(KL[k]||k))));
+  (D.domains||[]).forEach(([k,n])=>domains.append(
+    E('span',{className:'chip2'}, E('b',{textContent:n+' '}), document.createTextNode(k))));
+
+  // two-track concrete example
+  const ls=(D.conjectures||[]).find(c=>/linear-search/.test(c.algorithm));
+  if(ls&&ls.twin) twoex.textContent='For example, for linear search the conjecture track computes E[cost] = '
+    +ls.mean_closed_form+' with a '+ls.limit+' limit; the verified twin '+ls.twin.expected_theorem+' proves the mean exactly.';
 
   // conjecture track
   const cj = D.conjectures || [];
-  if(!cj.length) conjectures.append(E('p',{className:'note',textContent:'(run tools/conjecture/conjecture.py to populate)'}));
+  if(!cj.length) conjectures.append(E('p',{className:'note',textContent:'(none yet)'}));
   cj.forEach(c=>{
     const box=E('div',{className:'job'});
     box.append(E('h3',{}, document.createTextNode(c.algorithm),
@@ -254,8 +314,9 @@ fetch('data.json').then(r=>r.json()).then(D=>{
   });
 
   // open jobs
+  ojc.textContent=D.open_jobs.length;
   if(!D.open_jobs.length) jobs.append(E('p',{textContent:'Everything is verified. 🎉'}));
-  D.open_jobs.forEach(j=>{
+  D.open_jobs.slice(0,30).forEach(j=>{
     const box=E('div',{className:'job'});
     box.append(E('h3',{}, document.createTextNode(j.title),
       E('span',{className:'chip',textContent:'['+j.backend+']'}),
@@ -269,6 +330,37 @@ fetch('data.json').then(r=>r.json()).then(D=>{
     row.append(E('a',{className:'btn',href:j.pr_url,target:'_blank',rel:'noopener',textContent:'Create a PR →'}));
     box.append(row);
     jobs.append(box);
+  });
+
+  // full verification matrix
+  uc.textContent=s.units;
+  const SY={verified:['✓','ok'],open:['·','open']};
+  const tbl=E('table'); const thead=E('tr',{}, E('th',{textContent:'unit'}));
+  D.backends.forEach(b=>thead.append(E('th',{textContent:b})));
+  tbl.append(thead);
+  D.units.forEach(u=>{
+    const tags=(u.title+' '+u.id+' '+u.domain+' '+u.claim_kind+' '+u.expected_theorem).toLowerCase();
+    const tr=E('tr',{'data-name':tags});
+    tr.append(E('td',{}, document.createTextNode(u.title),
+      E('span',{className:'chip',textContent:u.claim_kind})));
+    D.backends.forEach(b=>{
+      const td=E('td');
+      if(!(u.targets||[]).includes(b)){ td.textContent='–'; td.className='note'; }
+      else { const v=u.status[b]==='verified'; const [sym,cls]=v?SY.verified:SY.open;
+        td.textContent=sym; td.className=cls; }
+      tr.append(td);
+    });
+    tbl.append(tr);
+  });
+  matrix.append(tbl);
+  mfilter.addEventListener('input',()=>{
+    const q=mfilter.value.toLowerCase().trim();
+    let shown=0;
+    tbl.querySelectorAll('tr[data-name]').forEach(tr=>{
+      const hit=!q||tr.getAttribute('data-name').includes(q);
+      tr.style.display=hit?'':'none'; if(hit)shown++;
+    });
+    uc.textContent=q?shown+' / '+s.units:s.units;
   });
 
   // bite-sized leaves (good first)
