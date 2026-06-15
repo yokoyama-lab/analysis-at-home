@@ -1,9 +1,12 @@
 name: verify-submissions
 # On every PR, kernel-check the proof targets it adds or changes, so "anyone can
 # contribute" stays trustless: a PR only goes green if the kernel accepts the
-# submission. rocq runs in the coq container; lean installs a pinned toolchain.
-# agda/isabelle are heavier — verify them locally with tools/verify_changed.sh
-# (the same script) or on a dedicated runner until wired here.
+# submission AND it proves the same statement as the base (signature-lock, see
+# tools/verify_changed.sh + tools/signature_lock.sh). rocq runs in the coq
+# container; lean/agda/isabelle install a pinned toolchain only when the PR
+# actually touches that backend (the install steps are gated on a changed-files
+# check, so ordinary PRs stay fast). Bump the pinned toolchain versions below as
+# the project's local toolchains move.
 on:
   pull_request:
 
@@ -47,3 +50,52 @@ jobs:
           "$HOME/.elan/bin/lean" --version
       - if: steps.c.outputs.n != '0'
         run: bash tools/verify_changed.sh "origin/${{ github.base_ref }}" lean
+
+  agda:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+      - name: any changed agda targets?
+        id: c
+        run: |
+          n=$(git diff --name-only --diff-filter=AM "origin/${{ github.base_ref }}...HEAD" \
+                | grep -Ec '^work-units/.+/targets/agda/.+\.agda$' || true)
+          echo "n=$n" >> "$GITHUB_OUTPUT"
+      - if: steps.c.outputs.n != '0'
+        name: install Agda + agda-stdlib (pinned)
+        uses: wenkokke/setup-agda@v2
+        with:
+          agda-version: "2.8.0"
+          agda-stdlib-version: "recommended"
+      - if: steps.c.outputs.n != '0'
+        run: bash tools/verify_changed.sh "origin/${{ github.base_ref }}" agda
+
+  isabelle:
+    runs-on: ubuntu-latest
+    env:
+      ISABELLE_VERSION: Isabelle2025
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+      - name: any changed isabelle targets?
+        id: c
+        run: |
+          n=$(git diff --name-only --diff-filter=AM "origin/${{ github.base_ref }}...HEAD" \
+                | grep -Ec '^work-units/.+/targets/isabelle/.+\.thy$' || true)
+          echo "n=$n" >> "$GITHUB_OUTPUT"
+      - if: steps.c.outputs.n != '0'
+        name: install Isabelle (pinned; ships a prebuilt HOL heap)
+        run: |
+          curl -fsSL "https://isabelle.in.tum.de/dist/${ISABELLE_VERSION}_linux.tar.gz" \
+            -o isabelle.tar.gz
+          tar xzf isabelle.tar.gz
+          echo "$PWD/${ISABELLE_VERSION}/bin" >> "$GITHUB_PATH"
+      - if: steps.c.outputs.n != '0'
+        run: |
+          isabelle version
+          bash tools/verify_changed.sh "origin/${{ github.base_ref }}" isabelle
