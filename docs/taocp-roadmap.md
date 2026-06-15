@@ -13,6 +13,11 @@ conjecture-track result whose mean is (or could be) promoted to a theorem.
 | Algorithm | TAOCP | Unit | Claim |
 |---|---|---|---|
 | Euclid (Algorithm E) | Vol 1 §1.1, Vol 2 §4.5.2 | `euclid-gcd` | ✅ steps ≤ b; gcd correct |
+| Lamé's theorem (tight Euclid) | Vol 2 §4.5.3 | `lame-theorem` | ✅ n steps ⇒ b ≥ F(n+1), a ≥ F(n+2) |
+| Comparison-sort lower bound | Vol 3 §5.3.1 | `comparison-sort-lower-bound` | ✅ height ≥ lg(n!) = Ω(n log n) |
+| Build-heap (Floyd) | Vol 3 §5.2.3 | `build-heap-linear` | ✅ Σ heights ≤ n ⇒ O(n) |
+| Dynamic array (table doubling) | CLRS §17.4 | `dynamic-array-amortized` | ✅ n pushes ≤ 3n (amortized O(1)) |
+| Boyer-Moore majority (MJRTY) | — | `boyer-moore-majority` | ✅ strict majority found, O(1) space |
 | Finding the maximum (Algorithm M) | Vol 1 §1.2.10 | `algorithm-m-maxima` | ✅ worst-case updates ≤ n; 🔬 avg = Hₙ |
 | Horner's rule | Vol 2 §4.6.4 | `horner-multiplications` | ✅ n multiplications |
 | Right-to-left binary exponentiation | Vol 2 §4.6.3 | `fast-exponentiation-mults` | ✅ ≤ 2⌊lg e⌋ mults |

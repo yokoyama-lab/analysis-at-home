@@ -1,0 +1,32 @@
+{
+  "id": "boyer-moore-majority",
+  "title": "Boyer-Moore majority vote: O(n) time, O(1) space, correct",
+  "statement_informal": "The Boyer-Moore majority vote finds a strict majority element in one left-to-right pass using only a candidate and a counter (O(1) space). Correctness: if some m occurs in more than half the list (length l < 2*cnt m l) then the final candidate equals m. Proved via the cancellation invariant.",
+  "domain": "lists",
+  "claim_kind": "correctness",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "boyer_moore_majority",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "One fold_left over the list; each step does O(1) work with a single (candidate,count) pair. The correctness invariant is (A) forall x<>c, 2*cnt x prefix + count <= length prefix; (B) 2*cnt c prefix <= length prefix + count, maintained by rev_ind."
+  },
+  "references": [
+    "R. Boyer and J. Moore, 'MJRTY — A Fast Majority Vote Algorithm' (1981/1991).",
+    "The O(1)-space streaming majority element; the verify-track companion to the average/distribution units on selection."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

@@ -104,6 +104,7 @@ def collect() -> dict:
                 "certificate": r.get("certificate", ""),
                 "certificate_verified": r.get("certificate_verified"),
                 "limit": ld.get("law", ""),
+                "ks": ld,
                 "ks_normal": ld.get("ks_normal"),
                 "ks_uniform": ld.get("ks_uniform"),
                 "histogram": r.get("histogram_at_limit_n", ""),
@@ -288,8 +289,11 @@ fetch('data.json').then(r=>r.json()).then(D=>{
       E('span',{className:'chip',textContent:c.kind})));
     if(c.kind==='distribution'){
       box.append(E('p',{className:'note'}, document.createTextNode('E[cost(n)] ≈ '), E('b',{textContent:c.mean_closed_form})));
-      box.append(E('p',{className:'note',textContent:'limit law (standardized): '+c.limit
-        +'  (KS: normal='+c.ks_normal+', uniform='+c.ks_uniform+')'}));
+      const bestKey='ks_'+(c.limit||'').split(' ')[0].toLowerCase();
+      const bestKs=(c.ks||{})[bestKey];
+      box.append(E('p',{className:'note'}, document.createTextNode('limit law (standardized): '),
+        E('b',{textContent:c.limit}),
+        document.createTextNode(bestKs!=null?'  (KS '+bestKs+'; normal='+c.ks_normal+', uniform='+c.ks_uniform+')':'')));
     } else {
       if(c.summand) box.append(E('p',{className:'note',textContent:c.summand}));
       box.append(E('p',{className:'note'}, document.createTextNode('closed form: '), E('b',{textContent:c.mean_closed_form})));

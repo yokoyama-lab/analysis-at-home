@@ -1,0 +1,33 @@
+{
+  "id": "build-heap-linear",
+  "title": "Floyd's build-heap is O(n) (TAOCP Vol. 3 §5.2.3)",
+  "statement_informal": "Sift-down at a node of height j costs O(j); summed over a perfect binary tree of height h, the total work is the sum of all node heights, which is LINEAR in the node count: sheight h + h + 1 = nodes h, so sheight h <= nodes h ~ n. Build-heap is O(n), not O(n log n).",
+  "domain": "sorting",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "build_heap_identity",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison",
+      "swap"
+    ],
+    "notes": "sheight h = total sift-down work over a perfect tree of height h, sheight (S h') = S h' + 2*sheight h'. nodes h = 2^(h+1)-1. The closed identity sheight h + h + 1 = nodes h (proved by structural induction) shows total work <= n."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.2.3 — Floyd's bottom-up heap construction runs in linear time; the sum of node heights in a complete tree is O(n).",
+    "The geometric series sum_{j>=1} j/2^j = 2 underlies the bound."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

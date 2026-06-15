@@ -235,6 +235,60 @@ def uniform_cdf(x: float) -> float:  # standardized Uniform(-√3, √3): mean 0
     return min(1.0, max(0.0, (x + a) / (2 * a)))
 
 
+_EULER = 0.5772156649015329  # Euler-Mascheroni gamma
+
+
+def gumbel_cdf(x: float) -> float:  # standardized Gumbel (maxima): mean γ, var π²/6
+    sd = math.pi / math.sqrt(6)
+    return math.exp(-math.exp(-(_EULER + sd * x)))
+
+
+def rayleigh_cdf(x: float) -> float:  # standardized Rayleigh(σ=1): mean √(π/2), var (4-π)/2
+    mean = math.sqrt(math.pi / 2)
+    sd = math.sqrt((4 - math.pi) / 2)
+    t = mean + sd * x
+    return 0.0 if t <= 0 else 1.0 - math.exp(-t * t / 2)
+
+
+_LAWS = {"normal (Gaussian)": normal_cdf, "uniform": uniform_cdf,
+         "Gumbel (extreme value)": gumbel_cdf, "Rayleigh": rayleigh_cdf}
+
+
+def ks_weighted_to_cdf(values: list[float], probs: list[float], cdf) -> float:
+    """KS distance of a weighted empirical distribution to a standardized cdf."""
+    order = sorted(range(len(values)), key=lambda i: values[i])
+    cum = 0.0
+    d = 0.0
+    for i in order:
+        below = cum
+        cum += probs[i]
+        c = cdf(values[i])
+        d = max(d, abs(cum - c), abs(below - c))
+    return d
+
+
+def limit_fit_pmf(value_probs: list[tuple[float, float]], laws: list[str]) -> dict:
+    """Fit the standardized pmf (list of (value, prob)) to the named candidate
+    laws; report the best (smallest KS) and every candidate's KS."""
+    tot = sum(p for _, p in value_probs)
+    vp = [(v, p / tot) for v, p in value_probs]
+    mu = sum(v * p for v, p in vp)
+    var = sum(p * (v - mu) ** 2 for v, p in vp)
+    sd = math.sqrt(var) if var > 0 else 1.0
+    z = [(v - mu) / sd for v, _ in vp]
+    pr = [p for _, p in vp]
+    ks = {name: round(ks_weighted_to_cdf(z, pr, _LAWS[name]), 4) for name in laws}
+    best = min(ks, key=ks.get)
+    out = {"law": best}
+    # board.py reads ks_normal / ks_uniform; expose every computed KS as ks_<law>
+    out["ks_normal"] = ks.get("normal (Gaussian)")
+    out["ks_uniform"] = ks.get("uniform")
+    for name, v in ks.items():
+        key = "ks_" + name.split()[0].lower()
+        out[key] = v
+    return out
+
+
 def limit_fit(samples: list[float]) -> dict:
     mu = statistics.fmean(samples)
     sd = statistics.pstdev(samples)
@@ -325,6 +379,175 @@ def inversions_pmf(n: int) -> Counter:
     return c
 
 
+def random_bst_depths(perm: tuple) -> list[int]:
+    """Depths of the nodes of the BST built by inserting `perm` left to right."""
+    root, left, right, depths = None, {}, {}, []
+    for k in perm:
+        if root is None:
+            root = k; depths.append(0); continue
+        cur, d = root, 0
+        while True:
+            d += 1
+            if k < cur:
+                if cur in left: cur = left[cur]
+                else: left[cur] = k; break
+            else:
+                if cur in right: cur = right[cur]
+                else: right[cur] = k; break
+        depths.append(d)
+    return depths
+
+
+def random_bst_pmf(n: int) -> Counter:
+    """Depth of a uniformly random node in a random BST (built from a random
+    permutation of 1..n), over all permutations. E[depth] ~ 2 ln n; Gaussian."""
+    c: Counter = Counter()
+    for p in itertools.permutations(range(1, n + 1)):
+        for d in random_bst_depths(p):
+            c[d] += 1
+    return c
+
+
+def ascii_hist_binned(vp: list[tuple[float, float]], nbins: int = 16) -> str:
+    if not vp:
+        return ""
+    lo = min(v for v, _ in vp); hi = max(v for v, _ in vp)
+    width = (hi - lo) / nbins if hi > lo else 1.0
+    bins = [0.0] * (nbins + 1)
+    for v, p in vp:
+        bins[min(nbins, int((v - lo) / width))] += p
+    mx = max(bins) or 1.0
+    out = []
+    for i, p in enumerate(bins):
+        center = lo + (i + 0.5) * width
+        out.append(f"{center:6.1f} | {'█' * round(50 * p / mx)} {p:.4f}")
+    return "\n".join(out)
+
+
+def coupon_collector_result(small_ns: list[int], limit_n: int) -> dict:
+    """Time T to collect all n coupons (each draw uniform). E[T] = n*H_n exactly;
+    standardized T converges to a Gumbel (extreme-value) law."""
+    means = [n * harmonic(n) for n in small_ns]
+    n = limit_n
+    p = [0.0] * (n + 1); p[0] = 1.0
+    t, cum, vp = 0, 0.0, []
+    while cum < 1 - 1e-12 and t < 200000:
+        t += 1
+        nw = [0.0] * (n + 1)
+        for j in range(n):
+            if p[j]:
+                nw[j] += p[j] * (j / n)
+                nw[j + 1] += p[j] * ((n - j) / n)
+        if nw[n] > 0:
+            vp.append((float(t), nw[n])); cum += nw[n]
+        nw[n] = 0.0
+        p = nw
+    mu = sum(v * q for v, q in vp); var = sum(q * (v - mu) ** 2 for v, q in vp)
+    return {
+        "kind": "distribution",
+        "algorithm": "coupon collector (collect all n coupons)",
+        "small_ns": small_ns,
+        "exact_means": [str(m) for m in means],
+        "conjectured_mean_closed_form": "n·H_n (n-th harmonic number)",
+        "limit_n": limit_n,
+        "limit_mean": str(n * harmonic(n)),
+        "limit_variance": f"~{var:.3f}",
+        "limit_distribution": limit_fit_pmf(
+            vp, ["normal (Gaussian)", "uniform", "Gumbel (extreme value)"]),
+        "histogram_at_limit_n": ascii_hist_binned(vp),
+    }
+
+
+def birthday_result(small_ns: list[int], limit_n: int) -> dict:
+    """Number of insertions T until the first hash collision among n slots.
+    E[T] = sum_i prod_{j<i}(1 - j/n) ~ sqrt(pi*n/2); standardized T -> Rayleigh."""
+    def mean_exact(n: int) -> Fraction:
+        total, D = Fraction(0), Fraction(1)
+        for i in range(n + 1):
+            total += D; D *= Fraction(n - i, n)
+        return total
+    means = [mean_exact(n) for n in small_ns]
+    n = limit_n
+    vp, D = [], 1.0
+    for t in range(1, n + 2):
+        if t >= 2:
+            pc = D * ((t - 1) / n)
+            if pc > 0:
+                vp.append((float(t), pc))
+        D *= (1 - (t - 1) / n)
+        if D <= 0:
+            break
+    mu = sum(v * q for v, q in vp); var = sum(q * (v - mu) ** 2 for v, q in vp)
+    return {
+        "kind": "distribution",
+        "algorithm": "birthday problem (insertions to first hash collision, n slots)",
+        "small_ns": small_ns,
+        "exact_means": [str(m) for m in means],
+        "conjectured_mean_closed_form": "~ sqrt(pi*n/2)  (E[T] = sum_i prod_{j<i}(1-j/n))",
+        "limit_n": limit_n,
+        "limit_mean": f"~{mu:.3f}",
+        "limit_variance": f"~{var:.3f}",
+        "limit_distribution": limit_fit_pmf(
+            vp, ["normal (Gaussian)", "uniform", "Rayleigh"]),
+        "histogram_at_limit_n": ascii_hist_binned(vp),
+    }
+
+
+def reservoir_result(n: int, k: int) -> dict:
+    """Reservoir sampling (Algorithm R): exact per-item retention probability,
+    computed over all decision paths. Every item is kept with probability k/n —
+    a perfectly UNIFORM sample. Certificate = max deviation from k/n (= 0)."""
+    states = {frozenset(range(1, k + 1)): Fraction(1)}
+    for i in range(k + 1, n + 1):
+        nst, pa = {}, Fraction(k, i)
+        for res, pr in states.items():
+            nst[res] = nst.get(res, Fraction(0)) + pr * (1 - pa)
+            for victim in res:
+                nr = frozenset((res - {victim}) | {i})
+                nst[nr] = nst.get(nr, Fraction(0)) + pr * pa * Fraction(1, k)
+        states = nst
+    probs = {it: Fraction(0) for it in range(1, n + 1)}
+    for res, pr in states.items():
+        for it in res:
+            probs[it] += pr
+    target = Fraction(k, n)
+    dev = max(abs(p - target) for p in probs.values())
+    return {
+        "kind": "uniformity",
+        "algorithm": f"reservoir sampling (Algorithm R, k={k} of n={n})",
+        "summand": "P(item i is in the final sample), for every position i = 1..n",
+        "conjectured_mean_closed_form": f"k/n = {target} for ALL items (uniform)",
+        "certificate": f"max_i |P(keep i) - k/n| = {dev} over all decision paths",
+        "certificate_verified": (dev == 0),
+        "limit_distribution": {},
+    }
+
+
+def fisher_yates_result(n: int) -> dict:
+    """Fisher-Yates shuffle: exact output distribution over all n! equally-likely
+    choice sequences. Every one of the n! permutations occurs exactly once —
+    perfectly uniform. Certificate = (max count - min count) over permutations."""
+    base = list(range(n))
+    counts: Counter = Counter()
+    for choice in itertools.product(*[range(i, n) for i in range(n)]):
+        a = base[:]
+        for i, j in enumerate(choice):
+            a[i], a[j] = a[j], a[i]
+        counts[tuple(a)] += 1
+    nfact = math.factorial(n)
+    spread = max(counts.values()) - min(counts.values()) if len(counts) == nfact else None
+    return {
+        "kind": "uniformity",
+        "algorithm": f"Fisher-Yates shuffle (n={n})",
+        "summand": "P(output = pi), for every permutation pi of n elements",
+        "conjectured_mean_closed_form": f"1/n! = 1/{nfact} for ALL {nfact} permutations (uniform)",
+        "certificate": (f"all {nfact} permutations reached, each by exactly one of n! "
+                        f"choice paths; (max-min) count = {spread}"),
+        "certificate_verified": (len(counts) == nfact and spread == 0),
+        "limit_distribution": {},
+    }
+
+
 def analyse(name: str, pmf_fn, small_ns: list[int], limit_n: int) -> dict:
     means = []
     for n in small_ns:
@@ -371,15 +594,38 @@ def main() -> None:
          list(range(1, 8)), 7, "quickselect-average.json"),
         ("hashing collisions (n keys, n slots, load 1)", hashing_collisions_pmf,
          list(range(1, 7)), 6, "hashing-collisions.json"),
+        ("random BST node depth (random permutation)", random_bst_pmf,
+         list(range(1, 8)), 7, "random-bst-depth.json"),
     ]
     for name, fn, ns, lim, out in jobs:
         r = analyse(name, fn, ns, lim)
+        if out == "random-bst-depth.json":
+            r["conjectured_mean_closed_form"] = "~ 2·H_n − 3  (≈ 2 ln n)"
         (RESULTS / out).write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
         print(f"# {name}")
         print(f"  E[cost(n)] (conjectured) = {r['conjectured_mean_closed_form']}")
         print(f"  limit (standardized) ~ {r['limit_distribution']['law']} "
               f"(KS normal={r['limit_distribution']['ks_normal']}, "
               f"uniform={r['limit_distribution']['ks_uniform']})")
+        print()
+
+    # probabilistic results with non-Gaussian limit laws / exact uniformity
+    extras = [
+        ("coupon-collector.json", coupon_collector_result(list(range(1, 9)), 40)),
+        ("birthday-problem.json", birthday_result(list(range(1, 9)), 80)),
+        ("reservoir-sampling.json", reservoir_result(7, 3)),
+        ("fisher-yates-uniformity.json", fisher_yates_result(5)),
+    ]
+    for out, r in extras:
+        (RESULTS / out).write_text(json.dumps(r, ensure_ascii=False, indent=2), encoding="utf-8")
+        ld = r.get("limit_distribution") or {}
+        print(f"# {r['algorithm']}")
+        if r["kind"] == "distribution":
+            print(f"  E[cost(n)] (conjectured) = {r['conjectured_mean_closed_form']}")
+            print(f"  limit (standardized) ~ {ld.get('law')}  (KS {ld})")
+        else:
+            print(f"  {r['conjectured_mean_closed_form']}")
+            print(f"  certificate: {r['certificate']}  [verified={r['certificate_verified']}]")
         print()
 
     # closed-form summation (Gosper-style antidifference + telescoping certificate)

@@ -1,0 +1,9 @@
+{
+  "kind": "uniformity",
+  "algorithm": "Fisher-Yates shuffle (n=5)",
+  "summand": "P(output = pi), for every permutation pi of n elements",
+  "conjectured_mean_closed_form": "1/n! = 1/120 for ALL 120 permutations (uniform)",
+  "certificate": "all 120 permutations reached, each by exactly one of n! choice paths; (max-min) count = 0",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

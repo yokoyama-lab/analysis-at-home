@@ -1,0 +1,32 @@
+{
+  "id": "lame-theorem",
+  "title": "Lamé's theorem: Euclid's worst case is consecutive Fibonacci numbers (TAOCP Vol. 2 §4.5.3)",
+  "statement_informal": "If the Euclidean algorithm performs n >= 1 division steps on a > b, then b >= F(n+1) and a >= F(n+2). Consecutive Fibonacci numbers are the smallest pair forcing a given number of steps — the tight O(log) bound behind the easy linear bound of euclid-gcd.",
+  "domain": "number-theory",
+  "claim_kind": "worst-case",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "lame",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "division"
+    ],
+    "notes": "steps fuel a b counts the (a,b)->(b, a mod b) division steps (= snd (euclid ...) of euclid-gcd). The Fibonacci lower bound is proved by induction on fuel with the joint invariant fib(S n) <= b /\\ fib(S(S n)) <= a."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 2 §4.5.3 — Lamé's theorem: the worst case of Algorithm E occurs at consecutive Fibonacci numbers, giving the tight O(log) step bound.",
+    "Builds on work-units/euclid-gcd (the easy linear bound snd(euclid)<=b) and the fibonacci-* corpus."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

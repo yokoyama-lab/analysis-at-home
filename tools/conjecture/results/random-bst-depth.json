@@ -1,0 +1,32 @@
+{
+  "kind": "distribution",
+  "algorithm": "random BST node depth (random permutation)",
+  "small_ns": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "exact_means": [
+    "0",
+    "1/2",
+    "8/9",
+    "29/24",
+    "37/25",
+    "103/60",
+    "472/245"
+  ],
+  "conjectured_mean_closed_form": "~ 2·H_n − 3  (≈ 2 ln n)",
+  "limit_n": 7,
+  "limit_mean": "472/245",
+  "limit_variance": "858014/540225",
+  "limit_distribution": {
+    "law": "normal (Gaussian)",
+    "ks_normal": 0.1566,
+    "ks_uniform": 0.1607
+  },
+  "histogram_at_limit_n": "  0 | █████████████████████████ 5040\n  1 | ██████████████████████████████████████████ 8640\n  2 | ██████████████████████████████████████████████████ 10224\n  3 | ████████████████████████████████████ 7456\n  4 | ███████████████ 3152\n  5 | ███ 704\n  6 |  64"
+}

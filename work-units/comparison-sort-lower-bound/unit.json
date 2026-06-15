@@ -1,0 +1,32 @@
+{
+  "id": "comparison-sort-lower-bound",
+  "title": "Comparison-sort lower bound: height >= lg(n!) (TAOCP Vol. 3 §5.3.1)",
+  "statement_informal": "A comparison sort is a binary decision tree that must distinguish all n! orderings, so it has >= n! leaves. Since a binary tree of height h has <= 2^h leaves, its height (worst-case comparisons) is >= log2(n!) = Omega(n log n). Promotes decision-tree-leaves-bound to the actual lg(n!) bound.",
+  "domain": "sorting",
+  "claim_kind": "worst-case",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "comparison_sort_lower_bound",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "comparison"
+    ],
+    "notes": "height of the decision tree = worst-case comparisons. fact n <= leaves t (must distinguish n! orderings) and leaves t <= 2^height t give log2(n!) <= height t via Nat.log2_le_mono + Nat.log2_pow2."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 3 §5.3.1 — the information-theoretic lower bound: any comparison sort needs at least ceil(lg n!) comparisons in the worst case.",
+    "Builds on work-units/decision-tree-leaves-bound (leaves t <= 2^height t)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

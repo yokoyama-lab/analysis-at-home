@@ -1,0 +1,9 @@
+{
+  "kind": "uniformity",
+  "algorithm": "reservoir sampling (Algorithm R, k=3 of n=7)",
+  "summand": "P(item i is in the final sample), for every position i = 1..n",
+  "conjectured_mean_closed_form": "k/n = 3/7 for ALL items (uniform)",
+  "certificate": "max_i |P(keep i) - k/n| = 0 over all decision paths",
+  "certificate_verified": true,
+  "limit_distribution": {}
+}

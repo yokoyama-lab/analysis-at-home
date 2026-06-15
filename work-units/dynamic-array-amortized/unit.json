@@ -1,0 +1,33 @@
+{
+  "id": "dynamic-array-amortized",
+  "title": "Dynamic array (table doubling): push is amortized O(1)",
+  "statement_informal": "A dynamic array doubles its capacity when full. A push costs 1; on overflow it copies all c elements before doubling. By the potential method (Phi = 2*size - capacity), n pushes from a fresh array cost at most 3n total: da_cost n 0 1 <= 3n. The expensive O(n) copy is amortized away by the cheap pushes that precede it.",
+  "domain": "data-structures",
+  "claim_kind": "complexity",
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "dynamic_array_amortized",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "write",
+      "copy"
+    ],
+    "notes": "da_cost n s c = total cost of n pushes at size s, capacity c. Push = 1; resize (s=c) adds c copies and doubles capacity. Proved by the potential method with invariant 1<=c, c/2 <= s <= c and amortized cost 3 per push."
+  },
+  "references": [
+    "CLRS 3rd ed. §17.4 (dynamic tables) — table doubling gives amortized O(1) insertion by the accounting / potential method.",
+    "Same amortized-analysis family as work-units/binary-counter-increments."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}

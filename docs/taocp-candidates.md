@@ -64,17 +64,28 @@ See `docs/taocp-roadmap.md` for what is already verified and the active queue.
 
 ### Vol 2
 - ✅ `base-b-digit-count`, `classical-addition`, `classical-multiplication`, `trial-division-checks`.
-- ✅ `karatsuba-multiplications` — 3 sub-mults/level => 3^k = n^lg3. ⏸ extended Euclid & binary GCD (ℤ / case analysis), Sieve, Lamé, addition-chain bound, polynomial division, FFT.
+- ✅ `karatsuba-multiplications` — 3 sub-mults/level => 3^k = n^lg3.
+- ✅ `lame-theorem` — **Lamé's theorem** (§4.5.3): n>=1 Euclid steps on a>b force `b >= F(n+1)`, `a >= F(n+2)`; consecutive Fibonacci numbers are the worst case (the tight O(log) bound, tying `euclid-*` to `fibonacci-*`).
+- ⏸ extended Euclid & binary GCD (ℤ / case analysis), Sieve, addition-chain bound, polynomial division, FFT.
 
 ### Vol 3
 - ✅ `cocktail-bubble-comparisons`, `radix-sort-passes`, `counting-sort-histogram`, `merge-comparisons`, `min-and-max-comparisons`, `heap-siftdown-comparisons`, `binary-search-comparisons`, `decision-tree-leaves-bound`, `quickselect-worst-case`, the inversion lemmas.
 - 🔬 `quickselect-average` (~2n), `hashing-collisions` ((n-1)/2), inversions / linear-search / Algorithm-M distributions.
+- 🔬 `coupon-collector` — E[T] = n·H_n, **Gumbel** (extreme-value) limit; `birthday-problem` — E[T] ~ √(πn/2) insertions to first collision, **Rayleigh** limit (two new limit laws on the conjecture track).
+- ✅ `boyer-moore-majority` — MJRTY: a strict majority element found in one pass with O(1) space (cancellation invariant).
 - ✅ `median-of-medians-linear` — the BFPRT recurrence `T(n) ≤ T(n/5)+T(7n/10)+n` is proved linear (`≤ 10n`); full algorithm model still open.
 - ✅ `avl-min-nodes-fibonacci` — AVL min nodes >= fib(h) => O(log n) height.
-- ⏸ Shellsort, Ford-Johnson, min-max 3n/2−2, 2nd-largest, B-tree height, tries, move-to-front, interpolation search, open-addressing probes (research-level / need richer models).
+- ✅ `comparison-sort-lower-bound` (§5.3.1) — `fact n <= leaves t -> log2(fact n) <= height t`: any comparison sort needs `>= lg(n!) = Omega(n log n)` comparisons (promotes `decision-tree-leaves-bound` to the actual `lg n!` bound).
+- ✅ `build-heap-linear` (§5.2.3) — sum of node heights `sheight h + h + 1 = nodes h`, so total sift-down work `<= n`: Floyd's build-heap is **O(n)**, not O(n log n).
+- 🔬 `random-bst-depth` — E[node depth] `~ 2·H_n − 3 ≈ 2 ln n`, Gaussian limit.
+- ⏸ Shellsort, Ford-Johnson, min-max 3n/2−2, 2nd-largest, B-tree height, tries, move-to-front, interpolation search (research-level / need richer models).
 
 ### Vol 4A
+- 🔬 `fisher-yates-uniformity` — exact: each of the n! permutations is output exactly once (uniform, certificate verified); `reservoir-sampling` — each item retained with probability k/n exactly (uniform, certificate verified).
 - ⏸ Gray code (bitwise), popcount/ruler, permutation & combination generation, partitions/Bell (need bit-models or generation frameworks; candidates for the conjecture track).
+
+### Amortized / data structures
+- ✅ `binary-counter-increments` (amortized O(1)); `dynamic-array-amortized` — table doubling, n pushes cost `<= 3n` (potential method, Phi = 2·size − capacity).
 
 ### Graphs & strings (§7.4 etc.)
 - ✅ `warshall-operations` (V³), `dp-table-fill` (LCS/edit/matrix-chain n·m), `prefix-match-comparisons` (naive-match core).
