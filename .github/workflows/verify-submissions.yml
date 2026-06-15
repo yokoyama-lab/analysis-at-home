@@ -99,3 +99,26 @@ jobs:
         run: |
           isabelle version
           bash tools/verify_changed.sh "origin/${{ github.base_ref }}" isabelle
+
+  # Conjecture track: a "computed, not trusted" result is still only accepted if
+  # it REPRODUCES from the committed solver. When a PR touches tools/conjecture/,
+  # re-run conjecture.py and reject any drift in results/*.json.
+  conjecture-reproducible:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: git fetch --no-tags --depth=1 origin "${{ github.base_ref }}"
+      - name: any changed conjecture-track files?
+        id: c
+        run: |
+          n=$(git diff --name-only --diff-filter=AMD "origin/${{ github.base_ref }}...HEAD" \
+                | grep -Ec '^tools/conjecture/' || true)
+          echo "n=$n" >> "$GITHUB_OUTPUT"
+      - if: steps.c.outputs.n != '0'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - if: steps.c.outputs.n != '0'
+        run: bash tools/check_conjecture_reproducible.sh

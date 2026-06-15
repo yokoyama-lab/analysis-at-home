@@ -49,7 +49,28 @@ trusted — the kernel decides.
 See [`docs/work-unit-format.md`](docs/work-unit-format.md). A unit needs
 `unit.json` (validated against `work-units/schema.json`), a human `statement.md`,
 a `prompt-template.md`, and at least one `targets/<backend>/` seed whose theorem
-is `Admitted.`.
+is `Admitted.`. This is how you contribute a **cost** claim too — `claim_kind`
+may be `worst-case` / `best-case` / `expected-cost` / `complexity` /
+`closed-form` (not only `correctness`); the kernel checks the cost theorem the
+same way.
+
+## Contributing to the conjecture track (cost distributions & limit laws)
+
+The conjecture track *computes* a cost distribution, its exact mean, and its
+limiting law — fast, but **not trusted**. Two ways to contribute:
+
+1. **Promote a computed mean to a theorem (a "kernel twin").** The board lists
+   distributions that have an exact computed mean but no verified twin yet. Prove
+   that mean as a normal work unit and link the evidence from `unit.json`:
+   `"conjecture_artifact": "tools/conjecture/results/<name>.json"`. The board then
+   shows the conjecture and its kernel-checked twin side by side.
+2. **Add a new distribution / limit law.** Add a model to
+   [`tools/conjecture/conjecture.py`](tools/conjecture/conjecture.py) (pure
+   stdlib — exact `Fraction` arithmetic, exhaustive enumeration, KS-fit to the
+   candidate limit laws) and commit the regenerated `results/*.json`. CI re-runs
+   the solver and **rejects any result that does not reproduce** from the
+   committed script (`tools/check_conjecture_reproducible.sh`) — so a computed
+   contribution is at least deterministically reproducible by anyone.
 
 ## Credit
 

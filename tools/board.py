@@ -143,6 +143,17 @@ def collect() -> dict:
                 "artifact": rel,
                 "twin": twin.get(rel),
             })
+    # conjecture-track jobs: a computed distribution with an EXACT mean but no
+    # kernel-checked twin yet — a candidate theorem someone can prove and link
+    # back via `conjecture_artifact`.
+    def _exact(m: str) -> bool:
+        return bool(m) and not any(s in m for s in ("~", "non-polynomial", "skew", "→"))
+    twin_jobs = [
+        {"algorithm": c["algorithm"], "mean": c["mean_closed_form"],
+         "limit": c["limit"], "artifact": c["artifact"]}
+        for c in conjectures
+        if c["kind"] == "distribution" and not c["twin"] and _exact(c["mean_closed_form"])
+    ]
     # aggregate breakdowns for the at-a-glance summary
     from collections import Counter
     domains = Counter(u["domain"] for u in units if u["domain"])
@@ -152,7 +163,7 @@ def collect() -> dict:
     return {
         "repo": OWNER_REPO, "backends": BACKENDS, "units": units,
         "open_jobs": open_jobs, "decompositions": decomps, "leaf_jobs": leaf_jobs,
-        "conjectures": conjectures,
+        "conjectures": conjectures, "twin_jobs": twin_jobs,
         "domains": sorted(domains.items(), key=lambda kv: -kv[1]),
         "claim_kinds": sorted(kinds.items(), key=lambda kv: -kv[1]),
         "stats": {"targets": total, "verified": verified, "open": total - verified,
@@ -257,6 +268,15 @@ mean) to a kernel-checked theorem. <span id="twoex"></span></p>
 <details><summary>Computed distributions &amp; limit laws (not trusted)</summary>
   <div id="conjectures"></div>
 </details>
+<h3 style="margin:1rem 0 .2rem">Conjecture-track jobs — promote a computed mean to a theorem</h3>
+<p class="note">You can contribute to the cost-statistics track two ways.
+<b>(1) Promote:</b> these distributions have an <b>exact computed mean</b> but
+<b>no kernel-checked twin yet</b> — prove the mean as a theorem in a new work
+unit and link it with <code>conjecture_artifact</code>. <b>(2) Compute:</b> add a
+brand-new distribution/limit-law to <code>tools/conjecture/conjecture.py</code>
+(pure stdlib); CI re-runs the solver and <b>rejects results that don't reproduce</b>
+from the committed script. Twins wanted: <span id="twc">0</span>.</p>
+<div id="twinjobs"></div>
 
 <h2 id="contribute">Pick an open job</h2>
 <p class="note">Each is a port of a kernel-verified theorem to another proof
@@ -352,6 +372,21 @@ fetch('data.json').then(r=>r.json()).then(D=>{
       box.append(det);
     }
     conjectures.append(box);
+  });
+
+  // conjecture-track jobs: computed means awaiting a kernel twin
+  const tj = D.twin_jobs || [];
+  twc.textContent = tj.length;
+  if(!tj.length) twinjobs.append(E('p',{className:'note',textContent:'(every computed mean already has a verified twin)'}));
+  tj.forEach(j=>{
+    const box=E('div',{className:'job'});
+    box.append(E('h3',{}, document.createTextNode(j.algorithm),
+      E('span',{className:'chip',textContent:'TWIN WANTED'}),
+      E('span',{className:'chip',textContent:j.limit||'distribution'})));
+    box.append(E('p',{className:'note'}, document.createTextNode('prove the exact mean: '), E('b',{textContent:j.mean})));
+    box.append(E('p',{className:'note'}, document.createTextNode('computed evidence: '),
+      E('code',{textContent:j.artifact}), document.createTextNode(' — link it from your unit via conjecture_artifact')));
+    twinjobs.append(box);
   });
 
   // open jobs
