@@ -9,6 +9,7 @@
     "input_distribution": "uniform present target in {1..n}"
   },
   "conjecture_artifact": "tools/conjecture/results/linear-search.json",
+  "oracle": { "p": "n+1", "q": "2", "artifact": "tools/conjecture/results/linear-search.json" },
   "targets": ["rocq", "lean", "agda", "isabelle"],
   "prompt_template": "prompt-template.md",
   "expected_theorem": "linear_search_avg_total",

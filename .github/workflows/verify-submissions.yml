@@ -122,3 +122,15 @@ jobs:
           python-version: "3.12"
       - if: steps.c.outputs.n != '0'
         run: bash tools/check_conjecture_reproducible.sh
+
+  # Faithfulness oracle: a unit's formal average-case mean p/q must match the
+  # INDEPENDENTLY ENUMERATED E[cost] in its conjecture-track artifact. Cheap
+  # (pure stdlib), so it runs on every PR.
+  oracle-faithful:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python3 tools/oracle_check.py
