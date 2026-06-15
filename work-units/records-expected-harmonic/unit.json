@@ -1,0 +1,35 @@
+{
+  "id": "records-expected-harmonic",
+  "title": "Expected number of records of a random permutation = H_n (Algorithm M average case)",
+  "statement_informal": "The expected number of left-to-right maxima (records) of a uniformly random permutation of [n] is the harmonic number H_n. Modelled via sequential-rank vectors (c_i in {1..i}, uniform); position i is a record iff c_i = i. Proved without enumerating the n! permutations: linearity over the last coordinate gives Tot(S m) = (S m)*Tot m + m!, i.e. E[R_n] = E[R_{n-1}] + 1/n.",
+  "domain": "searching",
+  "claim_kind": "expected-cost",
+  "conjecture_artifact": "tools/conjecture/results/algorithm-m-maxima.json",
+  "oracle": { "p": "H(n)", "q": "1", "artifact": "tools/conjecture/results/algorithm-m-maxima.json" },
+  "targets": [
+    "rocq",
+    "lean",
+    "agda",
+    "isabelle"
+  ],
+  "prompt_template": "prompt-template.md",
+  "expected_theorem": "records_expected",
+  "cost_model": {
+    "kind": "func-ops",
+    "counts": [
+      "max-update"
+    ],
+    "notes": "records(c) counts coordinates with c_i = i. E records (ranks n) := (Σ records)/|ranks n|, |ranks n| = n!. The recurrence Tot(S m)=(S m)*Tot m + m! (linearity over the last coordinate) gives E[R_n] = H_n in QArith via field."
+  },
+  "references": [
+    "Knuth, TAOCP Vol. 1 §1.2.10 — Algorithm M (finding the maximum); the average number of times the running maximum is updated is H_n - 1 (records counting the first element gives H_n).",
+    "Rényi — sequential-rank representation of a uniform permutation; records correspond to records in the rank sequence.",
+    "Verified twin of conjecture artifact tools/conjecture/results/algorithm-m-maxima.json (enumerated E[records] = H_n)."
+  ],
+  "status": {
+    "rocq": "verified",
+    "lean": "open",
+    "agda": "open",
+    "isabelle": "open"
+  }
+}
