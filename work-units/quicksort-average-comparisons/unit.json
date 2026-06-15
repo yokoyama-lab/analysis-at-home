@@ -9,13 +9,14 @@
     "input_distribution": "uniformly random permutation (random pivot)"
   },
   "conjecture_artifact": "tools/conjecture/results/quicksort-average.json",
+  "oracle": { "p": "2*(n+1)*H(n)-4*n", "q": "1", "artifact": "tools/conjecture/results/quicksort-average.json" },
   "targets": ["rocq", "lean", "agda", "isabelle"],
   "prompt_template": "prompt-template.md",
   "expected_theorem": "quicksort_average_closed_form",
   "cost_model": {
     "kind": "func-ops",
     "counts": ["comparison"],
-    "notes": "Expected key comparisons over a uniformly random permutation. The full-history recurrence reduces to the first-order n·C(n)=(n+1)·C(n-1)+2(n-1); its solution is 2(n+1)H_n−4n (rationals + harmonic numbers)."
+    "notes": "Expected key comparisons over a uniformly random permutation. The full-history recurrence reduces to the first-order n·C(n)=(n+1)·C(n-1)+2(n-1); its solution is 2(n+1)H_n−4n (rationals + harmonic numbers). PROGRAM GROUNDING (targets/rocq/Quicksort.v, axiom-free): an instrumented head-pivot comparison counter cmp with cmp_cons; summed over all permutations it reproduces the closed form's small values (Tot 2..6 = 2,16,116,888,7416 = mean*n!); and the pair-decomposition identity cmp_eq_pairsum (cmp l = number of element pairs ever compared) expresses E[C]=Sum_{i<j}P[compared] at the program level. Remaining (Stage 2): the analytic pair-count -> closed form. The oracle checks 2(n+1)H_n-4n against the enumerated means."
   },
   "references": [
     "Verify-track twin of the CAS conjecture in tools/conjecture/results/quicksort-average.json (tools/conjecture/cas_explore.py).",

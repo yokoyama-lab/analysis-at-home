@@ -54,6 +54,10 @@ def quicksort_average() -> dict:
     residual = sp.simplify(residual)
     H = sp.harmonic
     small = {int(m): str(sp.nsimplify(2 * (m + 1) * H(m) - 4 * m)) for m in range(0, 7)}
+    # small_ns / exact_means: the enumerated-mean view consumed by tools/oracle_check.py
+    # (and the program-grounded twin Quicksort.v, whose Tot n = mean * n!).
+    small_ns = list(range(1, 7))
+    exact_means = [small[m] for m in small_ns]
     return {
         "kind": "recurrence",
         "algorithm": "quicksort average comparisons (random pivot)",
@@ -63,6 +67,8 @@ def quicksort_average() -> dict:
                        f"residual after substituting the closed form = {residual}",
         "certificate_verified": residual == 0,
         "small_values": small,
+        "small_ns": small_ns,
+        "exact_means": exact_means,
         "limit_distribution": None,
         "histogram_at_limit_n": "",
         "note": "CAS-verified conjecture, now also kernel-checked: the verify-track "
