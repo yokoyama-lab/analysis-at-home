@@ -1,0 +1,58 @@
+{
+  "_doc": "Fault corpus for the computation-oracle evaluation. Each entry seeds plausible-but-wrong closed forms ('mutants') for an oracle unit and records the disposition the oracle SHOULD produce: 'caught' = mismatches the enumerated mean at some small n (a faithfulness bug the oracle must reject); 'equivalent' = a different syntactic form of the SAME mean (the oracle must NOT flag it); 'survives' = an adversarially crafted form that agrees on every enumerated n but is wrong beyond the window (a documented blind spot — proof, not the oracle, is what rules it out). p/q are expressions in n, H(.), Fraction, evaluated exactly over the rationals (same semantics as tools/oracle_check.py). Run: python3 tools/fault_corpus.py",
+  "units": [
+    {
+      "id": "linear-search-average-comparisons",
+      "artifact": "tools/conjecture/results/linear-search.json",
+      "correct": { "p": "n+1", "q": "2" },
+      "mutants": [
+        { "id": "ls-drop-plus-one", "p": "n", "q": "2", "kind": "off-by-one", "disposition": "caught",
+          "note": "forgot the +1 (search of a present key vs the n+1 convention)" },
+        { "id": "ls-extra-plus-one", "p": "n+2", "q": "2", "kind": "off-by-one", "disposition": "caught",
+          "note": "double-counted the sentinel" },
+        { "id": "ls-wrong-denom", "p": "n+1", "q": "3", "kind": "wrong-constant", "disposition": "caught",
+          "note": "divided by 3 instead of 2" },
+        { "id": "ls-harmonic-confusion", "p": "H(n)", "q": "1", "kind": "wrong-family", "disposition": "caught",
+          "note": "near miss: agrees at n=1,2 (1, 3/2) then diverges at n=3 (11/6 vs 2) -- the kind of fault random PBT can miss but exact enumeration catches" },
+        { "id": "ls-equivalent-rewrite", "p": "n*n+n", "q": "2*n", "kind": "equivalent", "disposition": "equivalent",
+          "note": "(n^2+n)/(2n) = (n+1)/2; the oracle must NOT flag a faithful rewrite (false-positive control)" },
+        { "id": "ls-asymptotic-only", "p": "(n+1)/2 + (n-1)*(n-2)*(n-3)*(n-4)*(n-5)*(n-6)*(n-7)*(n-8)", "q": "1", "kind": "blind-spot", "disposition": "survives",
+          "note": "adversarial: the added product vanishes at every enumerated n (1..8) but is nonzero at n=9 -- demonstrates the oracle is consistency, not proof" }
+      ]
+    },
+    {
+      "id": "records-expected-harmonic",
+      "artifact": "tools/conjecture/results/algorithm-m-maxima.json",
+      "correct": { "p": "H(n)", "q": "1" },
+      "mutants": [
+        { "id": "rec-maxima-updates", "p": "H(n)-1", "q": "1", "kind": "off-by-one", "disposition": "caught",
+          "note": "the single most plausible faithfulness bug: TAOCP Algorithm M counts running-maximum UPDATES = H_n - 1; records (counting the first element) = H_n. caught at n=1 (0 vs 1)" },
+        { "id": "rec-extra-one", "p": "H(n)+1", "q": "1", "kind": "off-by-one", "disposition": "caught",
+          "note": "off by +1" },
+        { "id": "rec-shifted", "p": "H(n-1)", "q": "1", "kind": "index-shift", "disposition": "caught",
+          "note": "harmonic indexed at n-1; caught at n=1 (0 vs 1)" },
+        { "id": "rec-linear-lookalike", "p": "n+1", "q": "2", "kind": "wrong-family", "disposition": "caught",
+          "note": "near miss: H_n and (n+1)/2 agree at n=1,2 then diverge at n=3 (11/6 vs 2)" },
+        { "id": "rec-equivalent-rewrite", "p": "H(n-1) + 1/n", "q": "1", "kind": "equivalent", "disposition": "equivalent",
+          "note": "H_{n-1}+1/n = H_n; faithful rewrite, must not be flagged" }
+      ]
+    },
+    {
+      "id": "collisions-expected-hashing",
+      "artifact": "tools/conjecture/results/hashing-collisions.json",
+      "correct": { "p": "n-1", "q": "2" },
+      "mutants": [
+        { "id": "coll-drop-minus-one", "p": "n", "q": "2", "kind": "off-by-one", "disposition": "caught",
+          "note": "forgot the -1; caught at n=1 (1/2 vs 0)" },
+        { "id": "coll-wrong-denom", "p": "n-1", "q": "3", "kind": "wrong-constant", "disposition": "caught",
+          "note": "divided by 3; agrees at n=1 (0) then caught at n=2 (1/3 vs 1/2)" },
+        { "id": "coll-sign-flip", "p": "n+1", "q": "2", "kind": "off-by-one", "disposition": "caught",
+          "note": "+1 instead of -1; caught at n=1" },
+        { "id": "coll-forgot-normalization", "p": "n*(n-1)", "q": "2", "kind": "missing-factor", "disposition": "caught",
+          "note": "plausible: C(n,2) total pairs without dividing by n slots; E = C(n,2)/n = (n-1)/2, not C(n,2). caught at n=2 (1 vs 1/2)" },
+        { "id": "coll-equivalent-rewrite", "p": "n*n-n", "q": "2*n", "kind": "equivalent", "disposition": "equivalent",
+          "note": "(n^2-n)/(2n) = (n-1)/2 for n>=1; faithful rewrite, must not be flagged" }
+      ]
+    }
+  ]
+}

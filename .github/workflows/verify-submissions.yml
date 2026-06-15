@@ -134,3 +134,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: python3 tools/oracle_check.py
+      # Discriminating-power evaluation: the oracle must CATCH plausible-but-wrong
+      # closed forms (off-by-one, wrong constant, wrong family), pass faithful
+      # rewrites, and (honestly) miss only the documented asymptotic-only blind
+      # spot. Guards against the oracle silently degrading into a no-op.
+      - run: python3 tools/fault_corpus.py
