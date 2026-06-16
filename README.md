@@ -86,7 +86,7 @@ proves it.
   evaluates it: **12/12 plausible-but-wrong closed forms are caught** (e.g. the
   `Hₙ − 1` maxima-updates trap), faithful rewrites pass, and the one
   enumeration-window blind spot is reported, not hidden. Exact enumeration, not
-  random sampling — see [`docs/oracle-evaluation.md`](docs/oracle-evaluation.md).
+  random sampling — `tools/fault_corpus.py` prints the full breakdown.
 
 A unit may `Require Import` the framework: the verifier precompiles `framework/*.v`
 (from source, still kernel-checked end to end), so contributors build *on* the
